@@ -1,31 +1,31 @@
-import { AxiosInstance } from "axios";
-import api from "../configs/axios";
-import { ApiResponse } from "../types/response";
+import { AxiosInstance } from "axios"
+import api from "../configs/axios"
+import { ApiResponse } from "../types/response"
 
-const endpoint = "/hospital/vnpay";
+const endpoint = "/hospital/vnpay"
 
 // ---------------- REQUEST TYPES ----------------
 export interface CreatePaymentRequest {
-  amount: number;
-  orderId: string;
+  amount: number
+  orderId: string
 }
 
 // ---------------- RESPONSE TYPES ----------------
 export interface CreatePaymentResponse {
-  paymentUrl: string;
+  paymentUrl: string
 }
 
 export interface VnpayReturnResponse {
-  orderId: string;
-  status: "success" | "failed";
-  code?: string;
+  orderId: string
+  status: "success" | "failed"
+  code?: string
 }
 
 class VnpayClient {
-  private readonly client: AxiosInstance;
+  private readonly client: AxiosInstance
 
   constructor() {
-    this.client = api;
+    this.client = api
   }
 
   /**
@@ -34,11 +34,8 @@ class VnpayClient {
    * @returns Payment URL
    */
   async createPaymentURL(data: CreatePaymentRequest): Promise<ApiResponse<CreatePaymentResponse>> {
-    const response = await this.client.post<ApiResponse<CreatePaymentResponse>>(
-      `${endpoint}/create-payment`,
-      data,
-    );
-    return response.data;
+    const response = await this.client.post<ApiResponse<CreatePaymentResponse>>(`${endpoint}/create-payment`, data)
+    return response.data
   }
 
   /**
@@ -47,12 +44,10 @@ class VnpayClient {
    * @returns Kết quả thanh toán
    */
   async verifyReturn(queryParams: string): Promise<ApiResponse<VnpayReturnResponse>> {
-    const response = await this.client.get<ApiResponse<VnpayReturnResponse>>(
-      `${endpoint}/return${queryParams}`,
-    );
-    return response.data;
+    const response = await this.client.get<ApiResponse<VnpayReturnResponse>>(`${endpoint}/return${queryParams}`)
+    return response.data
   }
 }
 
-const VnpayApi = new VnpayClient();
-export { VnpayApi };
+const VnpayApi = new VnpayClient()
+export { VnpayApi }

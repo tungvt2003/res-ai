@@ -1,8 +1,7 @@
-import axios from "axios";
+import axios from "axios"
 
-const GEMINI_API_URL =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
-const GEMINI_API_KEY = process.env.NEXT_PUBLIC_API_KEY_GEMINI;
+const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+const GEMINI_API_KEY = process.env.NEXT_PUBLIC_API_KEY_GEMINI
 const info = `
 Tôi là AI chatbot tên là **Baoispro** và tôi sẽ trả lời tất cả câu hỏi liên quan đến **DeepEyeX**, một hệ thống chăm sóc sức khỏe mắt toàn diện.
 
@@ -2030,7 +2029,7 @@ Tôi luôn sẵn sàng hỗ trợ bạn trong các vấn đề liên quan đến
 - Chính sách và dịch vụ của hệ thống  
 
 Tôi sẽ chỉ trả lời bằng **tiếng Việt** và nội dung liên quan đến DeepEyeX. Nếu bạn có bất kỳ câu hỏi nào về sản phẩm, đơn hàng, chính sách, hay hỗ trợ kỹ thuật, tôi luôn sẵn sàng giúp đỡ!
-`;
+`
 
 class GeminiClient {
   constructor(private readonly client = axios) {}
@@ -2050,15 +2049,15 @@ class GeminiClient {
             parts: [{ text: message }],
           },
         ],
-      });
+      })
 
-      const reply = response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
-      return reply || "Không thể tạo phản hồi.";
+      const reply = response.data?.candidates?.[0]?.content?.parts?.[0]?.text
+      return reply || "Không thể tạo phản hồi."
     } catch (error) {
-      console.error("Lỗi từ Gemini API:", error);
-      return "🤖: Có lỗi xảy ra khi xử lý yêu cầu.";
+      console.error("Lỗi từ Gemini API:", error)
+      return "🤖: Có lỗi xảy ra khi xử lý yêu cầu."
     }
   }
 }
 
-export const geminiApi = new GeminiClient();
+export const geminiApi = new GeminiClient()

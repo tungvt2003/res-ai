@@ -6,4 +6,4 @@ enum Specialty {
   SpecialtyPediatrics = "pediatrics",
 }
 
-export { Specialty };
+export { Specialty }

@@ -1,13 +1,13 @@
 type Prediction = {
-  label: EyeDiseaseLabel;
-  index: number;
-  probability: number;
-};
+  label: EyeDiseaseLabel
+  index: number
+  probability: number
+}
 
 type DiagnosisResponse = {
-  predictions: Prediction[];
-  top1: Prediction;
-};
+  predictions: Prediction[]
+  top1: Prediction
+}
 
 type EyeDiseaseLabel =
   | "conjunctivitis"
@@ -15,6 +15,6 @@ type EyeDiseaseLabel =
   | "healthy_eye"
   | "hordeolum"
   | "keratitiswithulcer"
-  | "subconjunctival_hemorrhage";
+  | "subconjunctival_hemorrhage"
 
-export type { Prediction, DiagnosisResponse, EyeDiseaseLabel };
+export type { Prediction, DiagnosisResponse, EyeDiseaseLabel }

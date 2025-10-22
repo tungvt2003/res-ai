@@ -1,20 +1,20 @@
-"use client";
-import { Card, Typography, Spin, Button } from "antd";
-import { useState } from "react";
-import { FaStethoscope, FaEye } from "react-icons/fa";
-import { useRouter } from "@/app/shares/locales/navigation";
+"use client"
+import { Card, Typography, Spin, Button } from "antd"
+import { useState } from "react"
+import { FaStethoscope, FaEye } from "react-icons/fa"
+import { useRouter } from "@/app/shares/locales/navigation"
 
-const { Title, Text } = Typography;
+const { Title, Text } = Typography
 
 export type DiagnosisHistory = {
-  id: string;
-  diagnosis: string;
-  doctor: string;
-  date: string;
-  note?: string;
-};
+  id: string
+  diagnosis: string
+  doctor: string
+  date: string
+  note?: string
+}
 
-const mockDiagnosisHistory: DiagnosisHistory[] = [];
+const mockDiagnosisHistory: DiagnosisHistory[] = []
 // [
 //   {
 //     id: "1",
@@ -46,19 +46,19 @@ const diagnosisMap: Record<string, string> = {
   hordeolum: "Chắp / Lẹo",
   keratitiswithulcer: "Viêm giác mạc có loét",
   subconjunctival_hemorrhage: "Xuất huyết dưới kết mạc",
-};
+}
 
 export default function DiagnosisHistoryList() {
-  const [data] = useState<DiagnosisHistory[]>(mockDiagnosisHistory);
-  const [loading] = useState(false);
-  const router = useRouter();
+  const [data] = useState<DiagnosisHistory[]>(mockDiagnosisHistory)
+  const [loading] = useState(false)
+  const router = useRouter()
 
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
         <Spin size="large" tip="Đang tải lịch sử chẩn đoán..." />
       </div>
-    );
+    )
   }
 
   if (data.length === 0) {
@@ -77,8 +77,8 @@ export default function DiagnosisHistoryList() {
           Chưa có lịch sử chẩn đoán
         </Title>
         <Text className="text-gray-500 text-lg mb-8 max-w-md">
-          Bạn chưa có lịch sử khám bệnh nào. Hãy đặt lịch khám hoặc sử dụng tính năng chẩn đoán AI
-          để kiểm tra sức khỏe mắt.
+          Bạn chưa có lịch sử khám bệnh nào. Hãy đặt lịch khám hoặc sử dụng tính năng chẩn đoán AI để kiểm tra sức khỏe
+          mắt.
         </Text>
 
         {/* Action buttons */}
@@ -113,7 +113,7 @@ export default function DiagnosisHistoryList() {
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -121,7 +121,7 @@ export default function DiagnosisHistoryList() {
       <Title level={4}>Lịch sử chẩn đoán</Title>
 
       <div className="grid gap-4 md:grid-cols-2">
-        {data.map((item) => (
+        {data.map(item => (
           <Card key={item.id} hoverable>
             <div className="mb-2">
               <Text strong>Ngày: </Text>
@@ -154,5 +154,5 @@ export default function DiagnosisHistoryList() {
         ))}
       </div>
     </div>
-  );
+  )
 }

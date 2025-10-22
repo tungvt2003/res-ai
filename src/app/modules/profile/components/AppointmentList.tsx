@@ -1,31 +1,24 @@
-"use client";
-import { Typography, Tag, Spin, Button, Modal } from "antd";
-import React, { useState } from "react";
-import dayjs from "dayjs";
-import "dayjs/locale/vi";
-import Image from "next/image";
-import {
-  FaCalendarAlt,
-  FaClock,
-  FaUserMd,
-  FaFileAlt,
-  FaCalendarPlus,
-  FaStethoscope,
-} from "react-icons/fa";
-import { useRouter } from "@/app/shares/locales/navigation";
-import { Appointment, statusLabels } from "../../hospital/types/appointment";
-import { useUpdateAppointmentStatusMutation } from "../../hospital/hooks/mutations/appointments/use-update-appointment-status.mutation";
-import { toast } from "react-toastify";
-import { useQueryClient } from "@tanstack/react-query";
-import { QueryKeyEnum } from "@/app/shares/enums/queryKey";
+"use client"
+import { Typography, Tag, Spin, Button, Modal } from "antd"
+import React, { useState } from "react"
+import dayjs from "dayjs"
+import "dayjs/locale/vi"
+import Image from "next/image"
+import { FaCalendarAlt, FaClock, FaUserMd, FaFileAlt, FaCalendarPlus, FaStethoscope } from "react-icons/fa"
+import { useRouter } from "@/app/shares/locales/navigation"
+import { Appointment, statusLabels } from "../../hospital/types/appointment"
+import { useUpdateAppointmentStatusMutation } from "../../hospital/hooks/mutations/appointments/use-update-appointment-status.mutation"
+import { toast } from "react-toastify"
+import { useQueryClient } from "@tanstack/react-query"
+import { QueryKeyEnum } from "@/app/shares/enums/queryKey"
 
-dayjs.locale("vi");
+dayjs.locale("vi")
 
-const { Title, Text } = Typography;
+const { Title, Text } = Typography
 
 interface AppointmentListProps {
-  appointments: Appointment[];
-  loading?: boolean;
+  appointments: Appointment[]
+  loading?: boolean
 }
 
 const statusColors: Record<Appointment["status"], string> = {
@@ -36,68 +29,68 @@ const statusColors: Record<Appointment["status"], string> = {
   PENDING_ONLINE: "purple",
   CONFIRMED_ONLINE: "cyan",
   COMPLETED_ONLINE: "teal",
-};
+}
 
 const capitalizeWords = (str: string): string => {
   return str
     .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-};
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ")
+}
 
 export default function AppointmentList({ appointments, loading }: AppointmentListProps) {
-  const router = useRouter();
-  const queryClient = useQueryClient();
-  const [cancellingId, setCancellingId] = useState<string | null>(null);
-  const [showCancelModal, setShowCancelModal] = useState(false);
+  const router = useRouter()
+  const queryClient = useQueryClient()
+  const [cancellingId, setCancellingId] = useState<string | null>(null)
+  const [showCancelModal, setShowCancelModal] = useState(false)
   const [selectedAppointment, setSelectedAppointment] = useState<{
-    id: string;
-    code: string;
-  } | null>(null);
+    id: string
+    code: string
+  } | null>(null)
 
   const { mutate: updateStatus, isPending: isCancelling } = useUpdateAppointmentStatusMutation({
     onSuccess: () => {
-      toast.success("Hủy lịch hẹn thành công!");
+      toast.success("Hủy lịch hẹn thành công!")
       // Refetch appointments list
-      queryClient.invalidateQueries({ queryKey: [QueryKeyEnum.Order, "appointments"] });
-      setCancellingId(null);
-      setShowCancelModal(false);
-      setSelectedAppointment(null);
+      queryClient.invalidateQueries({ queryKey: [QueryKeyEnum.Order, "appointments"] })
+      setCancellingId(null)
+      setShowCancelModal(false)
+      setSelectedAppointment(null)
     },
-    onError: (err) => {
-      toast.error("Hủy lịch hẹn thất bại: " + err.message);
-      setCancellingId(null);
+    onError: err => {
+      toast.error("Hủy lịch hẹn thất bại: " + err.message)
+      setCancellingId(null)
     },
-  });
+  })
 
   const handleOpenCancelModal = (appointmentId: string, appointmentCode: string) => {
-    setSelectedAppointment({ id: appointmentId, code: appointmentCode });
-    setShowCancelModal(true);
-  };
+    setSelectedAppointment({ id: appointmentId, code: appointmentCode })
+    setShowCancelModal(true)
+  }
 
   const handleConfirmCancel = () => {
     if (selectedAppointment) {
-      setCancellingId(selectedAppointment.id);
+      setCancellingId(selectedAppointment.id)
       updateStatus({
         appointment_id: selectedAppointment.id,
         status: "CANCELLED",
-      });
+      })
     }
-  };
+  }
 
   const handleCloseModal = () => {
     if (!isCancelling) {
-      setShowCancelModal(false);
-      setSelectedAppointment(null);
+      setShowCancelModal(false)
+      setSelectedAppointment(null)
     }
-  };
+  }
 
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
         <Spin size="large" tip="Đang tải lịch hẹn..." />
       </div>
-    );
+    )
   }
 
   if (appointments.length === 0) {
@@ -116,8 +109,7 @@ export default function AppointmentList({ appointments, loading }: AppointmentLi
           Chưa có lịch hẹn khám
         </Title>
         <Text className="text-gray-500 text-lg mb-8 max-w-md">
-          Bạn chưa đặt lịch khám nào. Hãy tìm bệnh viện và bác sĩ phù hợp để được tư vấn và điều trị
-          chuyên nghiệp.
+          Bạn chưa đặt lịch khám nào. Hãy tìm bệnh viện và bác sĩ phù hợp để được tư vấn và điều trị chuyên nghiệp.
         </Text>
 
         {/* Action buttons */}
@@ -152,7 +144,7 @@ export default function AppointmentList({ appointments, loading }: AppointmentLi
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -165,11 +157,11 @@ export default function AppointmentList({ appointments, loading }: AppointmentLi
       </div>
 
       <div className="grid grid-cols-1 gap-4">
-        {appointments.map((appt) => {
-          const timeSlot = appt.time_slots[0];
-          const doctor = timeSlot?.doctor;
-          const startTime = dayjs(timeSlot?.start_time);
-          const endTime = dayjs(timeSlot?.end_time);
+        {appointments.map(appt => {
+          const timeSlot = appt.time_slots[0]
+          const doctor = timeSlot?.doctor
+          const startTime = dayjs(timeSlot?.start_time)
+          const endTime = dayjs(timeSlot?.end_time)
 
           return (
             <div
@@ -204,8 +196,7 @@ export default function AppointmentList({ appointments, loading }: AppointmentLi
                 <div className="flex items-center gap-2">
                   <FaFileAlt className="text-gray-400" />
                   <Text className="text-gray-600 !text-base">
-                    <strong>Mã lịch hẹn:</strong>{" "}
-                    <span className="text-blue-600">{appt.appointment_code}</span>
+                    <strong>Mã lịch hẹn:</strong> <span className="text-blue-600">{appt.appointment_code}</span>
                   </Text>
                 </div>
                 {appt.service_name && (
@@ -236,9 +227,7 @@ export default function AppointmentList({ appointments, loading }: AppointmentLi
                         </Text>
                       </div>
                       <Text className="text-sm text-gray-500 block">
-                        {doctor.specialty === "ophthalmology"
-                          ? "Chuyên khoa Mắt"
-                          : doctor.specialty}
+                        {doctor.specialty === "ophthalmology" ? "Chuyên khoa Mắt" : doctor.specialty}
                       </Text>
                     </div>
                     <div className="text-right">
@@ -264,21 +253,17 @@ export default function AppointmentList({ appointments, loading }: AppointmentLi
                   </Text>
                   {appt.status === "PENDING" && (
                     <button
-                      onClick={() =>
-                        handleOpenCancelModal(appt.appointment_id, appt.appointment_code)
-                      }
+                      onClick={() => handleOpenCancelModal(appt.appointment_id, appt.appointment_code)}
                       disabled={isCancelling && cancellingId === appt.appointment_id}
                       className="bg-red-500 cursor-pointer text-white px-4 py-2 rounded-md hover:bg-red-600 font-medium text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {isCancelling && cancellingId === appt.appointment_id
-                        ? "Đang hủy..."
-                        : "Hủy lịch hẹn"}
+                      {isCancelling && cancellingId === appt.appointment_id ? "Đang hủy..." : "Hủy lịch hẹn"}
                     </button>
                   )}
                 </div>
               </div>
             </div>
-          );
+          )
         })}
       </div>
 
@@ -296,10 +281,8 @@ export default function AppointmentList({ appointments, loading }: AppointmentLi
         <p>
           Bạn có chắc chắn muốn hủy lịch hẹn <strong>{selectedAppointment?.code}</strong>?
         </p>
-        <p className="text-gray-500 text-sm mt-2">
-          Lưu ý: Sau khi hủy, bạn sẽ không thể hoàn tác thao tác này.
-        </p>
+        <p className="text-gray-500 text-sm mt-2">Lưu ý: Sau khi hủy, bạn sẽ không thể hoàn tác thao tác này.</p>
       </Modal>
     </div>
-  );
+  )
 }

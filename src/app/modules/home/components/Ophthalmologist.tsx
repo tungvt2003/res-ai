@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/image"
 
 export default function Ophthalmologist() {
   return (
@@ -15,11 +15,11 @@ export default function Ophthalmologist() {
                   WebkitTextFillColor: "transparent",
                 }}
               >
-                Ophthalmologist
+                Bác Sĩ Chuyên Khoa
               </span>
 
               <h2 className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-3xl font-semibold text-gray-800">
-                The Most Qualified Skillful & Professional staff
+                Đội ngũ nhân viên có trình độ cao, tay nghề giỏi và chuyên nghiệp
               </h2>
             </div>
           </div>
@@ -39,7 +39,7 @@ export default function Ophthalmologist() {
                 }}
               >
                 <h3 className="text-xl font-semibold text-gray-800">Susan Hopkins</h3>
-                <p className="text-gray-600">Cataract surgery</p>
+                <p className="text-gray-600">Phẫu thuật đục thủy tinh thể</p>
               </div>
             </div>
 
@@ -58,7 +58,7 @@ export default function Ophthalmologist() {
                 }}
               >
                 <h3 className="text-xl font-semibold text-gray-800">Keanu Reeves</h3>
-                <p className="text-gray-600">Clarivu eye</p>
+                <p className="text-gray-600">Mắt Clarivu</p>
               </div>
             </div>
 
@@ -77,7 +77,7 @@ export default function Ophthalmologist() {
                 }}
               >
                 <h3 className="text-xl font-semibold text-gray-800">Dr. Robert De Niro</h3>
-                <p className="text-gray-600">Glaucoma</p>
+                <p className="text-gray-600">Bệnh tăng nhãn áp</p>
               </div>
             </div>
 
@@ -96,12 +96,12 @@ export default function Ophthalmologist() {
                 }}
               >
                 <h3 className="text-xl font-semibold text-gray-800">Dr. Mel Gibson</h3>
-                <p className="text-gray-600">Laboratory</p>
+                <p className="text-gray-600">Phòng thí nghiệm</p>
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-import z from "zod";
+import z from "zod"
 
 export const updatePasswordSchema = z.object({
   email: z.email("Email không hợp lệ"),
@@ -10,4 +10,4 @@ export const updatePasswordSchema = z.object({
     .regex(/[a-z]/, "Mật khẩu phải có ít nhất 1 chữ thường")
     .regex(/[0-9]/, "Mật khẩu phải có ít nhất 1 chữ số")
     .regex(/[^A-Za-z0-9]/, "Mật khẩu phải có ít nhất 1 ký tự đặc biệt"),
-});
+})

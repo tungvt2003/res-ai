@@ -1,6 +1,6 @@
-"use client";
+"use client"
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react"
 import {
   Card,
   Input,
@@ -17,101 +17,95 @@ import {
   Row,
   Col,
   Calendar,
-} from "antd";
-import { FileTextOutlined, FileSearchOutlined } from "@ant-design/icons";
-import { motion } from "framer-motion";
-import dayjs, { Dayjs } from "dayjs";
-import { useGetMedicalRecordsByPatientQuery } from "../hooks/queries/medical_records/use-get-medical-records-by-patient.query";
-import { useAppSelector } from "@/app/shares/stores";
-import { MedicalRecord } from "../types/medical_record";
-import { useGetTimeSlotsByDoctorAndMonthQuery } from "../hooks/queries/timeslots/use-get-time-slots-by-doctor-and-month.query";
-import { useGetTimeSlotsByDoctorAndDateQuery } from "../hooks/queries/timeslots/use-get-time-slots-by-doctor-and-date.query";
-import { useCreateFollowUpAppointmentMutation } from "../hooks/mutations/appointments/use-create-follow-up-appointment.mutation";
-import { toast } from "react-toastify";
-import { CreateFollowUpRequest } from "../apis/appointment/appointmentApi";
-import { useQueryClient } from "@tanstack/react-query";
-import { QueryKeyEnum } from "@/app/shares/enums/queryKey";
+} from "antd"
+import { FileTextOutlined, FileSearchOutlined } from "@ant-design/icons"
+import { motion } from "framer-motion"
+import dayjs, { Dayjs } from "dayjs"
+import { useGetMedicalRecordsByPatientQuery } from "../hooks/queries/medical_records/use-get-medical-records-by-patient.query"
+import { useAppSelector } from "@/app/shares/stores"
+import { MedicalRecord } from "../types/medical_record"
+import { useGetTimeSlotsByDoctorAndMonthQuery } from "../hooks/queries/timeslots/use-get-time-slots-by-doctor-and-month.query"
+import { useGetTimeSlotsByDoctorAndDateQuery } from "../hooks/queries/timeslots/use-get-time-slots-by-doctor-and-date.query"
+import { useCreateFollowUpAppointmentMutation } from "../hooks/mutations/appointments/use-create-follow-up-appointment.mutation"
+import { toast } from "react-toastify"
+import { CreateFollowUpRequest } from "../apis/appointment/appointmentApi"
+import { useQueryClient } from "@tanstack/react-query"
+import { QueryKeyEnum } from "@/app/shares/enums/queryKey"
 
-const { Title, Text } = Typography;
-const { Option } = Select;
+const { Title, Text } = Typography
+const { Option } = Select
 
 const FollowUpBooking: React.FC = () => {
-  const queryClient = useQueryClient();
-  const patientId = useAppSelector((state) => state.auth.patient?.patientId || "");
-  const userId = useAppSelector((state) => state.auth.userId || "");
-  const {
-    data: existingRecords,
-    isLoading,
-    isError,
-  } = useGetMedicalRecordsByPatientQuery(patientId);
-  const [form] = Form.useForm();
-  const [loading, setLoading] = useState(false);
-  const [selectedRecord, setSelectedRecord] = useState<MedicalRecord | null>(null);
-  const [step, setStep] = useState(1);
+  const queryClient = useQueryClient()
+  const patientId = useAppSelector(state => state.auth.patient?.patientId || "")
+  const userId = useAppSelector(state => state.auth.userId || "")
+  const { data: existingRecords, isLoading, isError } = useGetMedicalRecordsByPatientQuery(patientId)
+  const [form] = Form.useForm()
+  const [loading, setLoading] = useState(false)
+  const [selectedRecord, setSelectedRecord] = useState<MedicalRecord | null>(null)
+  const [step, setStep] = useState(1)
 
   const handleSelectRecord = (recordId?: string) => {
     if (!recordId) {
-      setSelectedRecord(null);
-      return;
+      setSelectedRecord(null)
+      return
     }
-    const rec = existingRecords?.data?.records.find((r) => r.record_id === recordId);
-    setSelectedRecord(rec ?? null);
-  };
+    const rec = existingRecords?.data?.records.find(r => r.record_id === recordId)
+    setSelectedRecord(rec ?? null)
+  }
 
   const handleSubmitStep1 = () => {
     if (!selectedRecord) {
-      message.warning("Vui lòng chọn hồ sơ để tiếp tục!");
-      return;
+      message.warning("Vui lòng chọn hồ sơ để tiếp tục!")
+      return
     }
-    setStep(2);
-  };
+    setStep(2)
+  }
 
   // ---------------- Lấy slot theo bác sĩ/bệnh viện của hồ sơ ----------------
-  const doctorId = selectedRecord?.appointment?.doctor?.doctor_id;
-  const { data: monthData } = useGetTimeSlotsByDoctorAndMonthQuery(
-    doctorId || "",
-    dayjs().format("YYYY-MM"),
-    { enabled: !!doctorId && step === 2 },
-  );
+  const doctorId = selectedRecord?.appointment?.doctor?.doctor_id
+  const { data: monthData } = useGetTimeSlotsByDoctorAndMonthQuery(doctorId || "", dayjs().format("YYYY-MM"), {
+    enabled: !!doctorId && step === 2,
+  })
 
   const availableDays = useMemo(
-    () => monthData?.data?.map((slot) => dayjs(slot.start_time).format("YYYY-MM-DD")) || [],
+    () => monthData?.data?.map(slot => dayjs(slot.start_time).format("YYYY-MM-DD")) || [],
     [monthData],
-  );
+  )
 
-  const [selectedDate, setSelectedDate] = useState<Dayjs | undefined>(undefined);
+  const [selectedDate, setSelectedDate] = useState<Dayjs | undefined>(undefined)
   const { data: dayData, isLoading: isDayLoading } = useGetTimeSlotsByDoctorAndDateQuery(
     doctorId || "",
     selectedDate ? selectedDate.format("YYYY-MM-DD") : "",
     { enabled: !!selectedDate && !!doctorId },
-  );
+  )
 
-  const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
+  const [selectedSlot, setSelectedSlot] = useState<string | null>(null)
 
   const createFollowUpMutation = useCreateFollowUpAppointmentMutation({
     onSuccess: () => {
-      toast.success(`Đặt lịch tái khám thành công cho hồ sơ ${selectedRecord?.record_id} 🎉`);
+      toast.success(`Đặt lịch tái khám thành công cho hồ sơ ${selectedRecord?.record_id} 🎉`)
       // reset form & state
-      setStep(1);
-      setSelectedRecord(null);
-      setSelectedDate(undefined);
-      setSelectedSlot(null);
-      form.resetFields();
+      setStep(1)
+      setSelectedRecord(null)
+      setSelectedDate(undefined)
+      setSelectedSlot(null)
+      form.resetFields()
       if (patientId) {
         queryClient.invalidateQueries({
           queryKey: [QueryKeyEnum.MedicalRecords, patientId],
-        });
+        })
       }
     },
     onError: (err: Error) => {
-      toast.error(`Đặt lịch thất bại: ${err.message}`);
+      toast.error(`Đặt lịch thất bại: ${err.message}`)
     },
-  });
+  })
 
   const handleFinalSubmit = async () => {
     if (!selectedSlot || !selectedRecord || !doctorId) {
-      message.warning("Vui lòng chọn ngày, slot và hồ sơ!");
-      return;
+      message.warning("Vui lòng chọn ngày, slot và hồ sơ!")
+      return
     }
 
     const payload: CreateFollowUpRequest = {
@@ -123,10 +117,10 @@ const FollowUpBooking: React.FC = () => {
       notes: form.getFieldValue("notes") || "",
       service_name: "Tái khám",
       related_record_id: selectedRecord.record_id,
-    };
+    }
 
-    createFollowUpMutation.mutate(payload);
-  };
+    createFollowUpMutation.mutate(payload)
+  }
 
   return (
     <motion.div
@@ -150,9 +144,7 @@ const FollowUpBooking: React.FC = () => {
               <Title level={3} style={{ color: "#1250dc", marginBottom: 0 }}>
                 Chọn hồ sơ tái khám
               </Title>
-              <Text type="secondary">
-                Nhập mã hồ sơ hoặc chọn hồ sơ đã có để tiếp tục đặt lịch tái khám.
-              </Text>
+              <Text type="secondary">Nhập mã hồ sơ hoặc chọn hồ sơ đã có để tiếp tục đặt lịch tái khám.</Text>
             </div>
 
             <Form layout="vertical" form={form} autoComplete="off">
@@ -193,13 +185,11 @@ const FollowUpBooking: React.FC = () => {
                     style={{ borderRadius: 8 }}
                     onChange={handleSelectRecord}
                   >
-                    {(existingRecords?.data?.records || []).map((rec) => (
+                    {(existingRecords?.data?.records || []).map(rec => (
                       <Option key={rec.record_id} value={rec.record_id}>
                         {`Hồ sơ ngày ${
                           rec.appointment?.time_slots?.[0]?.start_time
-                            ? new Date(rec.appointment.time_slots[0].start_time).toLocaleDateString(
-                                "vi-VN",
-                              )
+                            ? new Date(rec.appointment.time_slots[0].start_time).toLocaleDateString("vi-VN")
                             : new Date(rec.created_at).toLocaleDateString("vi-VN")
                         } - ${rec.diagnosis}`}
                       </Option>
@@ -246,14 +236,10 @@ const FollowUpBooking: React.FC = () => {
                 <Descriptions bordered column={1} size="small">
                   <Descriptions.Item label="Ngày khám trước">
                     {selectedRecord.appointment?.time_slots?.[0]?.start_time
-                      ? dayjs(selectedRecord.appointment.time_slots[0].start_time).format(
-                          "DD/MM/YYYY",
-                        )
+                      ? dayjs(selectedRecord.appointment.time_slots[0].start_time).format("DD/MM/YYYY")
                       : dayjs(selectedRecord.created_at).format("DD/MM/YYYY")}
                   </Descriptions.Item>
-                  <Descriptions.Item label="Chuẩn đoán">
-                    {selectedRecord.diagnosis}
-                  </Descriptions.Item>
+                  <Descriptions.Item label="Chuẩn đoán">{selectedRecord.diagnosis}</Descriptions.Item>
                   <Descriptions.Item label="Bác sĩ">
                     {selectedRecord.appointment?.doctor?.full_name || "Chưa có"}
                   </Descriptions.Item>
@@ -268,16 +254,15 @@ const FollowUpBooking: React.FC = () => {
                 <Calendar
                   fullscreen={false}
                   value={selectedDate}
-                  onSelect={(date) => {
-                    setSelectedDate(date);
-                    setSelectedSlot(null);
+                  onSelect={date => {
+                    setSelectedDate(date)
+                    setSelectedSlot(null)
                   }}
-                  disabledDate={(current) => {
-                    const today = dayjs().startOf("day");
-                    const isPast = current && current < today;
-                    const isAvailable =
-                      current && availableDays.includes(current.format("YYYY-MM-DD"));
-                    return isPast || !isAvailable;
+                  disabledDate={current => {
+                    const today = dayjs().startOf("day")
+                    const isPast = current && current < today
+                    const isAvailable = current && availableDays.includes(current.format("YYYY-MM-DD"))
+                    return isPast || !isAvailable
                   }}
                 />
 
@@ -288,27 +273,23 @@ const FollowUpBooking: React.FC = () => {
                     <Spin tip="Đang tải slot..." />
                   ) : dayData?.data?.length ? (
                     <Radio.Group
-                      onChange={(e) => setSelectedSlot(e.target.value)}
+                      onChange={e => setSelectedSlot(e.target.value)}
                       value={selectedSlot}
                       style={{ width: "100%" }}
                     >
                       <Row gutter={[8, 8]}>
-                        {dayData.data.map((slot) => {
-                          const start = dayjs(slot.start_time);
-                          const end = dayjs(slot.end_time);
-                          const slotLabel = `${start.format("HH:mm")} - ${end.format("HH:mm")}`;
-                          const isPast = start.isBefore(dayjs());
+                        {dayData.data.map(slot => {
+                          const start = dayjs(slot.start_time)
+                          const end = dayjs(slot.end_time)
+                          const slotLabel = `${start.format("HH:mm")} - ${end.format("HH:mm")}`
+                          const isPast = start.isBefore(dayjs())
                           return (
                             <Col key={slot.slot_id} xs={12}>
-                              <Radio.Button
-                                value={slot.slot_id}
-                                disabled={isPast}
-                                style={{ width: "100%" }}
-                              >
+                              <Radio.Button value={slot.slot_id} disabled={isPast} style={{ width: "100%" }}>
                                 {slotLabel}
                               </Radio.Button>
                             </Col>
-                          );
+                          )
                         })}
                       </Row>
                     </Radio.Group>
@@ -323,10 +304,7 @@ const FollowUpBooking: React.FC = () => {
 
                 <Form layout="vertical" form={form} onFinish={handleFinalSubmit}>
                   <Form.Item label={<Text strong>Ghi chú bổ sung</Text>} name="notes">
-                    <Input.TextArea
-                      placeholder="Triệu chứng hiện tại, câu hỏi bác sĩ..."
-                      rows={4}
-                    />
+                    <Input.TextArea placeholder="Triệu chứng hiện tại, câu hỏi bác sĩ..." rows={4} />
                   </Form.Item>
 
                   <Form.Item className="mt-4 mb-0">
@@ -355,7 +333,7 @@ const FollowUpBooking: React.FC = () => {
         )}
       </Card>
     </motion.div>
-  );
-};
+  )
+}
 
-export default FollowUpBooking;
+export default FollowUpBooking

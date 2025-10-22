@@ -1,8 +1,7 @@
-import axios, { AxiosInstance } from "axios";
-import { store } from "../stores";
-import { setTokens, clearTokens } from "../stores/authSlice";
-import { redirect } from "../locales/navigation";
-import { refreshToken } from "../api/refreshToken";
+import axios, { AxiosInstance } from "axios"
+import { refreshToken } from "../api/refreshToken"
+import { store } from "../stores"
+import { clearTokens, setTokens } from "../stores/authSlice"
 
 const api: AxiosInstance = axios.create({
   baseURL: "http://localhost:8000",
@@ -11,30 +10,30 @@ const api: AxiosInstance = axios.create({
     "Content-Type": "application/json",
   },
   withCredentials: true,
-});
+})
 
 // ---------------- Request Interceptor ----------------
 // Thêm token nếu có
-api.interceptors.request.use((config) => {
-  const token = store.getState().auth.accessToken;
+api.interceptors.request.use(config => {
+  const token = store.getState().auth.accessToken
   if (token && config.headers) {
-    config.headers.Authorization = `Bearer ${token}`;
+    config.headers.Authorization = `Bearer ${token}`
   }
-  return config;
-});
+  return config
+})
 
 // ---------------- Response Interceptor ----------------
 // Xử lý lỗi chung hoặc logout nếu 401
 api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
+  response => response,
+  async error => {
+    const originalRequest = error.config
 
     if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
+      originalRequest._retry = true
       try {
-        const res = await refreshToken();
-        const state = store.getState().auth;
+        const res = await refreshToken()
+        const state = store.getState().auth
         if (res.data?.access_token) {
           store.dispatch(
             setTokens({
@@ -43,20 +42,18 @@ api.interceptors.response.use(
               userId: state.userId ?? "",
               role: state.role ?? "",
             }),
-          );
-          originalRequest.headers.Authorization = `Bearer ${res.data.access_token}`;
-          return api(originalRequest);
+          )
+          originalRequest.headers.Authorization = `Bearer ${res.data.access_token}`
+          return api(originalRequest)
         }
       } catch (refreshErr) {
-        store.dispatch(clearTokens());
-        const pathname = window.location.pathname; // "/vi/private/users"
-        const locale = pathname.startsWith("/en") ? "en" : "vi";
-        redirect({ href: "/login", locale }); // redirect nếu refresh fail
+        store.dispatch(clearTokens())
+        window.location.href = "/signin"
       }
     }
 
-    return Promise.reject(error);
+    return Promise.reject(error)
   },
-);
+)
 
-export default api;
+export default api

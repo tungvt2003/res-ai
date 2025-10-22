@@ -1,20 +1,20 @@
-"use client";
-import { Upload, Button, Form, Input, Select, UploadFile, message, DatePicker } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
-import { useState } from "react";
-import { Patient } from "../../hospital/types/patient";
-import { useAppSelector } from "@/app/shares/stores";
-import Avatar from "react-avatar";
-import dayjs from "dayjs";
-import { useUpdatePatientMutation } from "../../hospital/hooks/mutations/patients/use-update-patient.mutation";
-import { useDispatch } from "react-redux";
-import { setPatient } from "@/app/shares/stores/authSlice";
+"use client"
+import { Upload, Button, Form, Input, Select, UploadFile, message, DatePicker } from "antd"
+import { UploadOutlined } from "@ant-design/icons"
+import { useState } from "react"
+import { Patient } from "../../hospital/types/patient"
+import { useAppSelector } from "@/app/shares/stores"
+import Avatar from "react-avatar"
+import dayjs from "dayjs"
+import { useUpdatePatientMutation } from "../../hospital/hooks/mutations/patients/use-update-patient.mutation"
+import { useDispatch } from "react-redux"
+import { setPatient } from "@/app/shares/stores/authSlice"
 
 export default function PatientInfoForm() {
-  const [form] = Form.useForm<Patient>();
-  const auth = useAppSelector((state) => state.auth);
-  const patient = auth.patient;
-  const dispatch = useDispatch();
+  const [form] = Form.useForm<Patient>()
+  const auth = useAppSelector(state => state.auth)
+  const patient = auth.patient
+  const dispatch = useDispatch()
 
   const [fileList, setFileList] = useState<UploadFile[]>(
     patient?.image
@@ -27,34 +27,34 @@ export default function PatientInfoForm() {
           },
         ]
       : [],
-  );
+  )
 
   const updatePatientMutation = useUpdatePatientMutation({
-    onSuccess: (data) => {
-      message.success("Cập nhật thông tin bệnh nhân thành công!");
+    onSuccess: data => {
+      message.success("Cập nhật thông tin bệnh nhân thành công!")
     },
-    onError: (error) => {
-      message.error(error.message || "Cập nhật thất bại!");
+    onError: error => {
+      message.error(error.message || "Cập nhật thất bại!")
     },
-  });
+  })
 
   const beforeUpload = (file: File) => {
-    const isImage = file.type.startsWith("image/");
-    if (!isImage) message.error("Bạn chỉ có thể tải lên file hình ảnh!");
-    return isImage ? false : Upload.LIST_IGNORE;
-  };
+    const isImage = file.type.startsWith("image/")
+    if (!isImage) message.error("Bạn chỉ có thể tải lên file hình ảnh!")
+    return isImage ? false : Upload.LIST_IGNORE
+  }
 
   const handleUploadChange = ({ fileList }: { fileList: UploadFile[] }) => {
-    setFileList(fileList);
+    setFileList(fileList)
     form.setFieldsValue({
       image: fileList.length > 0 ? fileList[0].url : undefined,
-    });
-  };
+    })
+  }
 
   const handleFinish = (values: Patient) => {
     if (!patient?.patientId) {
-      message.error("Không tìm thấy thông tin bệnh nhân để cập nhật.");
-      return;
+      message.error("Không tìm thấy thông tin bệnh nhân để cập nhật.")
+      return
     }
 
     const payload = {
@@ -66,9 +66,9 @@ export default function PatientInfoForm() {
       phone: values.phone ?? "",
       email: values.email ?? "",
       image: fileList.length > 0 ? fileList[0].url : undefined,
-    };
+    }
 
-    updatePatientMutation.mutate(payload);
+    updatePatientMutation.mutate(payload)
     dispatch(
       setPatient({
         patientId: patient.patientId,
@@ -80,8 +80,8 @@ export default function PatientInfoForm() {
         phone: payload.phone || null,
         image: payload.image || null,
       }),
-    );
-  };
+    )
+  }
 
   return (
     <div>
@@ -102,12 +102,7 @@ export default function PatientInfoForm() {
       >
         <Form.Item name="image" className="w-1/2">
           <div className="flex flex-col items-center">
-            <Avatar
-              name={patient?.fullName || ""}
-              src={patient?.image || ""}
-              size="200"
-              round={true}
-            />
+            <Avatar name={patient?.fullName || ""} src={patient?.image || ""} size="200" round={true} />
 
             <Upload
               fileList={fileList}
@@ -132,19 +127,11 @@ export default function PatientInfoForm() {
             <Input placeholder="Nhập họ và tên" />
           </Form.Item>
 
-          <Form.Item
-            label="Ngày sinh"
-            name="dob"
-            rules={[{ required: true, message: "Vui lòng nhập ngày sinh" }]}
-          >
+          <Form.Item label="Ngày sinh" name="dob" rules={[{ required: true, message: "Vui lòng nhập ngày sinh" }]}>
             <DatePicker style={{ width: "100%" }} format="DD/MM/YYYY" />
           </Form.Item>
 
-          <Form.Item
-            label="Giới tính"
-            name="gender"
-            rules={[{ required: true, message: "Vui lòng chọn giới tính" }]}
-          >
+          <Form.Item label="Giới tính" name="gender" rules={[{ required: true, message: "Vui lòng chọn giới tính" }]}>
             <Select>
               <Select.Option value="male">Nam</Select.Option>
               <Select.Option value="female">Nữ</Select.Option>
@@ -172,5 +159,5 @@ export default function PatientInfoForm() {
         </div>
       </Form>
     </div>
-  );
+  )
 }

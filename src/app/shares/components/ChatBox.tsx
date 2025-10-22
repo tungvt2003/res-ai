@@ -1,53 +1,50 @@
-"use client";
+"use client"
 
-import { useState, useRef, useEffect } from "react";
-import Markdown from "react-markdown";
-import { geminiApi } from "../api/chat";
-import { FaFacebookMessenger } from "react-icons/fa";
+import { useState, useRef, useEffect } from "react"
+import Markdown from "react-markdown"
+import { geminiApi } from "../api/chat"
+import { FaFacebookMessenger } from "react-icons/fa"
 
 export function ChatBox() {
-  const [isChatOpen, setIsChatOpen] = useState(false);
-  const [chatMessages, setChatMessages] = useState<{ sender: "user" | "bot"; text: string }[]>([]);
-  const [inputValue, setInputValue] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false)
+  const [chatMessages, setChatMessages] = useState<{ sender: "user" | "bot"; text: string }[]>([])
+  const [inputValue, setInputValue] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const toggleChat = () => {
-    setIsChatOpen((prev) => !prev);
-  };
+    setIsChatOpen(prev => !prev)
+  }
 
   const handleSendMessage = async () => {
-    if (inputValue.trim() === "") return;
+    if (inputValue.trim() === "") return
 
-    const userMessage = inputValue;
-    setChatMessages((prev) => [...prev, { sender: "user", text: userMessage }]);
-    setInputValue("");
+    const userMessage = inputValue
+    setChatMessages(prev => [...prev, { sender: "user", text: userMessage }])
+    setInputValue("")
 
-    setIsLoading(true);
+    setIsLoading(true)
 
     try {
-      const reply = await geminiApi.sendMessage(userMessage);
-      setChatMessages((prev) => [...prev, { sender: "bot", text: reply }]);
+      const reply = await geminiApi.sendMessage(userMessage)
+      setChatMessages(prev => [...prev, { sender: "bot", text: reply }])
     } catch (error) {
-      console.error("Error sending message:", error);
-      setChatMessages((prev) => [
-        ...prev,
-        { sender: "bot", text: "Xin lỗi, đã xảy ra lỗi khi nhận phản hồi." },
-      ]);
+      console.error("Error sending message:", error)
+      setChatMessages(prev => [...prev, { sender: "bot", text: "Xin lỗi, đã xảy ra lỗi khi nhận phản hồi." }])
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chatMessages, isLoading]);
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }, [chatMessages, isLoading])
 
   const renderMessage = (msg: { sender: "user" | "bot"; text: string }, idx: number) => {
-    const isUser = msg.sender === "user";
+    const isUser = msg.sender === "user"
 
-    const messageText = msg.text;
+    const messageText = msg.text
 
     return (
       <div key={idx} className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
@@ -60,8 +57,8 @@ export function ChatBox() {
           <Markdown>{messageText}</Markdown>
         </div>
       </div>
-    );
-  };
+    )
+  }
 
   return (
     <div>
@@ -102,8 +99,8 @@ export function ChatBox() {
             <input
               type="text"
               value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && !isLoading && handleSendMessage()}
+              onChange={e => setInputValue(e.target.value)}
+              onKeyDown={e => e.key === "Enter" && !isLoading && handleSendMessage()}
               className="flex-1 px-3 py-1 border rounded focus:outline-none focus:ring-2 focus:ring-[#1250dc]"
               placeholder={isLoading ? "Đang chờ..." : "Nhập tin nhắn..."}
               disabled={isLoading}
@@ -111,9 +108,7 @@ export function ChatBox() {
             <button
               onClick={handleSendMessage}
               className={`px-3 py-1 rounded-2xl transition-colors ${
-                isLoading
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-[#1250dc] text-white hover:bg-[#0e3eb7]"
+                isLoading ? "bg-gray-400 cursor-not-allowed" : "bg-[#1250dc] text-white hover:bg-[#0e3eb7]"
               }`}
               disabled={isLoading || inputValue.trim() === ""}
             >
@@ -123,5 +118,5 @@ export function ChatBox() {
         </div>
       )}
     </div>
-  );
+  )
 }

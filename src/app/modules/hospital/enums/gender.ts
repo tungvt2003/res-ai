@@ -3,4 +3,4 @@ enum Gender {
   Female = "female",
 }
 
-export { Gender };
+export { Gender }

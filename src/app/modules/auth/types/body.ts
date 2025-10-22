@@ -1,6 +1,6 @@
-import z from "zod";
-import { updatePasswordSchema } from "../schemas/resetPasswordByEmail.schema";
+import z from "zod"
+import { updatePasswordSchema } from "../schemas/resetPasswordByEmail.schema"
 
-type UpdatePasswordByEmailBody = z.infer<typeof updatePasswordSchema>;
+type UpdatePasswordByEmailBody = z.infer<typeof updatePasswordSchema>
 
-export type { UpdatePasswordByEmailBody };
+export type { UpdatePasswordByEmailBody }

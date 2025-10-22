@@ -24,3 +24,17 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Header */
+.header-li-item {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #4a5565dc;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  &:hover {
+    color: #202c45;
+  }
+}
+
+/* End Header */

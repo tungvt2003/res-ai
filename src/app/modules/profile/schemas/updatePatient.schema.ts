@@ -1,3 +1,3 @@
-import { createPatientSchema } from "./createPatient.schema";
+import { createPatientSchema } from "./createPatient.schema"
 
-export const updatePatientSchema = createPatientSchema.partial();
+export const updatePatientSchema = createPatientSchema.partial()

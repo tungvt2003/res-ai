@@ -1,14 +1,14 @@
-import { AxiosInstance } from "axios";
-import api from "../configs/axios";
-import { DiagnosisResponse } from "../types/predict";
+import { AxiosInstance } from "axios"
+import api from "../configs/axios"
+import { DiagnosisResponse } from "../types/predict"
 
-const endpoint = "/external-eye/predict";
+const endpoint = "/external-eye/predict"
 
 class PredictClient {
-  private readonly client: AxiosInstance;
+  private readonly client: AxiosInstance
 
   constructor() {
-    this.client = api;
+    this.client = api
   }
 
   /**
@@ -17,22 +17,18 @@ class PredictClient {
    * @param topK - Số lượng kết quả dự đoán top K
    */
   async predict(file: File, topK = 3): Promise<DiagnosisResponse> {
-    const formData = new FormData();
-    formData.append("file", file);
+    const formData = new FormData()
+    formData.append("file", file)
 
-    const response = await this.client.post<DiagnosisResponse>(
-      `${endpoint}?top_k=${topK}`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+    const response = await this.client.post<DiagnosisResponse>(`${endpoint}?top_k=${topK}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
       },
-    );
+    })
 
-    return response.data;
+    return response.data
   }
 }
 
-const PredictApi = new PredictClient();
-export { PredictApi };
+const PredictApi = new PredictClient()
+export { PredictApi }

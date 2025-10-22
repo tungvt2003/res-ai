@@ -1,58 +1,55 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from "react";
-import { Popover, Badge, List, Typography, Image } from "antd";
-import { FaShoppingCart, FaTrashAlt } from "react-icons/fa";
-import { useCart } from "../hooks/carts/useCart";
-import { Link, useRouter } from "../locales/navigation";
-import { useLocale, useTranslations } from "next-intl";
+import { useEffect, useState } from "react"
+import { Popover, Badge, List, Typography, Image } from "antd"
+import { FaShoppingCart, FaTrashAlt } from "react-icons/fa"
+import { useCart } from "../hooks/carts/useCart"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 
-const { Text } = Typography;
+const { Text } = Typography
 
 export default function CartPopover() {
-  const locale = useLocale();
-
-  const { getCart, removeFromCart } = useCart();
-  const [cartItems, setCartItems] = useState(getCart());
-  const [count, setCount] = useState(0);
-  const router = useRouter();
-  const t = useTranslations("cart");
+  const { getCart, removeFromCart } = useCart()
+  const [cartItems, setCartItems] = useState(getCart())
+  const [count, setCount] = useState(0)
+  const router = useRouter()
 
   // mỗi lần mở lại component thì sync với localStorage
 
   useEffect(() => {
     const syncCart = () => {
-      const items = getCart();
-      setCartItems(items);
-      setCount(items.reduce((sum, i) => sum + i.quantity, 0));
-    };
+      const items = getCart()
+      setCartItems(items)
+      setCount(items.reduce((sum, i) => sum + i.quantity, 0))
+    }
 
-    syncCart(); // load lần đầu
+    syncCart() // load lần đầu
 
-    window.addEventListener("cartUpdated", syncCart);
-    return () => window.removeEventListener("cartUpdated", syncCart);
-  }, []);
+    window.addEventListener("cartUpdated", syncCart)
+    return () => window.removeEventListener("cartUpdated", syncCart)
+  }, [])
 
   const handleRemove = (drug_id: string) => {
-    removeFromCart(drug_id);
-    const updated = getCart();
-    setCartItems(updated);
-    setCount(updated.reduce((sum, item) => sum + item.quantity, 0));
-  };
+    removeFromCart(drug_id)
+    const updated = getCart()
+    setCartItems(updated)
+    setCount(updated.reduce((sum, item) => sum + item.quantity, 0))
+  }
 
   const content = (
     <div className="w-80 max-h-96 overflow-y-auto">
       <Typography.Title level={5} className="m-2.5">
-        {t("cart")}
+        Giỏ hàng
       </Typography.Title>
 
       {cartItems.length === 0 ? (
-        <div className="px-3 pb-3 text-gray-500 text-sm">{t("empty")}</div>
+        <div className="px-3 pb-3 text-gray-500 text-sm">Giỏ hàng trống</div>
       ) : (
         <>
           <List
             dataSource={cartItems}
-            renderItem={(item) => (
+            renderItem={item => (
               <List.Item
                 key={`${item.drug_id}`}
                 actions={[
@@ -92,10 +89,7 @@ export default function CartPopover() {
                     <div className="flex items-center justify-between">
                       <Text style={{ color: "#1250dc" }} className="font-semibold text-sm">
                         {item.discount_percent > 0
-                          ? `${(
-                              item.price -
-                              (item.price * item.discount_percent) / 100
-                            ).toLocaleString("vi-VN")}đ`
+                          ? `${(item.price - (item.price * item.discount_percent) / 100).toLocaleString("vi-VN")}đ`
                           : `${item.price.toLocaleString("vi-VN")}đ`}
                       </Text>
                       <Text type="secondary" className="text-xs text-[#657384] font-medium">
@@ -109,21 +103,19 @@ export default function CartPopover() {
           />
 
           <div className="px-3 pb-3 flex justify-between items-center text-sm text-[#657384] font-bold">
-            <span>
-              {cartItems.length} {t("products")}
-            </span>
+            <span>{cartItems.length} sản phẩm</span>
 
             <button
               onClick={() => router.push("/cart")}
               className="px-3 py-2 bg-gradient-to-br from-[#1250dc] to-[#306de4] text-white font-medium rounded-4xl transition duration-300 ease-in-out hover:brightness-110 hover:shadow-lg cursor-pointer"
             >
-              {t("viewCart")}
+              Xem giỏ hàng
             </button>
           </div>
         </>
       )}
     </div>
-  );
+  )
 
   return (
     <Popover content={content} trigger="hover" placement="bottomRight">
@@ -133,5 +125,5 @@ export default function CartPopover() {
         </Badge>
       </Link>
     </Popover>
-  );
+  )
 }

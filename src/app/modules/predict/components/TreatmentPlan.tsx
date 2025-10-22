@@ -1,12 +1,12 @@
-"use client";
-import React from "react";
-import { FaHeartbeat, FaPills, FaAppleAlt, FaCheckCircle, FaCalendarAlt } from "react-icons/fa";
-import { EyeDiseaseLabel } from "../../../shares/types/predict";
-import { useRouter } from "@/app/shares/locales/navigation";
+"use client"
+import { useRouter } from "next/navigation"
+import React from "react"
+import { FaAppleAlt, FaCalendarAlt, FaCheckCircle, FaHeartbeat, FaPills } from "react-icons/fa"
+import { EyeDiseaseLabel } from "../../../shares/types/predict"
 
 type Props = {
-  disease: EyeDiseaseLabel;
-};
+  disease: EyeDiseaseLabel
+}
 
 const planData: Record<
   EyeDiseaseLabel,
@@ -14,10 +14,7 @@ const planData: Record<
 > = {
   conjunctivitis: {
     diagnosis: "Viêm kết mạc (Đau mắt đỏ)",
-    medicines: [
-      "Thuốc nhỏ mắt kháng sinh (ví dụ: Chloramphenicol)",
-      "Giữ vệ sinh tay và mắt, tránh dụi mắt",
-    ],
+    medicines: ["Thuốc nhỏ mắt kháng sinh (ví dụ: Chloramphenicol)", "Giữ vệ sinh tay và mắt, tránh dụi mắt"],
     lifestyle: [
       "Không dùng chung khăn mặt, chậu rửa",
       "Rửa tay thường xuyên",
@@ -27,31 +24,20 @@ const planData: Record<
   },
   eyelidedema: {
     diagnosis: "Phù nề mí mắt",
-    medicines: [
-      "Chườm lạnh giảm sưng",
-      "Nếu kèm nhiễm trùng: dùng kháng sinh theo chỉ định bác sĩ",
-    ],
+    medicines: ["Chườm lạnh giảm sưng", "Nếu kèm nhiễm trùng: dùng kháng sinh theo chỉ định bác sĩ"],
     lifestyle: ["Ngủ đủ giấc", "Hạn chế muối trong khẩu phần", "Không dụi mắt"],
     followUp: "Khám lại sau 5-7 ngày.",
   },
   healthy_eye: {
     diagnosis: "Mắt bình thường",
     medicines: [],
-    lifestyle: [
-      "Ăn nhiều rau xanh, cá giàu Omega-3",
-      "Hạn chế dùng thiết bị điện tử liên tục",
-      "Khám mắt định kỳ",
-    ],
+    lifestyle: ["Ăn nhiều rau xanh, cá giàu Omega-3", "Hạn chế dùng thiết bị điện tử liên tục", "Khám mắt định kỳ"],
     followUp: "Khám định kỳ mỗi 6 - 12 tháng.",
   },
   hordeolum: {
     diagnosis: "Chắp / Lẹo",
     medicines: ["Chườm ấm 3-4 lần/ngày", "Thuốc mỡ kháng sinh (nếu có chỉ định)"],
-    lifestyle: [
-      "Giữ vệ sinh mí mắt sạch sẽ",
-      "Không nặn lẹo",
-      "Rửa tay trước khi chạm vào vùng mắt",
-    ],
+    lifestyle: ["Giữ vệ sinh mí mắt sạch sẽ", "Không nặn lẹo", "Rửa tay trước khi chạm vào vùng mắt"],
     followUp: "Khám lại nếu sau 1 tuần không cải thiện.",
   },
   keratitiswithulcer: {
@@ -70,11 +56,11 @@ const planData: Record<
     lifestyle: ["Kiểm soát huyết áp", "Không dụi mắt mạnh", "Ăn nhạt, tập thể dục đều đặn"],
     followUp: "Tự khỏi trong 1-2 tuần, khám lại nếu tái phát nhiều lần.",
   },
-};
+}
 
 const TreatmentPlanUI: React.FC<Props> = ({ disease }) => {
-  const plan = planData[disease];
-  const router = useRouter();
+  const plan = planData[disease]
+  const router = useRouter()
 
   return (
     <div className="p-4 bg-gray-50 rounded-lg shadow space-y-4">
@@ -132,7 +118,7 @@ const TreatmentPlanUI: React.FC<Props> = ({ disease }) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default TreatmentPlanUI;
+export default TreatmentPlanUI

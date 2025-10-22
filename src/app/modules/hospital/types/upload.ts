@@ -1,3 +1,3 @@
 export type Upload = {
-  url: string;
-};
+  url: string
+}

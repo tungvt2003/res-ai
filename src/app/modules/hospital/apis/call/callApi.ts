@@ -1,32 +1,32 @@
-import api from "@/app/shares/configs/axios";
-import { AxiosInstance } from "axios";
+import api from "@/app/shares/configs/axios"
+import { AxiosInstance } from "axios"
 
 // Kiểu dữ liệu trả về
 export interface StringeeTokenResponse {
-  status: number;
-  message: string;
+  status: number
+  message: string
   data: {
-    token: string;
-  };
+    token: string
+  }
 }
 
-const endpoint = "hospital/call/stringee-token";
+const endpoint = "hospital/call/stringee-token"
 
 class CallClient {
-  private readonly client: AxiosInstance;
+  private readonly client: AxiosInstance
 
   constructor() {
-    this.client = api;
+    this.client = api
   }
 
   // ---------------- Get Stringee Token ----------------
   async getStringeeToken(userId: string): Promise<StringeeTokenResponse> {
     const response = await this.client.get<StringeeTokenResponse>(endpoint, {
       params: { userId },
-    });
-    return response.data;
+    })
+    return response.data
   }
 }
 
-const CallApi = new CallClient();
-export { CallApi };
+const CallApi = new CallClient()
+export { CallApi }

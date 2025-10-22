@@ -1,20 +1,20 @@
-"use client";
-import { Typography, Button, Tag, Spin, Modal } from "antd";
-import React, { useState } from "react";
-import { Order, orderStatusLabels, deliveryMethodLabels } from "../../../shares/types/order";
-import { FaFileInvoice, FaShoppingCart, FaTruck, FaBox } from "react-icons/fa";
-import { useRouter } from "@/app/shares/locales/navigation";
-import dayjs from "dayjs";
-import { useUpdateOrderStatusMutation } from "@/app/shares/hooks/mutations/use-update-order-status.mutation";
-import { toast } from "react-toastify";
-import { useQueryClient } from "@tanstack/react-query";
-import { QueryKeyEnum } from "@/app/shares/enums/queryKey";
+"use client"
+import { Typography, Button, Tag, Spin, Modal } from "antd"
+import React, { useState } from "react"
+import { Order, orderStatusLabels, deliveryMethodLabels } from "../../../shares/types/order"
+import { FaFileInvoice, FaShoppingCart, FaTruck, FaBox } from "react-icons/fa"
+import { useRouter } from "@/app/shares/locales/navigation"
+import dayjs from "dayjs"
+import { useUpdateOrderStatusMutation } from "@/app/shares/hooks/mutations/use-update-order-status.mutation"
+import { toast } from "react-toastify"
+import { useQueryClient } from "@tanstack/react-query"
+import { QueryKeyEnum } from "@/app/shares/enums/queryKey"
 
-const { Title, Text } = Typography;
+const { Title, Text } = Typography
 
 interface InvoiceProps {
-  orders: Order[];
-  loading?: boolean;
+  orders: Order[]
+  loading?: boolean
 }
 
 const statusColors: Record<Order["status"], string> = {
@@ -22,62 +22,62 @@ const statusColors: Record<Order["status"], string> = {
   CONFIRMED: "blue",
   COMPLETED: "green",
   CANCELLED: "red",
-};
+}
 
 export default function InvoiceSection({ orders, loading }: InvoiceProps) {
-  const router = useRouter();
-  const queryClient = useQueryClient();
-  const [cancellingId, setCancellingId] = useState<string | null>(null);
-  const [showCancelModal, setShowCancelModal] = useState(false);
+  const router = useRouter()
+  const queryClient = useQueryClient()
+  const [cancellingId, setCancellingId] = useState<string | null>(null)
+  const [showCancelModal, setShowCancelModal] = useState(false)
   const [selectedOrder, setSelectedOrder] = useState<{
-    id: string;
-    code: string;
-  } | null>(null);
+    id: string
+    code: string
+  } | null>(null)
 
   const { mutate: updateStatus, isPending: isCancelling } = useUpdateOrderStatusMutation({
     onSuccess: () => {
-      toast.success("Hủy đơn hàng thành công!");
+      toast.success("Hủy đơn hàng thành công!")
       // Refetch orders list
-      queryClient.invalidateQueries({ queryKey: [QueryKeyEnum.Order, "patient-orders"] });
-      setCancellingId(null);
-      setShowCancelModal(false);
-      setSelectedOrder(null);
+      queryClient.invalidateQueries({ queryKey: [QueryKeyEnum.Order, "patient-orders"] })
+      setCancellingId(null)
+      setShowCancelModal(false)
+      setSelectedOrder(null)
     },
-    onError: (err) => {
-      toast.error("Hủy đơn hàng thất bại: " + err.message);
-      setCancellingId(null);
+    onError: err => {
+      toast.error("Hủy đơn hàng thất bại: " + err.message)
+      setCancellingId(null)
     },
-  });
+  })
 
   const handleOpenCancelModal = (orderId: string) => {
-    const orderCode = orderId.slice(0, 8).toUpperCase();
-    setSelectedOrder({ id: orderId, code: orderCode });
-    setShowCancelModal(true);
-  };
+    const orderCode = orderId.slice(0, 8).toUpperCase()
+    setSelectedOrder({ id: orderId, code: orderCode })
+    setShowCancelModal(true)
+  }
 
   const handleConfirmCancel = () => {
     if (selectedOrder) {
-      setCancellingId(selectedOrder.id);
+      setCancellingId(selectedOrder.id)
       updateStatus({
         order_id: selectedOrder.id,
         status: "CANCELLED",
-      });
+      })
     }
-  };
+  }
 
   const handleCloseModal = () => {
     if (!isCancelling) {
-      setShowCancelModal(false);
-      setSelectedOrder(null);
+      setShowCancelModal(false)
+      setSelectedOrder(null)
     }
-  };
+  }
 
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
         <Spin size="large" tip="Đang tải hóa đơn..." />
       </div>
-    );
+    )
   }
 
   if (orders?.length === 0) {
@@ -131,7 +131,7 @@ export default function InvoiceSection({ orders, loading }: InvoiceProps) {
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -144,7 +144,7 @@ export default function InvoiceSection({ orders, loading }: InvoiceProps) {
       </div>
 
       <div className="grid grid-cols-1 gap-4">
-        {orders?.map((order) => {
+        {orders?.map(order => {
           return (
             <div
               key={order.order_id}
@@ -160,9 +160,7 @@ export default function InvoiceSection({ orders, loading }: InvoiceProps) {
                     <Text strong className="text-base block">
                       Đơn hàng #{order.order_id.slice(0, 8).toUpperCase()}
                     </Text>
-                    <Text className="text-xs text-gray-500">
-                      {dayjs(order.created_at).format("DD/MM/YYYY HH:mm")}
-                    </Text>
+                    <Text className="text-xs text-gray-500">{dayjs(order.created_at).format("DD/MM/YYYY HH:mm")}</Text>
                   </div>
                 </div>
 
@@ -178,7 +176,7 @@ export default function InvoiceSection({ orders, loading }: InvoiceProps) {
                     📦 Danh sách sản phẩm/dịch vụ:
                   </Text>
                   <div className="space-y-2">
-                    {order.order_items.map((item) => (
+                    {order.order_items.map(item => (
                       <div
                         key={item.order_item_id}
                         className="flex justify-between items-center bg-gray-50 p-3 rounded-lg"
@@ -211,16 +209,12 @@ export default function InvoiceSection({ orders, loading }: InvoiceProps) {
                 <div className="border-t border-gray-200 pt-4">
                   <div className="flex justify-between items-center mb-2">
                     <Text className="text-gray-600">Tổng tiền hàng:</Text>
-                    <Text className="text-gray-800 font-semibold">
-                      {order.total_amount.toLocaleString()}₫
-                    </Text>
+                    <Text className="text-gray-800 font-semibold">{order.total_amount.toLocaleString()}₫</Text>
                   </div>
                   {order.delivery_fee > 0 && (
                     <div className="flex justify-between items-center mb-2">
                       <Text className="text-gray-600">Phí vận chuyển:</Text>
-                      <Text className="text-gray-800 font-semibold">
-                        {order.delivery_fee.toLocaleString()}₫
-                      </Text>
+                      <Text className="text-gray-800 font-semibold">{order.delivery_fee.toLocaleString()}₫</Text>
                     </div>
                   )}
                   <div className="flex justify-between items-center pt-2 border-t border-gray-200">
@@ -235,12 +229,7 @@ export default function InvoiceSection({ orders, loading }: InvoiceProps) {
 
                 {/* Action buttons */}
                 <div className="flex gap-3">
-                  <Button
-                    type="primary"
-                    icon={<FaBox />}
-                    className="!flex-1/2"
-                    onClick={() => window.print()}
-                  >
+                  <Button type="primary" icon={<FaBox />} className="!flex-1/2" onClick={() => window.print()}>
                     In hóa đơn
                   </Button>
                   {order.status === "PENDING" && (
@@ -257,7 +246,7 @@ export default function InvoiceSection({ orders, loading }: InvoiceProps) {
                 </div>
               </div>
             </div>
-          );
+          )
         })}
       </div>
 
@@ -275,10 +264,8 @@ export default function InvoiceSection({ orders, loading }: InvoiceProps) {
         <p>
           Bạn có chắc chắn muốn hủy đơn hàng <strong>#{selectedOrder?.code}</strong>?
         </p>
-        <p className="text-gray-500 text-sm mt-2">
-          Lưu ý: Sau khi hủy, bạn sẽ không thể hoàn tác thao tác này.
-        </p>
+        <p className="text-gray-500 text-sm mt-2">Lưu ý: Sau khi hủy, bạn sẽ không thể hoàn tác thao tác này.</p>
       </Modal>
     </div>
-  );
+  )
 }

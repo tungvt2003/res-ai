@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/image"
 
 export default function About() {
   return (
@@ -16,19 +16,18 @@ export default function About() {
                   WebkitTextFillColor: "transparent",
                 }}
               >
-                Who We Are?
+                Chúng Tôi Là Ai?
               </span>
 
               {/* H2 nằm trên */}
               <h2 className="absolute -bottom-10 left-0 text-3xl font-semibold text-gray-800">
-                AI-Powered Eye Diagnosis for Early Detection and Vision Care
+                Chẩn đoán mắt bằng AI để phát hiện sớm và chăm sóc thị lực
               </h2>
             </div>
             <p className="mt-15 text-gray-700 text-justify">
-              DeepEyeX is an AI-powered eye disease diagnosis system that helps you detect eye
-              conditions early, ensuring precise, personalized, and holistic care for your vision.
-              With up to 94% accuracy, you can trust our technology to protect your eyes and take
-              control of your eye health.
+              DeepEyeX là hệ thống chẩn đoán bệnh về mắt được hỗ trợ bởi AI, giúp bạn phát hiện sớm các tình trạng về
+              mắt, đảm bảo chăm sóc thị lực chính xác, cá nhân hóa và toàn diện. Với độ chính xác lên đến 94%, bạn có
+              thể tin tưởng công nghệ của chúng tôi để bảo vệ đôi mắt và kiểm soát sức khỏe mắt của mình.
             </p>
           </div>
           <div className="relative inline-block flex-shrink-0">
@@ -41,11 +40,11 @@ export default function About() {
             />
             <div className="absolute left-0 bottom-0 p-4 bg-[#f17732] rounded-lg flex items-center space-x-2 w-60 gap-5">
               <h2 className="text-lg font-bold text-white">10,000+</h2>
-              <h4 className="text-sm text-white">Eyes Diagnosed with AI Precision</h4>
+              <h4 className="text-sm text-white">Mắt được chẩn đoán với độ chính xác AI</h4>
             </div>
           </div>
         </div>
       </div>
     </section>
-  );
+  )
 }

@@ -1,9 +1,9 @@
-import { useMutation, UseMutationOptions } from "@tanstack/react-query";
+import { useMutation, UseMutationOptions } from "@tanstack/react-query"
 import {
   InitMedicalRecordAndDiagnosisRequest,
   InitMedicalRecordAndDiagnosisResponse,
   MedicalRecordApi,
-} from "../../../apis/medical_record/medicalRecordApi";
+} from "../../../apis/medical_record/medicalRecordApi"
 
 type Options = Omit<
   UseMutationOptions<
@@ -12,17 +12,17 @@ type Options = Omit<
     InitMedicalRecordAndDiagnosisRequest // input payload
   >,
   "mutationFn"
->;
+>
 
 const useInitMedicalRecordAndDiagnosisMutation = (options?: Options) => {
   return useMutation({
     mutationFn: async (
       payload: InitMedicalRecordAndDiagnosisRequest,
     ): Promise<InitMedicalRecordAndDiagnosisResponse> => {
-      return MedicalRecordApi.initRecordAndDiagnosis(payload);
+      return MedicalRecordApi.initRecordAndDiagnosis(payload)
     },
     ...options,
-  });
-};
+  })
+}
 
-export { useInitMedicalRecordAndDiagnosisMutation };
+export { useInitMedicalRecordAndDiagnosisMutation }

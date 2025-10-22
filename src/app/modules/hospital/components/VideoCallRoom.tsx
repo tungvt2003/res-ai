@@ -1,75 +1,75 @@
-"use client";
-import { useState, useRef, useEffect } from "react";
-import { VideoCameraOutlined } from "@ant-design/icons";
-import { ImPhoneHangUp } from "react-icons/im";
-import { FaVolumeMute } from "react-icons/fa";
-import { useSelector } from "react-redux";
-import { RootState } from "@/app/shares/stores";
-import { callEventEmitter } from "@/app/shares/utils/callEvents";
-import { hangupCall, makeVideoCall, muteCall } from "@/app/shares/utils/stringee";
-import { Button } from "antd";
+"use client"
+import { useState, useRef, useEffect } from "react"
+import { VideoCameraOutlined } from "@ant-design/icons"
+import { ImPhoneHangUp } from "react-icons/im"
+import { FaVolumeMute } from "react-icons/fa"
+import { useSelector } from "react-redux"
+import { RootState } from "@/app/shares/stores"
+import { callEventEmitter } from "@/app/shares/utils/callEvents"
+import { hangupCall, makeVideoCall, muteCall } from "@/app/shares/utils/stringee"
+import { Button } from "antd"
 
 interface ChatHeaderProps {
-  userId?: string;
+  userId?: string
 }
 
 interface IncomingCall {
-  fromNumber: string;
-  toNumber: string;
-  callId: string;
-  isVideo: boolean;
+  fromNumber: string
+  toNumber: string
+  callId: string
+  isVideo: boolean
 }
 
 const ChatHeader = ({ userId }: ChatHeaderProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
-  const [openModal, setOpenModal] = useState(false);
-  const [mute, setMute] = useState(true);
-  const userSenderId = useSelector((state: RootState) => state.auth.userId);
+  const [isOpen, setIsOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
+  const [openModal, setOpenModal] = useState(false)
+  const [mute, setMute] = useState(true)
+  const userSenderId = useSelector((state: RootState) => state.auth.userId)
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
+        setIsOpen(false)
       }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
 
   useEffect(() => {
     const handler = (incomingCall: IncomingCall) => {
-      console.log("📞 Received call in component!", incomingCall);
-      setOpenModal(true);
-    };
+      console.log("📞 Received call in component!", incomingCall)
+      setOpenModal(true)
+    }
 
-    callEventEmitter.on("incoming-call", handler);
+    callEventEmitter.on("incoming-call", handler)
 
     return () => {
-      callEventEmitter.off("incoming-call", handler); // cleanup
-    };
-  }, [setOpenModal]);
+      callEventEmitter.off("incoming-call", handler) // cleanup
+    }
+  }, [setOpenModal])
 
   const handleCall = (isCallVideo: boolean) => {
-    console.log("user2:" + userId);
-    console.log("user1:" + userSenderId?.toString());
-    setOpenModal(true);
-    if (userId != "0") makeVideoCall(userSenderId?.toString() || "", userId || "", isCallVideo);
-  };
+    console.log("user2:" + userId)
+    console.log("user1:" + userSenderId?.toString())
+    setOpenModal(true)
+    if (userId != "0") makeVideoCall(userSenderId?.toString() || "", userId || "", isCallVideo)
+  }
 
   const hangup = () => {
-    hangupCall();
-    setOpenModal(false);
-  };
+    hangupCall()
+    setOpenModal(false)
+  }
 
   const muteFunction = () => {
-    setMute(!mute);
-    muteCall(mute);
-  };
+    setMute(!mute)
+    muteCall(mute)
+  }
 
   const handleCancel = () => {
-    setOpenModal(false);
-  };
+    setOpenModal(false)
+  }
 
   return (
     <div className="flex items-center justify-between space-x-3 border-b border-white">
@@ -96,32 +96,15 @@ const ChatHeader = ({ userId }: ChatHeaderProps) => {
             </div>
 
             <div className="flex gap-4 justify-center">
-              <video
-                id="localVideo"
-                muted
-                playsInline
-                autoPlay
-                className="w-48 h-36 bg-black rounded-lg"
-              />
-              <video
-                id="remoteVideo"
-                playsInline
-                autoPlay
-                className="w-48 h-36 bg-black rounded-lg"
-              />
+              <video id="localVideo" muted playsInline autoPlay className="w-48 h-36 bg-black rounded-lg" />
+              <video id="remoteVideo" playsInline autoPlay className="w-48 h-36 bg-black rounded-lg" />
             </div>
 
             <div className="flex justify-center mt-4 gap-4">
-              <button
-                onClick={hangup}
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
-              >
+              <button onClick={hangup} className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
                 <ImPhoneHangUp />
               </button>
-              <button
-                onClick={muteFunction}
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
-              >
+              <button onClick={muteFunction} className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
                 <FaVolumeMute />
               </button>
             </div>
@@ -129,7 +112,7 @@ const ChatHeader = ({ userId }: ChatHeaderProps) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default ChatHeader;
+export default ChatHeader

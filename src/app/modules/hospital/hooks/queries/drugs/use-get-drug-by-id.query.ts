@@ -1,12 +1,9 @@
-import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query";
-import { QueryKeyEnum } from "@/app/shares/enums/queryKey";
-import { GetDrugByIdResponse } from "../../../types/response";
-import { DrugApi } from "../../../apis/drug/drugApi";
+import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query"
+import { QueryKeyEnum } from "@/app/shares/enums/queryKey"
+import { GetDrugByIdResponse } from "../../../types/response"
+import { DrugApi } from "../../../apis/drug/drugApi"
 
-type Options = Omit<
-  UseQueryOptions<GetDrugByIdResponse, Error, GetDrugByIdResponse, QueryKey>,
-  "queryKey" | "queryFn"
->;
+type Options = Omit<UseQueryOptions<GetDrugByIdResponse, Error, GetDrugByIdResponse, QueryKey>, "queryKey" | "queryFn">
 
 export function useGetDrugByIdQuery(drugId: string, options?: Options) {
   return useQuery({
@@ -14,5 +11,5 @@ export function useGetDrugByIdQuery(drugId: string, options?: Options) {
     queryFn: () => DrugApi.getById(drugId),
     enabled: !!drugId,
     ...options,
-  });
+  })
 }

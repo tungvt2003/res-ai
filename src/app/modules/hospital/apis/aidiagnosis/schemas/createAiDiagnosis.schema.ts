@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod"
 
 export const createAIDiagnosisSchema = z.object({
   patient_id: z.uuid("PatientID phải là UUID hợp lệ"),
@@ -14,6 +14,6 @@ export const createAIDiagnosisSchema = z.object({
   eye_type: z.enum(["left", "right", "both"]).optional(),
 
   notes: z.string().max(500, "Ghi chú không được vượt quá 500 ký tự").optional(),
-});
+})
 
-export type CreateAIDiagnosisBody = z.infer<typeof createAIDiagnosisSchema>;
+export type CreateAIDiagnosisBody = z.infer<typeof createAIDiagnosisSchema>

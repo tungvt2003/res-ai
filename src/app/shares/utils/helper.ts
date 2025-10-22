@@ -1,4 +1,4 @@
-import { EyeDiseaseLabel } from "../types/predict";
+import { EyeDiseaseLabel } from "../types/predict"
 
 export function convertLabelToVietnamese(label: EyeDiseaseLabel): string {
   const map: Record<EyeDiseaseLabel, string> = {
@@ -8,7 +8,7 @@ export function convertLabelToVietnamese(label: EyeDiseaseLabel): string {
     hordeolum: "Chắp / Lẹo",
     keratitiswithulcer: "Viêm giác mạc có loét",
     subconjunctival_hemorrhage: "Xuất huyết dưới kết mạc",
-  };
+  }
 
-  return map[label] || label;
+  return map[label] || label
 }

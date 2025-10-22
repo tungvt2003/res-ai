@@ -7,7 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,css,scss,md,json}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
   },
   "dependencies": {
     "@react-email/render": "^1.3.1",
@@ -19,7 +26,6 @@
     "firebase": "^12.2.1",
     "framer-motion": "^12.23.12",
     "next": "15.4.5",
-    "next-intl": "^4.3.7",
     "react": "19.1.0",
     "react-avatar": "^5.0.4",
     "react-dom": "19.1.0",
@@ -37,7 +43,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
+    "eslint": "^9.38.0",
     "eslint-config-next": "15.4.5",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",

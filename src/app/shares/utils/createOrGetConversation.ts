@@ -1,7 +1,7 @@
-import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "../configs/firebase";
-import { Doctor } from "@/app/modules/hospital/types/doctor";
-import { Patient } from "@/app/modules/hospital/types/patient";
+import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore"
+import { db } from "../configs/firebase"
+import { Doctor } from "@/app/modules/hospital/types/doctor"
+import { Patient } from "@/app/modules/hospital/types/patient"
 
 /**
  * Tạo hoặc lấy conversation giữa bác sĩ và bệnh nhân
@@ -10,20 +10,16 @@ import { Patient } from "@/app/modules/hospital/types/patient";
  * @param {string} appointmentId - id của cuộc hẹn (tuỳ chọn)
  * @returns {Promise<string>} conversationId
  */
-export async function createOrGetConversation(
-  doctor: Doctor,
-  patient: Patient,
-  appointmentId: string | null = null,
-) {
+export async function createOrGetConversation(doctor: Doctor, patient: Patient, appointmentId: string | null = null) {
   if (!doctor?.doctor_id || !patient?.patient_id) {
-    throw new Error("Missing doctor or patient ID");
+    throw new Error("Missing doctor or patient ID")
   }
 
   // ConversationId có thể dựa vào cặp doctorId_patientId để không trùng
-  const conversationId = `conv_${doctor.doctor_id}_${patient.patient_id}`;
+  const conversationId = `conv_${doctor.doctor_id}_${patient.patient_id}`
 
-  const conversationRef = doc(db, "conversations", conversationId);
-  const conversationSnap = await getDoc(conversationRef);
+  const conversationRef = doc(db, "conversations", conversationId)
+  const conversationSnap = await getDoc(conversationRef)
 
   if (conversationSnap.exists()) {
     // 🔄 Nếu đã có → chỉ update lại thông tin mới (nếu có)
@@ -34,7 +30,7 @@ export async function createOrGetConversation(
         updatedAt: serverTimestamp(),
       },
       { merge: true },
-    );
+    )
   } else {
     // 🆕 Nếu chưa có → tạo mới
     await setDoc(conversationRef, {
@@ -54,8 +50,8 @@ export async function createOrGetConversation(
       lastAppointmentId: appointmentId || null,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
-    });
+    })
   }
 
-  return conversationId;
+  return conversationId
 }

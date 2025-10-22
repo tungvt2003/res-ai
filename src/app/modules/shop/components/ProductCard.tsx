@@ -1,19 +1,17 @@
-"use client";
-import { Button } from "antd";
-import Image from "next/image";
-import { Drug } from "../../hospital/types/drug";
-import Link from "next/link";
-import { useLocale } from "next-intl";
-import { useCart } from "@/app/shares/hooks/carts/useCart";
-import { toast } from "react-toastify";
+"use client"
+import { useCart } from "@/app/shares/hooks/carts/useCart"
+import { Button } from "antd"
+import Image from "next/image"
+import Link from "next/link"
+import { toast } from "react-toastify"
+import { Drug } from "../../hospital/types/drug"
 
 type Props = {
-  data: Drug;
-};
+  data: Drug
+}
 
 const ProductCard = ({ data }: Props) => {
-  const locale = useLocale();
-  const { addToCart } = useCart();
+  const { addToCart } = useCart()
 
   return (
     <div className="bg-white rounded-2xl flex flex-col relative p-4 hover:border hover:border-[#1250dc] cursor-pointer">
@@ -22,10 +20,7 @@ const ProductCard = ({ data }: Props) => {
           <p className="text-white text-sm font-bold">-{data.discount_percent}%</p>
         </div>
       )}
-      <Link
-        href={`/${locale}/shop/${data.drug_id}`}
-        className="pt-4 px-2 pb-2 flex flex-col h-full justify-between"
-      >
+      <Link href={`/shop/${data.drug_id}`} className="pt-4 px-2 pb-2 flex flex-col h-full justify-between">
         <div className="flex justify-center items-center w-full h-[140px]">
           <Image
             src={data.image || "https://via.placeholder.com/300x300?text=No+Image"}
@@ -42,9 +37,7 @@ const ProductCard = ({ data }: Props) => {
             {(data.price - (data.price * data.discount_percent) / 100).toLocaleString("vi-VN")}đ
           </p>
           {data.discount_percent > 0 && (
-            <p className="line-through text-sm text-[#657384]">
-              {data.price.toLocaleString("vi-VN")}đ
-            </p>
+            <p className="line-through text-sm text-[#657384]">{data.price.toLocaleString("vi-VN")}đ</p>
           )}
         </div>
       </Link>
@@ -52,27 +45,24 @@ const ProductCard = ({ data }: Props) => {
       {/* Nút thêm giỏ hàng */}
       <Button
         className="!bg-gradient-to-tr from-[#1250dc] to-[#306de4] !text-white !font-medium !text-sm !w-full !rounded-2xl !mt-2"
-        onClick={(e) => {
-          e.preventDefault();
+        onClick={e => {
+          e.preventDefault()
           addToCart({
             drug_id: data.drug_id,
             name: data.name,
             image: data.image || "",
             price: data.price,
-            sale_price:
-              data.discount_percent > 0
-                ? data.price - (data.price * data.discount_percent) / 100
-                : 0,
+            sale_price: data.discount_percent > 0 ? data.price - (data.price * data.discount_percent) / 100 : 0,
             discount_percent: data.discount_percent,
             quantity: 1,
-          });
-          toast.success("Thêm vào giỏ hàng thành công");
+          })
+          toast.success("Thêm vào giỏ hàng thành công")
         }}
       >
         Chọn mua
       </Button>
     </div>
-  );
-};
+  )
+}
 
-export { ProductCard };
+export { ProductCard }
