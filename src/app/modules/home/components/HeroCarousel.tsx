@@ -84,27 +84,27 @@ export default function HeroCarousel() {
         </div>
       ))}
 
-      {/* Navigation */}
+      {/* Navigation - Hidden on tablet and mobile */}
       <button
         onClick={prevSlide}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/30 text-white p-3 rounded-full hover:bg-black/50 transition"
+        className="hidden lg:flex absolute cursor-pointer left-4 top-1/2 transform -translate-y-1/2 bg-black/30 text-white w-12 h-12 rounded-full hover:bg-black/50 transition z-30 items-center justify-center"
       >
         &#8592;
       </button>
       <button
         onClick={nextSlide}
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/30 text-white p-3 rounded-full hover:bg-black/50 transition"
+        className="hidden lg:flex absolute cursor-pointer right-4 top-1/2 transform -translate-y-1/2 bg-black/30 text-white w-12 h-12 rounded-full hover:bg-black/50 transition z-30 items-center justify-center"
       >
         &#8594;
       </button>
 
       {/* Dots */}
-      <div className="absolute bottom-8 w-full flex justify-center space-x-2">
+      <div className="absolute bottom-8 w-full flex justify-center space-x-2 z-30">
         {slides.map((_, idx) => (
           <button
             key={idx}
             onClick={() => setCurrent(idx)}
-            className={`w-3 h-3 rounded-full ${idx === current ? "bg-white" : "bg-gray-400"}`}
+            className={`w-3 h-3 rounded-full cursor-pointer ${idx === current ? "bg-white" : "bg-gray-400"}`}
           />
         ))}
       </div>

@@ -1,7 +1,6 @@
 "use client"
 import { persistor, useAppDispatch, useAppSelector } from "@/app/shares/stores"
 import { clearTokens } from "@/app/shares/stores/authSlice"
-import { MenuProps } from "antd"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -14,22 +13,6 @@ export default function Header() {
   const isLoggedIn = !!auth.accessToken
   const dispatch = useAppDispatch()
   const name = auth.patient?.fullName
-
-  // Sub menu Services
-  const serviceItems: MenuProps["items"] = [
-    {
-      key: "booking",
-      label: <Link href="/booking">Đặt lịch khám</Link>,
-    },
-    {
-      key: "diagnosis",
-      label: <Link href="/predict">Chẩn đoán</Link>,
-    },
-    {
-      key: "consultation",
-      label: <Link href="/consultation">Tư vấn trực tuyến</Link>,
-    },
-  ]
 
   return (
     <header className="bg-white shadow-md py-2 px-6 md:px-12 fixed top-0 w-full z-50">
@@ -52,7 +35,7 @@ export default function Header() {
             </li>
 
             <li>
-              <Link href="/shop" className="header-li-item">
+              <Link href="/res" className="header-li-item">
                 Res
               </Link>
             </li>
