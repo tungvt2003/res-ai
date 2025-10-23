@@ -1,9 +1,9 @@
 import MentorCarouselPlain from "@/components/home/components/MentorCarousel"
 import { Mentor } from "@/types"
 
-export default function Ophthalmologist({ mentors }: { mentors: Mentor[] }) {
+export default function ListMentor({ mentors }: { mentors: Mentor[] }) {
   return (
-    <section id="Ophthalmologist" aria-labelledby="ophthalmologist-heading" className="relative">
+    <section id="listmentor" aria-labelledby="listmentor-heading" className="relative">
       <div className="w-full">
         <div className="mx-auto max-w-6xl flex flex-col items-center text-center px-4 md:px-8 lg:px-10 py-10 sm:py-12 lg:py-14">
           <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/70 px-3 py-1 text-xs font-medium text-slate-700 shadow-sm backdrop-blur">
@@ -12,7 +12,7 @@ export default function Ophthalmologist({ mentors }: { mentors: Mentor[] }) {
           </p>
 
           <h2
-            id="ophthalmologist-heading"
+            id="listmentor-heading"
             className="
               text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05]
               text-transparent bg-clip-text
@@ -21,7 +21,7 @@ export default function Ophthalmologist({ mentors }: { mentors: Mentor[] }) {
             "
             style={{ WebkitTextFillColor: "transparent" }}
           >
-            Giảng Viên Chuyên Ngành
+            Đội Ngũ Giảng Viên
           </h2>
 
           <div className="mt-2 h-1 w-20 rounded-full bg-gradient-to-r from-[#2E8BC0] to-[#7FC3E8]" />

@@ -1,8 +1,8 @@
 "use client"
 
 import About from "@/components/home/components/About"
+import Blog from "@/components/home/components/Blog"
 import HeroCarousel from "@/components/home/components/HeroCarousel"
-import HowItWorks from "@/components/home/components/HowItWorks"
 import ListMentor from "@/components/home/components/ListMentor"
 
 const mentors = [
@@ -99,7 +99,7 @@ export default function Home() {
         <HeroCarousel />
         <About />
         <ListMentor mentors={mentors} />
-        <HowItWorks />
+        <Blog />
       </main>
     </div>
   )

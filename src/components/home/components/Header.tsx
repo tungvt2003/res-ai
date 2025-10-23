@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import Avatar from "react-avatar"
-import { BiBookOpen, BiBot, BiBrain, BiHome } from "react-icons/bi"
+import { BiBook, BiBookOpen, BiBot, BiBrain, BiHome, BiUser } from "react-icons/bi"
 
 export default function Header() {
   const router = useRouter()
@@ -42,12 +42,33 @@ export default function Header() {
                 Res
               </Link>
             </li>
-
-            <li>
-              <Link href="/edu" className="header-li-item flex items-center gap-2">
+            <li className="relative group">
+              <Link href="" className="header-li-item flex items-center gap-2">
                 <BiBookOpen className="w-5 h-5" />
                 Edu
               </Link>
+              <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                <div className="py-2">
+                  <Link
+                    href="/edu/mentor"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-[#202c45] transition-colors"
+                  >
+                    <div className="flex items-center gap-2">
+                      <BiUser className="w-4 h-4" />
+                      Giảng viên
+                    </div>
+                  </Link>
+                  <Link
+                    href="/edu/blog"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-[#202c45] transition-colors"
+                  >
+                    <div className="flex items-center gap-2">
+                      <BiBook className="w-4 h-4" />
+                      Blog
+                    </div>
+                  </Link>
+                </div>
+              </div>
             </li>
             <li>
               <Link href="/ai" className="header-li-item flex items-center gap-2">

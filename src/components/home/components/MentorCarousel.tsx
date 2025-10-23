@@ -1,6 +1,6 @@
 "use client"
 
-import CardMentor from "@/components/CardMentor"
+import CardMentor from "@/components/home/components/CardMentor"
 import { Mentor } from "@/types"
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react"
 
