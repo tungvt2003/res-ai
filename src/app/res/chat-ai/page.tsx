@@ -97,11 +97,6 @@ export default function ChatAiPage() {
     ])
   }
 
-  // Auto scroll to bottom when new messages arrive (disabled)
-  // useEffect(() => {
-  //   messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  // }, [messages, isLoading])
-
   // Reset textarea height when input is cleared
   useEffect(() => {
     if (textareaRef.current && !inputText) {

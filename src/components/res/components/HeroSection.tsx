@@ -5,7 +5,7 @@ export default function HeroSection() {
         <div className="flex flex-col items-center text-center">
           <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium text-white shadow-sm backdrop-blur">
             <span className="h-1.5 w-1.5 rounded-full bg-white" />
-            Công cụ AI & Tài liệu học thuật
+            Nghiên cứu & Tìm kiếm thông minh
           </p>
 
           <h1
@@ -17,12 +17,12 @@ export default function HeroSection() {
             "
             style={{ WebkitTextFillColor: "transparent" }}
           >
-            Trung Tâm AI & Nghiên Cứu
+            Trung Tâm Nghiên Cứu
           </h1>
 
           <div className="mt-2 h-1 w-20 rounded-full bg-gradient-to-r from-white to-blue-200" />
           <p className="mt-4 max-w-3xl text-base sm:text-lg text-white/90">
-            Khám phá các công cụ AI mạnh mẽ và nguồn tài liệu học thuật để nâng cao nghiên cứu và học tập của bạn
+            Khám phá các chuyên ngành nghiên cứu và trò chuyện với AI để được hỗ trợ nghiên cứu khoa học
           </p>
         </div>
       </div>

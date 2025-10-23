@@ -37,42 +37,10 @@ export default function Header() {
             </li>
 
             <li className="relative group">
-              <Link href="#" className="header-li-item flex items-center gap-2">
+              <Link href="/res" className="header-li-item flex items-center gap-2">
                 <BiBrain className="w-5 h-5" />
                 Res
               </Link>
-              {/* Dropdown Menu */}
-              <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                <div className="py-2">
-                  <Link
-                    href="/res/ai-diagnosis"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
-                  >
-                    <div className="flex items-center gap-2">
-                      <BiBrain className="w-4 h-4" />
-                      Tâm lý học
-                    </div>
-                  </Link>
-                  <Link
-                    href="/res/medical-research"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
-                  >
-                    <div className="flex items-center gap-2">
-                      <BiBookOpen className="w-4 h-4" />
-                      Nghiên cứu Khoa học
-                    </div>
-                  </Link>
-                  <Link
-                    href="/res/chat-ai"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
-                  >
-                    <div className="flex items-center gap-2">
-                      <BiBot className="w-4 h-4" />
-                      Chat Bot Gemini
-                    </div>
-                  </Link>
-                </div>
-              </div>
             </li>
 
             <li>
