@@ -1,214 +1,235 @@
 "use client"
 
-import AutoScroll from "embla-carousel-auto-scroll"
-import useEmblaCarousel, { UseEmblaCarouselType } from "embla-carousel-react"
-import Image from "next/image"
-import { useCallback, useEffect, useMemo, useRef } from "react"
+import CardMentor from "@/components/CardMentor"
+import { Mentor } from "@/types"
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react"
 
-/* ===== Types theo schema của bạn ===== */
-type Keyword = { id: string; name: string }
-export type Mentor = {
-  id: string
-  fullName: string
-  academicTitle?: string | null
-  workUnit?: string | null
-  position?: string | null
-  image?: string | null
-  website?: string | null
-  isActive?: boolean
-  keywords?: Keyword[]
+type Props = {
+  data: Mentor[]
+  pxPerSecond?: number
 }
 
-/* ===== Helpers ===== */
-function avatarPlaceholder(name: string) {
-  const initials = name
-    .split(" ")
-    .filter(Boolean)
-    .slice(-2)
-    .map(s => s[0]!.toUpperCase())
-    .join("")
-  const svg = encodeURIComponent(
-    `<svg xmlns='http://www.w3.org/2000/svg' width='600' height='800'>
-      <defs>
-        <linearGradient id='g' x1='0' x2='1' y1='0' y2='1'>
-          <stop offset='0%' stop-color='#13294B'/>
-          <stop offset='100%' stop-color='#2E8BC0'/>
-        </linearGradient>
-      </defs>
-      <rect width='100%' height='100%' fill='url(#g)'/>
-      <text x='50%' y='52%' dominant-baseline='middle' text-anchor='middle'
-        font-family='Inter, Segoe UI, Roboto, Helvetica, Arial'
-        font-size='200' fill='white' font-weight='800'>${initials}</text>
-    </svg>`,
-  )
-  return `data:image/svg+xml,${svg}`
-}
+const MentorCarouselPlain = memo(function MentorCarouselPlain({ data, pxPerSecond = 60 }: Props) {
+  const [deviceType, setDeviceType] = useState<"mobile" | "tablet" | "desktop">("desktop")
 
-function displayName(fullName: string, academicTitle?: string | null) {
-  const prefix = academicTitle ? `${academicTitle}. ` : ""
-  const hasPrefix = academicTitle && fullName.toLowerCase().startsWith(academicTitle.toLowerCase())
-  return hasPrefix ? fullName : `${prefix}${fullName}`
-}
+  const isMobile = deviceType === "mobile"
+  const isTablet = deviceType === "tablet"
 
-function badgeText(m: Mentor) {
-  // ưu tiên keywords[0] -> position -> workUnit
-  return m.keywords?.[0]?.name || m.position || m.workUnit || "Chuyên môn"
-}
-
-function metaText(m: Mentor) {
-  const left = m.workUnit || ""
-  const right = m.position || ""
-  const joined = [left, right].filter(Boolean).join(" • ")
-  return joined || "—"
-}
-
-/* ===== Carousel (marquee) ===== */
-export default function MentorCarousel({ data, options }: { data: Mentor[]; options?: UseEmblaCarouselType }) {
-  // tôn trọng prefers-reduced-motion
   const reducedMotion =
     typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches
 
-  // AutoScroll: chạy SANG TRÁI liên tục (direction: "backward")
-  const autoScroll = useRef(
-    AutoScroll({
-      speed: 1.6, // tốc độ trôi (có thể 1.0–3.0)
-      startDelay: 0,
-      stopOnInteraction: false, // kéo tay xong vẫn tiếp tục
-      stopOnMouseEnter: true, // dừng khi hover
-      direction: "backward", // sang trái
-    }),
-  )
+  const loopData = useMemo(() => [...data, ...data], [data])
 
-  const plugins = useMemo(() => (reducedMotion ? [] : [autoScroll.current]), [reducedMotion])
+  const viewportRef = useRef<HTMLDivElement | null>(null)
+  const trackRef = useRef<HTMLUListElement | null>(null)
 
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    {
-      loop: true,
-      align: "start",
-      dragFree: true, // trôi tự nhiên như băng chuyền
-      ...options,
+  const offsetRef = useRef(0)
+  const lastTsRef = useRef<number | null>(null)
+  const rafRef = useRef<number | null>(null)
+  const playingRef = useRef(true)
+
+  const cycleWidthRef = useRef(0)
+
+  const draggingRef = useRef(false)
+  const startXRef = useRef(0)
+  const startOffsetRef = useRef(0)
+  const velocityRef = useRef(0)
+  const lastMoveTsRef = useRef(0)
+  const lastMoveXRef = useRef(0)
+
+  const pxPerMs = useMemo(() => {
+    const baseSpeed = pxPerSecond / 1000
+    return isMobile ? baseSpeed * 0.7 : baseSpeed
+  }, [pxPerSecond, isMobile])
+
+  const gapPx = useCallback((el: Element) => {
+    const style = window.getComputedStyle(el.parentElement as Element)
+    const gap = parseFloat(style.columnGap || "0")
+    return isNaN(gap) ? 0 : gap
+  }, [])
+
+  const measure = useCallback(() => {
+    const track = trackRef.current
+    if (!track) return
+
+    requestAnimationFrame(() => {
+      const n = Math.max(data.length, 1)
+      let width = 0
+      for (let i = 0; i < n; i++) {
+        const el = track.children[i] as HTMLElement | undefined
+        if (el) {
+          const rect = el.getBoundingClientRect()
+          width += rect.width + gapPx(el)
+        }
+      }
+      cycleWidthRef.current = width
+    })
+  }, [data.length, gapPx])
+
+  const tick = useCallback(
+    (ts: number) => {
+      if (!trackRef.current) {
+        rafRef.current = null
+        return
+      }
+      if (lastTsRef.current == null) lastTsRef.current = ts
+      const dt = ts - lastTsRef.current
+      lastTsRef.current = ts
+
+      if (!draggingRef.current) {
+        const delta = (pxPerMs + velocityRef.current) * dt
+        velocityRef.current *= 0.95
+        if (Math.abs(velocityRef.current) < 0.0001) velocityRef.current = 0
+
+        offsetRef.current -= delta
+      }
+
+      const cycle = cycleWidthRef.current || 1
+      if (offsetRef.current <= -cycle) offsetRef.current += cycle
+      if (offsetRef.current >= 0) offsetRef.current -= cycle
+
+      trackRef.current.style.transform = `translate3d(${offsetRef.current}px,0,0)`
+
+      if (playingRef.current) {
+        rafRef.current = requestAnimationFrame(tick)
+      } else {
+        rafRef.current = null
+      }
     },
-    plugins,
+    [pxPerMs],
   )
 
-  // resume khi rời chuột (phòng khi plugin chưa tự play lại)
-  const onMouseLeave = useCallback(() => {
-    ;(emblaApi as unknown as UseEmblaCarouselType | undefined)?.plugins()?.autoScroll?.play()
-  }, [emblaApi])
-
-  // bật autoScroll sau mount
-  useEffect(() => {
-    const api = emblaApi as unknown as UseEmblaCarouselType | undefined
-    api?.plugins()?.autoScroll?.play()
-
-    // dừng khi tab ẩn, chạy lại khi quay về
-    const onVis = () => {
-      const auto = api?.plugins()?.autoScroll
-      if (!auto) return
-      document.hidden ? auto.stop() : auto.play()
+  const play = useCallback(() => {
+    if (reducedMotion) return
+    playingRef.current = true
+    if (rafRef.current == null) {
+      lastTsRef.current = null
+      rafRef.current = requestAnimationFrame(tick)
     }
-    document.addEventListener("visibilitychange", onVis)
-    return () => document.removeEventListener("visibilitychange", onVis)
-  }, [emblaApi])
+  }, [reducedMotion, tick])
+
+  const pause = useCallback(() => {
+    playingRef.current = false
+    if (rafRef.current != null) {
+      cancelAnimationFrame(rafRef.current)
+      rafRef.current = null
+      lastTsRef.current = null
+    }
+  }, [])
+
+  const debouncedResize = useCallback(() => {
+    let timeoutId: NodeJS.Timeout
+    return () => {
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(() => {
+        const width = window.innerWidth
+        const newDeviceType = width < 768 ? "mobile" : width < 1024 ? "tablet" : "desktop"
+        setDeviceType(prev => (prev !== newDeviceType ? newDeviceType : prev))
+      }, 100)
+    }
+  }, [])
+
+  useEffect(() => {
+    const checkDevice = () => {
+      const width = window.innerWidth
+      const newDeviceType = width < 768 ? "mobile" : width < 1024 ? "tablet" : "desktop"
+      setDeviceType(newDeviceType)
+    }
+
+    checkDevice()
+    const debouncedHandler = debouncedResize()
+    window.addEventListener("resize", debouncedHandler)
+    return () => {
+      window.removeEventListener("resize", debouncedHandler)
+    }
+  }, [debouncedResize])
+
+  const debouncedMeasure = useCallback(() => {
+    let timeoutId: NodeJS.Timeout
+    return () => {
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(measure, 150)
+    }
+  }, [measure])
+
+  useEffect(() => {
+    measure()
+    const debouncedMeasureHandler = debouncedMeasure()
+    window.addEventListener("resize", debouncedMeasureHandler)
+    if (!reducedMotion) play()
+
+    const vis = () => (document.hidden ? pause() : play())
+    document.addEventListener("visibilitychange", vis)
+
+    return () => {
+      window.removeEventListener("resize", debouncedMeasureHandler)
+      document.removeEventListener("visibilitychange", vis)
+      pause()
+    }
+  }, [measure, reducedMotion, debouncedMeasure, play, pause])
+
+  const onMouseEnter = useCallback(() => pause(), [pause])
+  const onMouseLeave = useCallback(() => play(), [play])
+
+  const onPointerDown = useCallback(
+    (e: React.PointerEvent) => {
+      ;(e.target as HTMLElement).setPointerCapture?.(e.pointerId)
+      pause()
+      draggingRef.current = true
+      startXRef.current = e.clientX
+      startOffsetRef.current = offsetRef.current
+      lastMoveTsRef.current = performance.now()
+      lastMoveXRef.current = e.clientX
+    },
+    [pause],
+  )
+
+  const onPointerMove = useCallback((e: React.PointerEvent) => {
+    if (!draggingRef.current) return
+    const dx = e.clientX - startXRef.current
+    offsetRef.current = startOffsetRef.current + dx
+    if (trackRef.current) {
+      trackRef.current.style.transform = `translate3d(${offsetRef.current}px,0,0)`
+    }
+    const now = performance.now()
+    const dt = now - lastMoveTsRef.current
+    if (dt > 0) velocityRef.current = (e.clientX - lastMoveXRef.current) / dt
+    lastMoveTsRef.current = now
+    lastMoveXRef.current = e.clientX
+  }, [])
+
+  const endDrag = useCallback(() => {
+    if (!draggingRef.current) return
+    draggingRef.current = false
+    play()
+  }, [play])
 
   return (
-    <div className="relative">
-      {/* Nút điều hướng (ẩn trên mobile) */}
-      <button
-        className="hidden md:flex absolute left-[-8px] top-1/2 -translate-y-1/2 z-10 h-10 w-10 items-center justify-center rounded-full bg-white ring-1 ring-slate-200 shadow hover:bg-slate-50"
-        onClick={() => emblaApi?.scrollPrev()}
-        aria-label="Trước"
+    <div className="relative w-full">
+      <div
+        ref={viewportRef}
+        className="overflow-hidden touch-pan-y w-full"
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
+        onPointerLeave={endDrag}
       >
-        ‹
-      </button>
-      <button
-        className="hidden md:flex absolute right-[-8px] top-1/2 -translate-y-1/2 z-10 h-10 w-10 items-center justify-center rounded-full bg-white ring-1 ring-slate-200 shadow hover:bg-slate-50"
-        onClick={() => emblaApi?.scrollNext()}
-        aria-label="Sau"
-      >
-        ›
-      </button>
-
-      {/* Viewport */}
-      <div className="overflow-hidden" ref={emblaRef} onMouseLeave={onMouseLeave}>
-        {/* Container: gap card */}
-        <ul className="flex gap-6">
-          {data.map(m => {
-            const name = displayName(m.fullName, m.academicTitle)
-            const img = m.image || avatarPlaceholder(m.fullName)
-            const badge = badgeText(m)
-            const meta = metaText(m)
-
-            return (
-              <li
-                key={m.id}
-                className="
-                  embla__slide
-                  shrink-0
-                  basis-[88%] sm:basis-[48%] lg:basis-[23%]
-                  rounded-2xl bg-white ring-1 ring-slate-200/70 shadow-sm
-                  transition-all duration-300 hover:shadow-md hover:-translate-y-0.5
-                  flex flex-col h-full
-                "
-              >
-                {/* Ảnh dọc – không che mặt */}
-                <div className="relative aspect-[3/4] overflow-hidden rounded-t-2xl">
-                  <Image
-                    src={img}
-                    alt={name}
-                    fill
-                    sizes="(max-width: 640px) 88vw, (max-width: 1024px) 48vw, 23vw"
-                    className="object-cover object-top transition-transform duration-300 ease-in-out"
-                  />
-
-                  {/* Gradient dưới – không đè mặt */}
-                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/35 to-transparent" />
-
-                  {/* Badge dưới-left */}
-                  <span className="absolute left-3 bottom-3 rounded-full px-2.5 py-1 text-[11px] font-medium text-white bg-[#1F4F86]/90 backdrop-blur-sm">
-                    {badge}
-                  </span>
-                </div>
-
-                {/* Body */}
-                <div className="p-5 flex flex-col flex-1">
-                  <h3 className="text-lg font-semibold text-slate-900 line-clamp-2">{name}</h3>
-                  <p className="mt-1 text-sm text-slate-600 line-clamp-2">{meta}</p>
-
-                  {/* Actions – dính đáy */}
-                  <div className="mt-auto pt-4 flex items-center gap-2.5">
-                    <a
-                      href={m.website || "#"}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="
-                        inline-flex items-center justify-center rounded-xl px-3.5 h-9 text-sm font-medium
-                        text-white bg-[#1F4F86] hover:bg-[#173e69]
-                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#2E8BC0]
-                      "
-                      aria-label={`Xem hồ sơ của ${name}`}
-                    >
-                      Xem hồ sơ
-                    </a>
-                    <button
-                      className="
-                        inline-flex items-center justify-center rounded-xl px-3.5 h-9 text-sm font-medium
-                        text-[#1F4F86] bg-[#E6F2FF] hover:bg-[#d8ebff]
-                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#2E8BC0]
-                      "
-                    >
-                      Đặt lịch
-                    </button>
-                  </div>
-                </div>
-
-                {/* Divider mảnh */}
-                <div className="h-px w-full bg-slate-200" />
-              </li>
-            )
-          })}
+        <ul
+          ref={trackRef}
+          className={`flex will-change-transform w-max mx-auto ${
+            isMobile ? "gap-4 px-4" : isTablet ? "gap-5 px-6" : "gap-6 px-8"
+          }`}
+        >
+          {loopData.map((m, idx) => (
+            <CardMentor key={`${m.id}-${idx}`} m={m} idx={idx} isMobile={isMobile} isTablet={isTablet} />
+          ))}
         </ul>
       </div>
     </div>
   )
-}
+})
+
+export default MentorCarouselPlain
