@@ -3,7 +3,7 @@
 import About from "@/components/home/components/About"
 import HeroCarousel from "@/components/home/components/HeroCarousel"
 import HowItWorks from "@/components/home/components/HowItWorks"
-import Ophthalmologist from "@/components/home/components/Ophthalmologist"
+import ListMentor from "@/components/home/components/ListMentor"
 
 const mentors = [
   {
@@ -98,7 +98,7 @@ export default function Home() {
       <main className="flex-grow pt-20 relative">
         <HeroCarousel />
         <About />
-        <Ophthalmologist data={mentors} />
+        <ListMentor mentors={mentors} />
         <HowItWorks />
       </main>
     </div>
