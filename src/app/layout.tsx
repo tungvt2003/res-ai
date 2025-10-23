@@ -1,10 +1,9 @@
-import Footer from "@/app/modules/home/components/Footer"
-import Header from "@/app/modules/home/components/Header"
+import Footer from "@/components/home/components/Footer"
+import Header from "@/components/home/components/Header"
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import Providers from "./providers"
-import { ChatBox } from "./shares/components/ChatBox"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Header />
           {children}
           <Footer />
-          <ChatBox />
+          {/* <ChatBox /> */}
         </Providers>
       </body>
     </html>

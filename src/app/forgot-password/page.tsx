@@ -1,9 +1,7 @@
 "use client"
-import { useState } from "react"
-import { sendPasswordResetEmail } from "firebase/auth"
-import { toast } from "react-toastify"
-import { auth } from "@/app/shares/configs/firebase"
 import Link from "next/link"
+import { useState } from "react"
+import { toast } from "react-toastify"
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("")
@@ -11,7 +9,6 @@ export default function ForgotPasswordPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      await sendPasswordResetEmail(auth, email.trim())
       toast.success("Email đặt lại mật khẩu đã được gửi! Vui lòng kiểm tra hộp thư của bạn.")
     } catch (error: unknown) {
       if (error instanceof Error) {

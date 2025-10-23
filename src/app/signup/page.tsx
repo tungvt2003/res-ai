@@ -1,18 +1,15 @@
 "use client"
 
-import { useLoginFirebaseMutation } from "@/app/modules/auth/hooks/mutations/use-login-by-google.mutation"
-import { useRegisterMutation } from "@/app/modules/auth/hooks/mutations/use-register.mutation"
-import { PatientApi } from "@/app/modules/hospital/apis/patient/patientApi"
-import { auth, googleProvider } from "@/app/shares/configs/firebase"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { setPatient } from "@/app/shares/stores/authSlice"
-import { isValidPassword } from "@/app/shares/utils/password"
+import { useLoginFirebaseMutation } from "@/components/modules/auth/hooks/mutations/use-login-by-google.mutation"
+import { useRegisterMutation } from "@/components/modules/auth/hooks/mutations/use-register.mutation"
+import { isValidPassword } from "@/components/shares/utils/password"
 import { Input } from "antd"
 import { AxiosError } from "axios"
-import { createUserWithEmailAndPassword, deleteUser, signInWithPopup, User } from "firebase/auth"
+import { deleteUser, User } from "firebase/auth"
 import Image from "next/image"
-import { useState, FormEvent } from "react"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { FormEvent, useState } from "react"
 import { FaGoogle } from "react-icons/fa"
 import { useDispatch } from "react-redux"
 import { toast } from "react-toastify"
@@ -75,7 +72,7 @@ export default function RegisterPage() {
   }
 
   const handleSubmit = async (e: FormEvent) => {
-    let firebaseUser: User | null = null
+    const firebaseUser: User | null = null
     e.preventDefault()
     clearMessage()
 
@@ -83,16 +80,15 @@ export default function RegisterPage() {
 
     try {
       // Tạo user Firebase
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-      firebaseUser = userCredential.user
-
-      // Gọi backend mutation
-      await registerMutation.mutateAsync({
-        username,
-        email,
-        password,
-        firebase_uid: firebaseUser.uid,
-      })
+      // // const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+      // firebaseUser = userCredential.user
+      // // Gọi backend mutation
+      // await registerMutation.mutateAsync({
+      //   username,
+      //   email,
+      //   password,
+      //   firebase_uid: firebaseUser.uid,
+      // })
     } catch (error) {
       if (
         typeof error === "object" &&
@@ -119,47 +115,14 @@ export default function RegisterPage() {
       localStorage.setItem("user_id", data.data?.user_id || "")
       toast.success("Login Google thành công!")
 
-      try {
-        const patient = await PatientApi.getByUserID(data.data?.user_id || "")
-        const patientInfo = {
-          patientId: patient.data?.patient_id ?? null,
-          fullName: patient.data?.full_name ?? null,
-          dob: patient.data?.dob ?? null,
-          gender: patient.data?.gender ?? null,
-          phone: patient.data?.phone ?? null,
-          address: patient.data?.address ?? null,
-          email: patient.data?.email ?? null,
-          image: patient.data?.image ?? null,
-        }
-        dispatch(setPatient(patientInfo))
-        localStorage.removeItem("email")
-        localStorage.removeItem("user_id")
-        router.push("/")
-      } catch (err) {
-        toast.warning("Vui lòng hoàn thành hồ sơ bệnh nhân của bạn.")
-        router.push("/create-patient")
-      }
+      localStorage.removeItem("email")
+      localStorage.removeItem("user_id")
+      router.push("/")
     },
     onError: err => {
       toast.error(err.response?.data?.message || "Login Google thất bại")
     },
   })
-
-  const handleGoogleLogin = async () => {
-    try {
-      const result = await signInWithPopup(auth, googleProvider)
-      const user = result.user
-      setEmail(user.email || "")
-
-      loginFirebaseMutation.mutate({
-        firebase_uid: user.uid,
-        email: user.email || "",
-      })
-    } catch (error: unknown) {
-      console.error("Google login error:", error)
-      toast.error("Login Google thất bại")
-    }
-  }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
@@ -278,7 +241,6 @@ export default function RegisterPage() {
             <button
               type="button"
               className="flex w-full items-center justify-center gap-2 rounded-md bg-red-500 px-4 py-2 font-medium text-white shadow-md transition-all hover:bg-red-600 focus:ring-2 focus:ring-red-400 focus:ring-offset-1 cursor-pointer"
-              onClick={handleGoogleLogin}
             >
               <FaGoogle className="text-white" />
               Google

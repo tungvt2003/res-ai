@@ -1,8 +1,9 @@
 "use client"
-import About from "./modules/home/components/About"
-import HeroCarousel from "./modules/home/components/HeroCarousel"
-import HowItWorks from "./modules/home/components/HowItWorks"
-import Ophthalmologist from "./modules/home/components/Ophthalmologist"
+
+import About from "@/components/home/components/About"
+import HeroCarousel from "@/components/home/components/HeroCarousel"
+import HowItWorks from "@/components/home/components/HowItWorks"
+import Ophthalmologist from "@/components/home/components/Ophthalmologist"
 
 export default function Home() {
   return (
