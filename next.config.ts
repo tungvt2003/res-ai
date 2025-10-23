@@ -32,6 +32,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "example.com", // 👈 thêm dòng này
       },
+      {
+        protocol: "https",
+        hostname: "csdlkhoahoc.hueuni.edu.vn",
+      },
     ],
   },
 }

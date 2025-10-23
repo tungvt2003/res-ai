@@ -1,105 +1,115 @@
-import Image from "next/image"
+import MentorCarousel from "@/app/modules/home/components/MentorCarousel"
+import { UseEmblaCarouselType } from "embla-carousel-react"
 
-export default function Ophthalmologist() {
+/* ===== Types ===== */
+type Keyword = { id: string; name: string }
+type Mentor = {
+  id: string
+  fullName: string
+  academicTitle?: string | null
+  workUnit?: string | null
+  position?: string | null
+  image?: string | null
+  website?: string | null
+  isActive?: boolean
+  keywords?: Keyword[]
+}
+
+/* ===== Helpers ===== */
+// Tạo avatar placeholder (initials) khi thiếu ảnh
+function avatarPlaceholder(name: string) {
+  const initials = name
+    .split(" ")
+    .filter(Boolean)
+    .slice(-2)
+    .map(s => s[0]!.toUpperCase())
+    .join("")
+  const svg = encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'>
+      <defs>
+        <linearGradient id='g' x1='0' x2='1' y1='0' y2='1'>
+          <stop offset='0%' stop-color='#13294B'/>
+          <stop offset='100%' stop-color='#2E8BC0'/>
+        </linearGradient>
+      </defs>
+      <rect width='100%' height='100%' fill='url(#g)'/>
+      <text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle'
+        font-family='Inter, Segoe UI, Roboto, Helvetica, Arial'
+        font-size='120' fill='white' font-weight='700'>${initials}</text>
+    </svg>`,
+  )
+  return `data:image/svg+xml,${svg}`
+}
+
+// Tránh lặp học hàm trong fullName (VD: "ThS. Phạm A" + academicTitle="ThS")
+function displayName(fullName: string, academicTitle?: string | null) {
+  const prefix = academicTitle ? `${academicTitle}. ` : ""
+  const hasPrefix = fullName.toLowerCase().startsWith((academicTitle ?? "").toLowerCase())
+  return hasPrefix ? fullName : `${prefix}${fullName}`
+}
+
+// Badge: ưu tiên keyword đầu tiên → position → workUnit
+function badgeText(m: Mentor) {
+  return m.keywords?.[0]?.name || m.position || m.workUnit || "Chuyên môn"
+}
+
+// Meta ngắn gọn dưới tên
+function metaText(m: Mentor) {
+  const left = m.workUnit || ""
+  const right = m.position || ""
+  const joined = [left, right].filter(Boolean).join(" • ")
+  return joined || "—"
+}
+
+/* ===== Component ===== */
+export default function Ophthalmologist({ data }: { data: Mentor[] }) {
+  const mentors = data
+
   return (
-    <section id="Ophthalmologist" className="relative">
-      <div className="py-4 px-6 md:px-12">
-        <div className="flex flex-col justify-between gap-20">
-          <div className="flex flex-col items-center text-center">
-            <div className="mb-6 relative">
-              <span
-                className="relative inline-block text-8xl font-jost font-extrabold text-transparent"
-                style={{
-                  background: "-webkit-linear-gradient(0deg, #f4e5da, #def4f1 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
-                Bác Sĩ Chuyên Khoa
-              </span>
+    <section id="Ophthalmologist" aria-labelledby="ophthalmologist-heading" className="relative">
+      <div className="mx-auto max-w-6xl px-4 md:px-8 lg:px-10 py-10 sm:py-12 lg:py-14">
+        {/* Header học thuật */}
+        <div className="flex flex-col items-center text-center">
+          <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/70 px-3 py-1 text-xs font-medium text-slate-700 shadow-sm backdrop-blur">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#2E8BC0]" />
+            Đội ngũ mentor & giảng viên
+          </p>
 
-              <h2 className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-3xl font-semibold text-gray-800">
-                Đội ngũ nhân viên có trình độ cao, tay nghề giỏi và chuyên nghiệp
-              </h2>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8 mt-5">
-            <div className="relative bg-white shadow-lg rounded-2xl overflow-hidden group">
-              <Image
-                src="https://23july.hostlin.com/optcare/wp-content/uploads/2022/10/team-7-2.jpg"
-                alt="Susan Hopkins"
-                width={300}
-                height={300}
-                className="w-full h-auto object-cover transition-transform duration-300 ease-in-out transform group-hover:scale-105"
-              />
-              <div
-                className="p-6"
-                style={{
-                  background: "-webkit-linear-gradient(10deg, #dff4f1, #faeae1 100%)",
-                }}
-              >
-                <h3 className="text-xl font-semibold text-gray-800">Susan Hopkins</h3>
-                <p className="text-gray-600">Phẫu thuật đục thủy tinh thể</p>
-              </div>
-            </div>
+          <h2
+            id="ophthalmologist-heading"
+            className="
+              text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05]
+              text-transparent bg-clip-text
+              bg-gradient-to-r from-[#13294B] via-[#1F4F86] to-[#2E8BC0]
+              [text-wrap:balance]
+            "
+            style={{ WebkitTextFillColor: "transparent" }}
+          >
+            Giảng Viên Chuyên Ngành
+          </h2>
 
-            <div className="relative bg-white shadow-lg rounded-2xl overflow-hidden group">
-              <Image
-                src="https://23july.hostlin.com/optcare/wp-content/uploads/2022/05/team-7.jpg"
-                alt="Keanu Reeves"
-                width={300}
-                height={300}
-                className="w-full h-auto object-cover transition-transform duration-300 ease-in-out transform group-hover:scale-105"
-              />
-              <div
-                className="p-6"
-                style={{
-                  background: "-webkit-linear-gradient(10deg, #dff4f1, #faeae1 100%)",
-                }}
-              >
-                <h3 className="text-xl font-semibold text-gray-800">Keanu Reeves</h3>
-                <p className="text-gray-600">Mắt Clarivu</p>
-              </div>
-            </div>
+          <div className="mt-2 h-1 w-20 rounded-full bg-gradient-to-r from-[#2E8BC0] to-[#7FC3E8]" />
+          <p className="mt-4 max-w-3xl text-base sm:text-lg text-slate-700">
+            Đội ngũ có trình độ cao, tay nghề giỏi và tác phong chuyên nghiệp, đồng hành cùng sinh viên trong nghiên cứu
+            và ứng dụng AI.
+          </p>
+        </div>
 
-            <div className="relative bg-white shadow-lg rounded-2xl overflow-hidden group">
-              <Image
-                src="https://23july.hostlin.com/optcare/wp-content/uploads/2022/05/team-7.jpg"
-                alt="Dr.Robert De Niro"
-                width={300}
-                height={300}
-                className="w-full h-auto object-cover transition-transform duration-300 ease-in-out transform group-hover:scale-105"
-              />
-              <div
-                className="p-6"
-                style={{
-                  background: "-webkit-linear-gradient(10deg, #dff4f1, #faeae1 100%)",
-                }}
-              >
-                <h3 className="text-xl font-semibold text-gray-800">Dr. Robert De Niro</h3>
-                <p className="text-gray-600">Bệnh tăng nhãn áp</p>
-              </div>
-            </div>
+        {/* Grid (carousel mobile bằng CSS), card cao bằng nhau */}
+        <MentorCarousel data={mentors} options={{ loop: true, align: "start" } as unknown as UseEmblaCarouselType} />
 
-            <div className="relative bg-white shadow-lg rounded-2xl overflow-hidden group">
-              <Image
-                src="https://23july.hostlin.com/optcare/wp-content/uploads/2022/05/team-7.jpg"
-                alt="Dr.Mel Gibson"
-                width={300}
-                height={300}
-                className="w-full h-auto object-cover transition-transform duration-300 ease-in-out transform group-hover:scale-105"
-              />
-              <div
-                className="p-6"
-                style={{
-                  background: "-webkit-linear-gradient(10deg, #dff4f1, #faeae1 100%)",
-                }}
-              >
-                <h3 className="text-xl font-semibold text-gray-800">Dr. Mel Gibson</h3>
-                <p className="text-gray-600">Phòng thí nghiệm</p>
-              </div>
-            </div>
-          </div>
+        {/* CTA */}
+        <div className="mt-8 flex justify-center">
+          <a
+            href="#"
+            className="
+              inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium
+              text-slate-700 hover:border-[#2E8BC0] hover:text-[#1F4F86]
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2E8BC0]/30
+            "
+          >
+            Xem tất cả giảng viên
+          </a>
         </div>
       </div>
     </section>
