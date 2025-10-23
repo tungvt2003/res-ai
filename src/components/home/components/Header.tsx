@@ -5,6 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import Avatar from "react-avatar"
+import { BiBookOpen, BiBot, BiBrain, BiHome } from "react-icons/bi"
 
 export default function Header() {
   const router = useRouter()
@@ -29,24 +30,28 @@ export default function Header() {
           {/* Menu */}
           <ul className="hidden md:flex space-x-6 lg:space-x-20">
             <li>
-              <Link href="/" className="header-li-item">
+              <Link href="/" className="header-li-item flex items-center gap-2">
+                <BiHome className="w-5 h-5" />
                 Trang chủ
               </Link>
             </li>
 
             <li>
-              <Link href="/res" className="header-li-item">
+              <Link href="/res" className="header-li-item flex items-center gap-2">
+                <BiBrain className="w-5 h-5" />
                 Res
               </Link>
             </li>
 
             <li>
-              <Link href="/edu" className="header-li-item">
+              <Link href="/edu" className="header-li-item flex items-center gap-2">
+                <BiBookOpen className="w-5 h-5" />
                 Edu
               </Link>
             </li>
             <li>
-              <Link href="/ai" className="header-li-item">
+              <Link href="/ai" className="header-li-item flex items-center gap-2">
+                <BiBot className="w-5 h-5" />
                 AI
               </Link>
             </li>

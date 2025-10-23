@@ -1,4 +1,4 @@
-import MentorCarousel from "@/app/modules/home/components/MentorCarousel"
+import MentorCarousel from "@/components/home/components/MentorCarousel"
 import { UseEmblaCarouselType } from "embla-carousel-react"
 
 /* ===== Types ===== */
