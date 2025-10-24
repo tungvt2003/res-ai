@@ -6,13 +6,14 @@ import { persistor, useAppDispatch, useAppSelector } from "@/components/shares/s
 import { clearAuth } from "@/components/shares/stores/authSlice"
 import Image from "next/image"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { useState } from "react"
 import Avatar from "react-avatar"
 import { BiBook, BiBookOpen, BiBot, BiBrain, BiHome, BiUser } from "react-icons/bi"
 
 export default function Header() {
   const router = useRouter()
+  const pathname = usePathname()
   const auth = useAppSelector(state => state.auth)
   const image = auth.user?.fullName
   const isLoggedIn = auth.isAuthenticated
@@ -21,6 +22,19 @@ export default function Header() {
   const [showLogoutModal, setShowLogoutModal] = useState(false)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
   const { showAuthModal, featureName, closeAuthModal } = useAuthGuard()
+
+  // Helper function to check if a route is active
+  const isActiveRoute = (route: string) => {
+    if (route === "/") {
+      return pathname === "/"
+    }
+    return pathname.startsWith(route)
+  }
+
+  // Helper function to get active class
+  const getActiveClass = (route: string) => {
+    return isActiveRoute(route) ? "header-li-item-active" : "header-li-item"
+  }
 
   const handleLogout = async () => {
     setIsLoggingOut(true)
@@ -57,20 +71,20 @@ export default function Header() {
           {/* Menu */}
           <ul className="hidden md:flex space-x-6 lg:space-x-20">
             <li>
-              <Link href="/" className="header-li-item flex items-center gap-2">
+              <Link href="/" className={`${getActiveClass("/")} flex items-center gap-2`}>
                 <BiHome className="w-5 h-5" />
                 Trang chủ
               </Link>
             </li>
 
             <li className="relative group">
-              <Link href="/res" className="header-li-item flex items-center gap-2">
+              <Link href="/res" className={`${getActiveClass("/res")} flex items-center gap-2`}>
                 <BiBrain className="w-5 h-5" />
                 Res
               </Link>
             </li>
             <li className="relative group">
-              <Link href="" className="header-li-item flex items-center gap-2">
+              <Link href="#" className={`${getActiveClass("/edu")} flex items-center gap-2`}>
                 <BiBookOpen className="w-5 h-5" />
                 Edu
               </Link>
@@ -78,7 +92,11 @@ export default function Header() {
                 <div className="py-2">
                   <Link
                     href="/edu/mentor"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-[#202c45] transition-colors"
+                    className={`block px-4 py-2 text-sm transition-colors ${
+                      isActiveRoute("/edu/mentor")
+                        ? "bg-blue-50 text-[#202c45] font-medium"
+                        : "text-gray-700 hover:bg-blue-50 hover:text-[#202c45]"
+                    }`}
                   >
                     <div className="flex items-center gap-2">
                       <BiUser className="w-4 h-4" />
@@ -87,7 +105,11 @@ export default function Header() {
                   </Link>
                   <Link
                     href="/edu/blog"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-[#202c45] transition-colors"
+                    className={`block px-4 py-2 text-sm transition-colors ${
+                      isActiveRoute("/edu/blog")
+                        ? "bg-blue-50 text-[#202c45] font-medium"
+                        : "text-gray-700 hover:bg-blue-50 hover:text-[#202c45]"
+                    }`}
                   >
                     <div className="flex items-center gap-2">
                       <BiBook className="w-4 h-4" />
@@ -98,7 +120,7 @@ export default function Header() {
               </div>
             </li>
             <li>
-              <Link href="/ai" className="header-li-item flex items-center gap-2">
+              <Link href="/ai" className={`${getActiveClass("/ai")} flex items-center gap-2`}>
                 <BiBot className="w-5 h-5" />
                 AI
               </Link>
@@ -115,7 +137,7 @@ export default function Header() {
               </button>
             ) : (
               <div className="relative group">
-                <Avatar name={name || ""} src={image || ""} size="40" round={true} />
+                <Avatar name={name || ""} src={image || ""} size="40" round={true} className="cursor-pointer" />
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition p-2 z-50">
                   <div className="py-1">
                     <div className="px-4 py-2 text-sm text-gray-500 border-b border-gray-100">

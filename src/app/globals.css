@@ -37,6 +37,19 @@ body {
   }
 }
 
+.header-li-item-active {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #202c45;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+
+  &:hover {
+    color: #202c45;
+  }
+}
+
 /* End Header */
 
 /* Custom Scrollbar for Textarea */
@@ -101,4 +114,153 @@ textarea.scrollbar-thin::-webkit-scrollbar-thumb {
 textarea.scrollbar-thin::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
   background-clip: content-box;
+}
+
+/* Blog Detail Typography */
+.blog-content {
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+}
+
+.blog-content h2 {
+  position: relative;
+  padding-bottom: 0.5rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.blog-content h2:first-child {
+  margin-top: 0;
+}
+
+.blog-content h2::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.blog-content h3 {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.blog-content h3::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 20px;
+  background: #2e8bc0;
+  border-radius: 2px;
+}
+
+.blog-content p {
+  text-align: justify;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+  margin-top: 0;
+}
+
+.blog-content ul,
+.blog-content ol {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+.blog-content li {
+  margin-bottom: 0.5rem;
+  line-height: 1.7;
+  text-align: justify;
+}
+
+.blog-content li:last-child {
+  margin-bottom: 0;
+}
+
+.blog-content ul li {
+  list-style-type: disc;
+}
+
+.blog-content ol li {
+  list-style-type: decimal;
+}
+
+.blog-content strong {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.blog-content a {
+  color: #2e8bc0;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.blog-content a:hover {
+  color: #1e6ba8;
+}
+
+.blog-content img {
+  transition: transform 0.3s ease;
+}
+
+.blog-content img:hover {
+  transform: scale(1.02);
+}
+
+/* TOC Styling */
+.toc-item {
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.toc-item::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 2px;
+  background: #2e8bc0;
+  transition: width 0.2s ease;
+}
+
+.toc-item:hover::before {
+  width: 4px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .blog-content h1 {
+    font-size: 2rem;
+  }
+
+  .blog-content h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .blog-content {
+    padding: 1rem;
+  }
+
+  .blog-content h1 {
+    font-size: 1.75rem;
+  }
+
+  .blog-content h2 {
+    font-size: 1.25rem;
+  }
 }
