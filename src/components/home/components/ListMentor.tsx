@@ -3,35 +3,95 @@ import { Mentor } from "@/types"
 
 export default function ListMentor({ mentors }: { mentors: Mentor[] }) {
   return (
-    <section id="listmentor" aria-labelledby="listmentor-heading" className="relative">
+    <section id="listmentor" aria-labelledby="listmentor-heading" className="relative bg-white">
       <div className="w-full">
-        <div className="mx-auto max-w-6xl flex flex-col items-center text-center px-4 md:px-8 lg:px-10 py-10 sm:py-12 lg:py-14">
-          <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/70 px-3 py-1 text-xs font-medium text-slate-700 shadow-sm backdrop-blur">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#2E8BC0]" />
-            Đội ngũ mentor & giảng viên
-          </p>
+        <div className="mx-auto max-w-6xl px-4 md:px-8 lg:px-10 py-16">
+          <div className="flex flex-col lg:flex-row items-center gap-12">
+            <div className="flex-1 space-y-6">
+              <div className="space-y-4">
+                <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 leading-tight">
+                  Gặp gỡ đội ngũ
+                  <span className="block text-transparent bg-clip-text bg-gradient-to-r from-slate-700 to-gray-700">
+                    chuyên gia hàng đầu
+                  </span>
+                </h2>
+              </div>
 
-          <h2
-            id="listmentor-heading"
-            className="
-              text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05]
-              text-transparent bg-clip-text
-              bg-gradient-to-r from-[#13294B] via-[#1F4F86] to-[#2E8BC0]
-              [text-wrap:balance]
-            "
-            style={{ WebkitTextFillColor: "transparent" }}
-          >
-            Đội Ngũ Giảng Viên
-          </h2>
+              <p className="text-lg text-slate-600 leading-relaxed">
+                Kết nối với các giáo sư, tiến sĩ và chuyên gia có kinh nghiệm sâu rộng trong lĩnh vực nghiên cứu và AI.
+                Họ sẽ đồng hành cùng bạn trong hành trình học tập và phát triển.
+              </p>
 
-          <div className="mt-2 h-1 w-20 rounded-full bg-gradient-to-r from-[#2E8BC0] to-[#7FC3E8]" />
-          <p className="mt-4 max-w-3xl text-base sm:text-lg text-slate-700">
-            Đội ngũ có trình độ cao, tay nghề giỏi và tác phong chuyên nghiệp, đồng hành cùng sinh viên trong nghiên cứu
-            và ứng dụng AI.
-          </p>
+              <div className="flex flex-wrap gap-4 pt-4">
+                <div className="flex items-center gap-2 text-sm text-slate-600">
+                  <div className="w-2 h-2 bg-slate-500 rounded-full"></div>
+                  <span>Hướng dẫn cá nhân hóa</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-slate-600">
+                  <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+                  <span>Kinh nghiệm thực tế</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-slate-600">
+                  <div className="w-2 h-2 bg-slate-400 rounded-full"></div>
+                  <span>Hỗ trợ 24/7</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex-1 max-w-lg">
+              <div className="bg-white rounded-2xl p-8 shadow-lg border border-slate-200">
+                <div className="space-y-6">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center">
+                          <span className="text-xs font-bold text-slate-600">AI</span>
+                        </div>
+                        <span className="text-sm font-medium text-slate-700">Trí tuệ nhân tạo</span>
+                      </div>
+                      <span className="text-sm text-slate-500">15+ mentor</span>
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center">
+                          <span className="text-xs font-bold text-slate-600">CS</span>
+                        </div>
+                        <span className="text-sm font-medium text-slate-700">Khoa học máy tính</span>
+                      </div>
+                      <span className="text-sm text-slate-500">12+ mentor</span>
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center">
+                          <span className="text-xs font-bold text-slate-600">DS</span>
+                        </div>
+                        <span className="text-sm font-medium text-slate-700">Khoa học dữ liệu</span>
+                      </div>
+                      <span className="text-sm text-slate-500">10+ mentor</span>
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center">
+                          <span className="text-xs font-bold text-slate-600">ED</span>
+                        </div>
+                        <span className="text-sm font-medium text-slate-700">Giáo dục & Đào tạo</span>
+                      </div>
+                      <span className="text-sm text-slate-500">13+ mentor</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <MentorCarouselPlain data={mentors} pxPerSecond={50} />
+        {/* Mentor Carousel */}
+        <div className="pb-16">
+          <MentorCarouselPlain data={mentors} pxPerSecond={50} />
+        </div>
       </div>
     </section>
   )
