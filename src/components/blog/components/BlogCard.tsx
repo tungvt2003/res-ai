@@ -38,9 +38,7 @@ export default function BlogCard({ blog, formatDate, truncateText }: BlogCardPro
         {blog.image ? (
           <Image src={blog.image} alt={blog.title} width={400} height={250} className="w-full h-48 object-cover" />
         ) : (
-          <div className="w-full h-48 bg-gradient-to-br from-[#2E8BC0] to-[#7FC3E8] flex items-center justify-center">
-            <span className="text-white text-3xl font-bold">{blog.category.name.charAt(0)}</span>
-          </div>
+          <div className="w-full h-48 bg-gradient-to-br from-[#2E8BC0] to-[#7FC3E8] flex items-center justify-center"></div>
         )}
         <div className="absolute top-4 left-4">
           <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-white/90 text-gray-700 backdrop-blur-sm">

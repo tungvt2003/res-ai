@@ -43,7 +43,7 @@ export default function TableOfContents({ content, className = "" }: TableOfCont
 
     // Sử dụng setTimeout để đảm bảo DOM đã được render
     const timer = setTimeout(() => {
-      const actualHeadings = document.querySelectorAll(".blog-content h2, .blog-content h3")
+      const actualHeadings = document.querySelectorAll(".blog-content h2")
       actualHeadings.forEach((heading, index) => {
         if (index < tocItems.length) {
           heading.id = tocItems[index].id
@@ -130,7 +130,7 @@ export default function TableOfContents({ content, className = "" }: TableOfCont
           <button
             key={item.id}
             onClick={() => scrollToSection(item.id)}
-            className={`toc-item block w-full text-left px-3 py-2 rounded-lg text-sm transition-all duration-200 ${
+            className={`toc-item cursor-pointer block w-full text-left px-3 py-2 rounded-lg text-sm transition-all duration-200 ${
               item.level === 3 ? "ml-4" : ""
             } ${
               activeSection === item.id
