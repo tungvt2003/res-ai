@@ -4,8 +4,8 @@ import { useAuthGuard } from "@/components/shares/hooks/useAuthGuard"
 import { BiBookOpen } from "react-icons/bi"
 
 interface MajorsSectionProps {
-  majors: string[]
-  onMajorClick: (major: string) => void
+  majors: { name: string; slug: string }[]
+  onMajorClick: (major: { name: string; slug: string }) => void
 }
 
 export default function MajorsSection({ majors, onMajorClick }: MajorsSectionProps) {
@@ -13,7 +13,7 @@ export default function MajorsSection({ majors, onMajorClick }: MajorsSectionPro
 
   const handleMajorClick = (major: string) => {
     requireAuth("Tree View", () => {
-      onMajorClick(major)
+      onMajorClick({ name: major, slug: major.toLowerCase() })
     })
   }
   return (
@@ -30,7 +30,7 @@ export default function MajorsSection({ majors, onMajorClick }: MajorsSectionPro
         {majors.map((major, index) => (
           <div
             key={index}
-            onClick={() => handleMajorClick(major)}
+            onClick={() => handleMajorClick(major.slug)}
             className="group cursor-pointer bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 overflow-hidden"
           >
             <div className="h-2 bg-gradient-to-r from-blue-500 to-blue-600" />
@@ -47,11 +47,11 @@ export default function MajorsSection({ majors, onMajorClick }: MajorsSectionPro
               </div>
 
               <h3 className="text-xl font-bold text-[#202c45] mb-4 group-hover:text-blue-600 transition-colors">
-                {major}
+                {major.name}
               </h3>
 
               <p className="text-gray-600 leading-relaxed">
-                Khám phá thông tin chi tiết về chuyên ngành {major.toLowerCase()}, hướng nghề nghiệp và cơ hội phát
+                Khám phá thông tin chi tiết về chuyên ngành {major.name.toLowerCase()}, hướng nghề nghiệp và cơ hội phát
                 triển trong lĩnh vực này.
               </p>
             </div>
