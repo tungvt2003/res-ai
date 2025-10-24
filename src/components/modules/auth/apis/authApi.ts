@@ -4,9 +4,11 @@ import api from "../../../shares/configs/axios"
 
 export type RegisterRequest = {
   username: string
-  email: string
   password: string
-  firebase_uid?: string
+  fullName: string
+  email: string
+  phone: string
+  roles: string
 }
 
 export type LoginRequest = {
@@ -14,9 +16,27 @@ export type LoginRequest = {
   password: string
 }
 
-export type LoginFirebaseRequest = {
-  firebase_uid: string
+export type User = {
+  id: string
+  username: string
   email: string
+  fullName: string
+  phone: string
+  roles: string
+  isActive: boolean
+  createdAt: string
+}
+
+export type LoginResponse = {
+  message: string
+  user: User
+  accessToken: string
+}
+
+export type RegisterResponse = {
+  message: string
+  user: User
+  accessToken: string
 }
 
 export type TokenResponse = {
@@ -45,41 +65,19 @@ class AuthClient {
   }
 
   // ---------------- Register ----------------
-  async register(form: RegisterRequest): Promise<SuccessResponse<{ id: string; username: string; email: string }>> {
-    const response = await this.client.post<SuccessResponse<{ id: string; username: string; email: string }>>(
-      "/public/register",
-      form,
-    )
-    return response.data
+  async register(form: RegisterRequest): Promise<SuccessResponse<RegisterResponse>> {
+    try {
+      const response = await this.client.post<SuccessResponse<RegisterResponse>>("/auth/register", form)
+
+      return response.data
+    } catch (error) {
+      throw error
+    }
   }
 
   // ---------------- Login ----------------
-  async login(form: LoginRequest): Promise<SuccessResponse<TokenResponse>> {
-    const response = await this.client.post<SuccessResponse<TokenResponse>>("/public/login", form)
-    return response.data
-  }
-
-  // ---------------- Login Firebase ----------------
-  async loginFirebase(form: LoginFirebaseRequest): Promise<SuccessResponse<TokenResponse>> {
-    const response = await this.client.post<SuccessResponse<TokenResponse>>("/public/login/firebase", form)
-    return response.data
-  }
-
-  // ---------------- Refresh Token ----------------
-  async refresh(): Promise<SuccessResponse<TokenResponse>> {
-    const response = await this.client.post<SuccessResponse<TokenResponse>>("/public/refresh")
-    return response.data
-  }
-
-  // ---------------- Logout ----------------
-  async logout(): Promise<SuccessResponse> {
-    const response = await this.client.post<SuccessResponse>("/public/logout")
-    return response.data
-  }
-
-  // ---------------- Get Current User ----------------
-  async me(): Promise<SuccessResponse<{ user_id: string; role: string }>> {
-    const response = await this.client.get<SuccessResponse<{ user_id: string; role: string }>>("/private/me")
+  async login(form: LoginRequest): Promise<SuccessResponse<LoginResponse>> {
+    const response = await this.client.post<SuccessResponse<LoginResponse>>("/auth/login", form)
     return response.data
   }
 }

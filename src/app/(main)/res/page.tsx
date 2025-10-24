@@ -15,7 +15,7 @@ export default function Res() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 font-sans text-gray-800">
-      <main className="flex-grow pt-20 relative">
+      <main className="grow pt-20 relative">
         <HeroSection />
 
         {/* Main Options Section */}

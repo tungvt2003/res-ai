@@ -1,15 +1,14 @@
 import axios, { AxiosInstance } from "axios"
-import { refreshToken } from "../api/refreshToken"
 import { store } from "../stores"
-import { clearTokens, setTokens } from "../stores/authSlice"
+import { clearAuth } from "../stores/authSlice"
 
 const api: AxiosInstance = axios.create({
-  baseURL: "http://localhost:8000",
-  timeout: 5000,
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://103.243.173.86:9999",
+  timeout: 10000,
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: true,
+  withCredentials: false,
 })
 
 // ---------------- Request Interceptor ----------------
@@ -19,36 +18,25 @@ api.interceptors.request.use(config => {
   if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`
   }
+
   return config
 })
 
 // ---------------- Response Interceptor ----------------
 // Xử lý lỗi chung hoặc logout nếu 401
 api.interceptors.response.use(
-  response => response,
+  response => {
+    return response
+  },
   async error => {
-    const originalRequest = error.config
-
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true
-      try {
-        const res = await refreshToken()
-        const state = store.getState().auth
-        if (res.data?.access_token) {
-          store.dispatch(
-            setTokens({
-              accessToken: res.data.access_token,
-              refreshToken: "",
-              userId: state.userId ?? "",
-              role: state.role ?? "",
-            }),
-          )
-          originalRequest.headers.Authorization = `Bearer ${res.data.access_token}`
-          return api(originalRequest)
-        }
-      } catch (refreshErr) {
-        store.dispatch(clearTokens())
-        window.location.href = "/signin"
+    if (error.response?.status === 401) {
+      // Chỉ redirect nếu không phải đang ở trang login
+      if (window.location.pathname !== "/login") {
+        // Clear auth state and redirect to login
+        store.dispatch(clearAuth())
+        localStorage.removeItem("accessToken")
+        localStorage.removeItem("user")
+        window.location.href = "/login"
       }
     }
 

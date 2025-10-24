@@ -1,10 +1,7 @@
 import { useMutation, UseMutationOptions } from "@tanstack/react-query"
-import { AuthApi, RegisterRequest, SuccessResponse } from "../../apis/authApi"
+import { AuthApi, RegisterRequest, RegisterResponse, SuccessResponse } from "../../apis/authApi"
 
-type RegisterOptions = Omit<
-  UseMutationOptions<SuccessResponse<{ id: string; username: string; email: string }>, Error, RegisterRequest>,
-  "mutationFn"
->
+type RegisterOptions = Omit<UseMutationOptions<SuccessResponse<RegisterResponse>, Error, RegisterRequest>, "mutationFn">
 
 function useRegisterMutation(options?: RegisterOptions) {
   return useMutation({

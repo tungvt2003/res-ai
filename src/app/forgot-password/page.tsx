@@ -36,7 +36,7 @@ export default function ForgotPasswordPage() {
         </button>
         <p className="mt-4 text-sm text-gray-500">
           Nhớ mật khẩu?{" "}
-          <Link href="/signin" className="text-cyan-600 hover:text-cyan-500">
+          <Link href="/login" className="text-cyan-600 hover:text-cyan-500">
             Đăng nhập
           </Link>
         </p>

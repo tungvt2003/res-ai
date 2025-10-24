@@ -1,4 +1,6 @@
 "use client"
+import { AuthRequiredModal } from "@/components/shares/components/AuthRequiredModal"
+import { useAuthGuard } from "@/components/shares/hooks/useAuthGuard"
 import { BiBookOpen } from "react-icons/bi"
 
 interface MajorsSectionProps {
@@ -7,6 +9,13 @@ interface MajorsSectionProps {
 }
 
 export default function MajorsSection({ majors, onMajorClick }: MajorsSectionProps) {
+  const { requireAuth, showAuthModal, featureName, closeAuthModal } = useAuthGuard()
+
+  const handleMajorClick = (major: string) => {
+    requireAuth("Tree View", () => {
+      onMajorClick(major)
+    })
+  }
   return (
     <>
       <div className="text-center mb-12">
@@ -21,7 +30,7 @@ export default function MajorsSection({ majors, onMajorClick }: MajorsSectionPro
         {majors.map((major, index) => (
           <div
             key={index}
-            onClick={() => onMajorClick(major)}
+            onClick={() => handleMajorClick(major)}
             className="group cursor-pointer bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 overflow-hidden"
           >
             <div className="h-2 bg-gradient-to-r from-blue-500 to-blue-600" />
@@ -49,6 +58,9 @@ export default function MajorsSection({ majors, onMajorClick }: MajorsSectionPro
           </div>
         ))}
       </div>
+
+      {/* Auth Required Modal */}
+      <AuthRequiredModal isOpen={showAuthModal} onClose={closeAuthModal} featureName={featureName} />
     </>
   )
 }

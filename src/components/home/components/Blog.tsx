@@ -197,20 +197,9 @@ const blogs = [
   },
 ]
 
-const categories = [
-  { id: "all", name: "Tất cả", slug: "all" },
-  { id: "c1111111-1111-1111-1111-111111111111", name: "Công nghệ", slug: "cong-nghe" },
-  { id: "c2222222-2222-2222-2222-222222222222", name: "Giáo dục", slug: "giao-duc" },
-  { id: "c3333333-3333-3333-3333-333333333333", name: "Nghiên cứu", slug: "nghien-cuu" },
-  { id: "c4444444-4444-4444-4444-444444444444", name: "Sự kiện", slug: "su-kien" },
-]
-
 export default function Blog() {
   // Chỉ lấy 6 blog mới nhất cho trang chủ
   const latestBlogs = blogs.slice(0, 6)
-
-  // Featured blog (first blog)
-  const featuredBlog = latestBlogs[0]
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("vi-VN", {

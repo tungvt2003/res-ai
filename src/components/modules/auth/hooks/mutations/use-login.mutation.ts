@@ -1,32 +1,32 @@
 // src/hooks/auth/useLoginMutation.ts
-import { setTokens } from "@/components/shares/stores/authSlice"
+import { setAuth } from "@/components/shares/stores/authSlice"
 import { MutationFunctionContext, useMutation, UseMutationOptions } from "@tanstack/react-query"
 import { AxiosError } from "axios"
 import { useDispatch } from "react-redux"
-import { AuthApi, ErrorResponse, LoginRequest, SuccessResponse, TokenResponse } from "../../apis/authApi"
+import { AuthApi, ErrorResponse, LoginRequest, LoginResponse, SuccessResponse } from "../../apis/authApi"
 
 type LoginOptions = Omit<
-  UseMutationOptions<SuccessResponse<TokenResponse>, AxiosError<ErrorResponse>, LoginRequest>,
+  UseMutationOptions<SuccessResponse<LoginResponse>, AxiosError<ErrorResponse>, LoginRequest>,
   "mutationFn"
 >
 
 export function useLoginMutation(options?: LoginOptions) {
   const dispatch = useDispatch()
 
-  return useMutation<SuccessResponse<TokenResponse>, AxiosError<ErrorResponse>, LoginRequest>({
+  return useMutation<SuccessResponse<LoginResponse>, AxiosError<ErrorResponse>, LoginRequest>({
     mutationFn: async (form: LoginRequest) => {
       return await AuthApi.login(form)
     },
     onSuccess: (res, variables, context) => {
-      // lưu access token vào redux
-      dispatch(
-        setTokens({
-          accessToken: res.data?.access_token || "",
-          refreshToken: "",
-          userId: res.data?.user_id || "",
-          role: res.data?.role || "",
-        }),
-      )
+      // lưu thông tin user và token vào redux
+      if (res.data) {
+        dispatch(
+          setAuth({
+            accessToken: res.data.accessToken,
+            user: res.data.user,
+          }),
+        )
+      }
       options?.onSuccess?.(res, variables, {}, context as MutationFunctionContext)
     },
     onError: (err, variables, context) => {

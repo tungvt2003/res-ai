@@ -1,258 +1,296 @@
 "use client"
 
-import { useLoginFirebaseMutation } from "@/components/modules/auth/hooks/mutations/use-login-by-google.mutation"
 import { useRegisterMutation } from "@/components/modules/auth/hooks/mutations/use-register.mutation"
 import { isValidPassword } from "@/components/shares/utils/password"
 import { Input } from "antd"
 import { AxiosError } from "axios"
-import { deleteUser, User } from "firebase/auth"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { FormEvent, useState } from "react"
-import { FaGoogle } from "react-icons/fa"
-import { useDispatch } from "react-redux"
+import { FaEye, FaEyeSlash } from "react-icons/fa"
 import { toast } from "react-toastify"
 
 export default function RegisterPage() {
   const router = useRouter()
-  const dispatch = useDispatch()
   const [username, setUsername] = useState<string>("")
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const [confirmPassword, setConfirmPassword] = useState<string>("")
+  const [fullName, setFullName] = useState<string>("")
+  const [phone, setPhone] = useState<string>("")
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
-  const [message, setMessage] = useState<string | null>(null)
 
   type ErrorResponse = {
     status: number
     message: string
   }
   const registerMutation = useRegisterMutation({
-    onSuccess: data => {
-      localStorage.setItem("email", email)
-      localStorage.setItem("user_id", data.data?.id || "")
-      toast.success("Đăng ký thành công! Vui lòng hoàn thành hồ sơ bệnh nhân của bạn.")
-      router.push("/create-patient")
+    onSuccess: () => {
+      toast.success("Đăng ký thành công!")
+      router.push("/login")
     },
     onError: error => {
       const axiosError = error as AxiosError<ErrorResponse>
       const backendMessage = axiosError.response?.data?.message
       toast.error(backendMessage || "Đăng ký thất bại. Vui lòng thử lại.")
+      setIsLoading(false)
     },
   })
 
-  const clearMessage = (): void => {
-    setMessage(null)
-  }
-
   const validateForm = (): boolean => {
     const newErrors: { [key: string]: string } = {}
-    if (!username) {
-      newErrors.username = "Username không được để trống."
+
+    if (!username.trim()) {
+      newErrors.username = "Tên đăng nhập không được để trống."
     }
-    if (!email) {
+
+    if (!fullName.trim()) {
+      newErrors.fullName = "Họ tên không được để trống."
+    }
+
+    if (!email.trim()) {
       newErrors.email = "Email không được để trống."
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = "Email không hợp lệ."
     }
+
+    if (!phone.trim()) {
+      newErrors.phone = "Số điện thoại không được để trống."
+    } else if (!/^[0-9]{10,11}$/.test(phone.replace(/\s/g, ""))) {
+      newErrors.phone = "Số điện thoại không hợp lệ."
+    }
+
     if (!password) {
       newErrors.password = "Mật khẩu không được để trống."
-    }
-    if (password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters long."
+    } else if (password.length < 8) {
+      newErrors.password = "Mật khẩu phải có ít nhất 8 ký tự."
     } else if (!isValidPassword(password)) {
-      newErrors.password = "Password must contain at least 1 uppercase, 1 lowercase, 1 digit, and 1 special character."
+      newErrors.password = "Mật khẩu phải chứa ít nhất 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt."
     }
-    if (password !== confirmPassword) {
+
+    if (!confirmPassword) {
+      newErrors.confirmPassword = "Xác nhận mật khẩu không được để trống."
+    } else if (password !== confirmPassword) {
       newErrors.confirmPassword = "Mật khẩu nhập lại không khớp."
     }
+
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
   const handleSubmit = async (e: FormEvent) => {
-    const firebaseUser: User | null = null
     e.preventDefault()
-    clearMessage()
 
     if (!validateForm()) return
 
-    try {
-      // Tạo user Firebase
-      // // const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-      // firebaseUser = userCredential.user
-      // // Gọi backend mutation
-      // await registerMutation.mutateAsync({
-      //   username,
-      //   email,
-      //   password,
-      //   firebase_uid: firebaseUser.uid,
-      // })
-    } catch (error) {
-      if (
-        typeof error === "object" &&
-        error !== null &&
-        "code" in error &&
-        (error as { code?: string }).code === "auth/email-already-in-use"
-      ) {
-        toast.error("Email is already in use.")
-        return
-      }
-      if (firebaseUser) {
-        try {
-          await deleteUser(firebaseUser)
-        } catch (delError) {
-          console.error("Failed to delete Firebase user:", delError)
-        }
-      }
-    }
+    setIsLoading(true)
+    registerMutation.mutate({
+      username,
+      password,
+      fullName,
+      email,
+      phone,
+      roles: "user",
+    })
   }
 
-  const loginFirebaseMutation = useLoginFirebaseMutation({
-    onSuccess: async data => {
-      localStorage.setItem("email", email)
-      localStorage.setItem("user_id", data.data?.user_id || "")
-      toast.success("Login Google thành công!")
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword)
+  }
 
-      localStorage.removeItem("email")
-      localStorage.removeItem("user_id")
-      router.push("/")
-    },
-    onError: err => {
-      toast.error(err.response?.data?.message || "Login Google thất bại")
-    },
-  })
+  const handleToggleConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword)
+  }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
-      <div className="flex w-full max-w-6xl h-full flex-col overflow-hidden rounded-2xl bg-white shadow-xl md:flex-row">
-        {/* Left Side */}
-        <div className="hidden flex-[2] bg-[url('/login_img_deepeyex.png')] bg-cover bg-center md:block"></div>
-
-        {/* Right Side */}
-        <div className="flex w-full flex-shrink-0 flex-col items-center p-6 md:w-1/2 md:flex-[1]">
-          <div className="mb-3 text-center w-full">
-            <div className="mx-auto mb-4 h-12 w-12 rounded-full overflow-hidden">
-              <Link href={"/"}>
-                <Image
-                  src="/logoDeepEyeX.png"
-                  alt="Logo"
-                  width={100}
-                  height={100}
-                  className="object-cover rounded-full"
-                />
-              </Link>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50 flex items-center justify-center p-2">
+      <div className="w-full max-w-4xl">
+        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
+          <div className="flex flex-col lg:flex-row">
+            {/* Left Side - Hero Image */}
+            <div className="lg:w-1/2 bg-gradient-to-br from-blue-600 to-cyan-600 p-8 lg:p-12 flex flex-col justify-center items-center text-white relative overflow-hidden">
+              <div className="absolute inset-0 bg-black/10"></div>
+              <div className="relative z-10 text-center">
+                <div className="mb-8">
+                  <div className="w-40 h-40 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Image src="/logo-su-pham.ico" alt="Logo" width={200} height={200} className="object-contain" />
+                  </div>
+                  <h1 className="text-3xl lg:text-4xl font-bold mb-2">Tham gia cùng chúng tôi!</h1>
+                  <p className="text-blue-100 text-lg">Tạo tài khoản để bắt đầu hành trình nghiên cứu khoa học</p>
+                </div>
+                <div className="hidden lg:block">
+                  <div className="w-64 h-64 bg-white/10 rounded-full absolute -bottom-32 -right-32"></div>
+                  <div className="w-32 h-32 bg-white/5 rounded-full absolute -top-16 -left-16"></div>
+                </div>
+              </div>
             </div>
-            <h2 className="text-3xl font-bold text-gray-800">Tham gia DeepEyeX</h2>
-            <p className="text-gray-500">Tạo tài khoản để bắt đầu.</p>
+
+            {/* Right Side - Register Form */}
+            <div className="lg:w-1/2 p-6 lg:p-8">
+              <div className="max-w-md mx-auto">
+                <div className="text-center mb-6">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Đăng ký tài khoản</h2>
+                  <p className="text-gray-600">Điền thông tin để tạo tài khoản mới</p>
+                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  {/* Full Name */}
+                  <div>
+                    <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1">
+                      Họ và tên
+                    </label>
+                    <Input
+                      id="fullName"
+                      type="text"
+                      placeholder="Nhập họ và tên"
+                      value={fullName}
+                      onChange={e => setFullName(e.target.value)}
+                      className="w-full h-10 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      size="large"
+                      disabled={isLoading}
+                    />
+                    {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
+                  </div>
+
+                  {/* Username */}
+                  <div>
+                    <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
+                      Tên đăng nhập
+                    </label>
+                    <Input
+                      id="username"
+                      type="text"
+                      placeholder="Nhập tên đăng nhập"
+                      value={username}
+                      onChange={e => setUsername(e.target.value)}
+                      className="w-full h-10 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      size="large"
+                      disabled={isLoading}
+                    />
+                    {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
+                  </div>
+
+                  {/* Email */}
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                      Email
+                    </label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="Nhập email"
+                      value={email}
+                      onChange={e => setEmail(e.target.value)}
+                      className="w-full h-10 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      size="large"
+                      disabled={isLoading}
+                    />
+                    {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                  </div>
+
+                  {/* Phone */}
+                  <div>
+                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+                      Số điện thoại
+                    </label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      placeholder="Nhập số điện thoại"
+                      value={phone}
+                      onChange={e => setPhone(e.target.value)}
+                      className="w-full h-10 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      size="large"
+                      disabled={isLoading}
+                    />
+                    {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+                  </div>
+
+                  {/* Password */}
+                  <div>
+                    <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                      Mật khẩu
+                    </label>
+                    <div className="relative">
+                      <Input
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Nhập mật khẩu"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        className="w-full h-10 px-4 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        size="large"
+                        disabled={isLoading}
+                      />
+                      <button
+                        type="button"
+                        onClick={handleTogglePassword}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                      >
+                        {showPassword ? <FaEyeSlash /> : <FaEye />}
+                      </button>
+                    </div>
+                    {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+                  </div>
+
+                  {/* Confirm Password */}
+                  <div>
+                    <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+                      Xác nhận mật khẩu
+                    </label>
+                    <div className="relative">
+                      <Input
+                        id="confirmPassword"
+                        type={showConfirmPassword ? "text" : "password"}
+                        placeholder="Nhập lại mật khẩu"
+                        value={confirmPassword}
+                        onChange={e => setConfirmPassword(e.target.value)}
+                        className="w-full h-10 px-4 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        size="large"
+                        disabled={isLoading}
+                      />
+                      <button
+                        type="button"
+                        onClick={handleToggleConfirmPassword}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                      >
+                        {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                      </button>
+                    </div>
+                    {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="w-full h-10 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-cyan-700 focus:ring-4 focus:ring-blue-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                  >
+                    {isLoading ? (
+                      <div className="flex items-center">
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                        Đang đăng ký...
+                      </div>
+                    ) : (
+                      "Đăng ký tài khoản"
+                    )}
+                  </button>
+                </form>
+
+                <div className="mt-6 text-center">
+                  <p className="text-sm text-gray-600">
+                    Đã có tài khoản?{" "}
+                    <Link href="/login" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
+                      Đăng nhập ngay
+                    </Link>
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-
-          <form className="w-full max-w-sm space-y-4" onSubmit={handleSubmit}>
-            {/* Username */}
-            <div>
-              <label htmlFor="username" className="mb-1 block text-sm font-medium text-gray-700">
-                Tên đăng nhập
-              </label>
-              <Input
-                id="username"
-                name="username"
-                type="text"
-                placeholder="Nhập tên đăng nhập"
-                value={username}
-                onChange={e => setUsername(e.target.value)}
-                size="large"
-              />
-              {errors.username && <p className="text-red-500 text-sm">{errors.username}</p>}
-            </div>
-
-            {/* Email */}
-            <div>
-              <label htmlFor="email" className="mb-1 block text-sm font-medium text-gray-700">
-                Email
-              </label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="Nhập email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                size="large"
-              />
-              {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-            </div>
-
-            {/* Password */}
-            <div>
-              <label htmlFor="password" className="mb-1 block text-sm font-medium text-gray-700">
-                Mật khẩu
-              </label>
-              <Input.Password
-                id="password"
-                name="password"
-                placeholder="Nhập mật khẩu"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                size="large"
-              />
-              {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
-            </div>
-
-            {/* Confirm Password */}
-            <div>
-              <label htmlFor="confirmPassword" className="mb-1 block text-sm font-medium text-gray-700">
-                Xác nhận mật khẩu
-              </label>
-              <Input.Password
-                id="confirmPassword"
-                name="confirmPassword"
-                placeholder="Nhập lại mật khẩu"
-                value={confirmPassword}
-                onChange={e => setConfirmPassword(e.target.value)}
-                size="large"
-              />
-              {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
-            </div>
-
-            {/* Submit */}
-            <div>
-              <button
-                type="submit"
-                disabled={registerMutation.status === "pending"}
-                className="w-full rounded-md bg-cyan-600 p-2 font-semibold text-white shadow-sm transition-colors hover:bg-cyan-500 cursor-pointer"
-              >
-                {registerMutation.status === "pending" ? "Đang xử lý..." : "Đăng ký"}
-              </button>
-            </div>
-          </form>
-
-          {/* Thông báo */}
-          {message && <p className="mt-4 text-center text-sm text-red-500">{message}</p>}
-
-          <div className="relative my-4 w-full max-w-sm text-center">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
-            </div>
-            <div className="relative inline-block bg-white px-2 text-sm text-gray-500">Hoặc tiếp tục với</div>
-          </div>
-
-          <div className="flex w-full max-w-sm items-center justify-center">
-            <button
-              type="button"
-              className="flex w-full items-center justify-center gap-2 rounded-md bg-red-500 px-4 py-2 font-medium text-white shadow-md transition-all hover:bg-red-600 focus:ring-2 focus:ring-red-400 focus:ring-offset-1 cursor-pointer"
-            >
-              <FaGoogle className="text-white" />
-              Google
-            </button>
-          </div>
-
-          <p className="mt-6 text-center text-sm text-gray-500">
-            Đã có tài khoản?{" "}
-            <Link href="/signin" className="font-semibold text-cyan-600 hover:text-cyan-500">
-              Đăng nhập
-            </Link>
-          </p>
         </div>
       </div>
     </div>

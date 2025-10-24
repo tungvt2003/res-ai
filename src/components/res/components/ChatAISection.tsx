@@ -1,7 +1,16 @@
-import Link from "next/link"
+"use client"
+import { AuthRequiredModal } from "@/components/shares/components/AuthRequiredModal"
+import { useAuthGuard } from "@/components/shares/hooks/useAuthGuard"
 import { BiBookOpen, BiBot, BiBrain, BiLinkExternal, BiSearch } from "react-icons/bi"
 
 export default function ChatAISection() {
+  const { requireAuth, showAuthModal, featureName, closeAuthModal } = useAuthGuard()
+
+  const handleChatClick = () => {
+    requireAuth("Chat Bot Gemini", () => {
+      window.location.href = "/res/chat-ai"
+    })
+  }
   return (
     <div className="bg-white rounded-2xl shadow-lg p-8 mb-16">
       <div className="text-center">
@@ -37,15 +46,18 @@ export default function ChatAISection() {
           </div>
         </div>
 
-        <Link
-          href="/res/chat-ai"
-          className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-lg font-medium"
+        <button
+          onClick={handleChatClick}
+          className="inline-flex cursor-pointer items-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-lg font-medium"
         >
           <BiBot className="w-6 h-6" />
           Bắt đầu trò chuyện
           <BiLinkExternal className="w-5 h-5" />
-        </Link>
+        </button>
       </div>
+
+      {/* Auth Required Modal */}
+      <AuthRequiredModal isOpen={showAuthModal} onClose={closeAuthModal} featureName={featureName} />
     </div>
   )
 }

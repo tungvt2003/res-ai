@@ -1,62 +1,50 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
-type PatientInfo = {
-  patientId: string | null
-  fullName: string | null
-  dob: string | null
-  gender: string | null
-  address: string | null
-  phone: string | null
-  email: string | null
-  image: string | null
+type User = {
+  id: string
+  username: string
+  email: string
+  fullName: string
+  phone: string
+  roles: string
+  isActive: boolean
+  createdAt: string
 }
 
 type AuthState = {
   accessToken: string | null
-  refreshToken: string | null
-  userId: string | null
-  role: string | null
-  patient: PatientInfo | null
+  user: User | null
+  isAuthenticated: boolean
 }
 
 const initialState: AuthState = {
   accessToken: null,
-  refreshToken: null,
-  userId: null,
-  role: null,
-  patient: null,
+  user: null,
+  isAuthenticated: false,
 }
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setTokens: (
+    setAuth: (
       state,
       action: PayloadAction<{
         accessToken: string
-        refreshToken: string
-        userId: string
-        role: string
+        user: User
       }>,
     ) => {
       state.accessToken = action.payload.accessToken
-      state.refreshToken = action.payload.refreshToken
-      state.userId = action.payload.userId
-      state.role = action.payload.role
+      state.user = action.payload.user
+      state.isAuthenticated = true
     },
-    setPatient: (state, action: PayloadAction<PatientInfo>) => {
-      state.patient = action.payload
-    },
-    clearTokens: state => {
+    clearAuth: state => {
       state.accessToken = null
-      state.refreshToken = null
-      state.userId = null
-      state.role = null
-      state.patient = null
+      state.user = null
+      state.isAuthenticated = false
     },
   },
 })
 
-export const { setTokens, setPatient, clearTokens } = authSlice.actions
+export const { setAuth, clearAuth } = authSlice.actions
 export default authSlice.reducer

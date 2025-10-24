@@ -32,11 +32,6 @@ export default function ArticlesSection() {
     },
   ]
 
-  const handleArticleClick = (articleId: number) => {
-    // TODO: Implement article navigation
-    console.log(`Navigate to article ${articleId}`)
-  }
-
   return (
     <div className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-6">

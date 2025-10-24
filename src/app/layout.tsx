@@ -1,5 +1,3 @@
-import Footer from "@/components/home/components/Footer"
-import Header from "@/components/home/components/Header"
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
@@ -24,12 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="vi">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Providers>
-          <Header />
-          {children}
-          <Footer />
-          {/* <ChatBox /> */}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   )
