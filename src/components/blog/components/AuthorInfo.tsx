@@ -1,5 +1,7 @@
 "use client"
 
+import Image from "next/image"
+
 interface Author {
   name: string
   avatar?: string
@@ -17,9 +19,10 @@ export default function AuthorInfo({ author, className = "" }: AuthorInfoProps) 
     <div className={`bg-white rounded-xl shadow-lg p-6 ${className}`}>
       <h3 className="text-lg font-bold text-gray-900 mb-4">Tác giả</h3>
       <div className="flex items-start gap-3">
-        <img
+        <Image
           src={author.avatar || "/avatar-default.png"}
           alt={author.name}
+          fill
           className="w-12 h-12 rounded-full object-cover shrink-0"
         />
         <div className="flex-1">

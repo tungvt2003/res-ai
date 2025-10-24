@@ -3,12 +3,6 @@
 import BlogDetailLayout from "@/components/blog/components/BlogDetailLayout"
 import { notFound } from "next/navigation"
 
-interface BlogDetailPageProps {
-  params: {
-    slugs: string[]
-  }
-}
-
 interface BlogData {
   id: string
   title: string
@@ -28,8 +22,8 @@ interface BlogData {
   }
 }
 
-export default function BlogDetailPage({ params }: BlogDetailPageProps) {
-  const slug = params.slugs[0]
+export default function BlogDetailPage() {
+  // const slug = params.slugs[0]
 
   // Mock data - thay thế bằng API call thực tế
   const blogData: BlogData = {

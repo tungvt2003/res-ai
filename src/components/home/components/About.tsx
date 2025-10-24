@@ -77,7 +77,7 @@ export default function About() {
 
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
-          {features.map((feature, index) => {
+          {features.map(feature => {
             const IconComponent = feature.icon
             return (
               <Link key={feature.title} href={feature.link} className="group relative">
