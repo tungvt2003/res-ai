@@ -17,19 +17,11 @@ export default function SearchSection({
   setIsSearching,
   setCurrentPage,
 }: SearchSectionProps) {
-  const suggestions = ["Tiến sĩ", "Thạc sĩ", "Giáo sư", "Trưởng khoa"]
-
   const handleClearSearch = () => {
     setSearchTerm("")
     setDebouncedSearchTerm("")
     setIsSearching(false)
     setCurrentPage(1)
-  }
-
-  const handleSuggestionClick = (suggestion: string) => {
-    setSearchTerm(suggestion)
-    setDebouncedSearchTerm(suggestion)
-    setIsSearching(false)
   }
 
   return (
@@ -48,7 +40,7 @@ export default function SearchSection({
                 setSearchTerm(e.target.value)
                 setCurrentPage(1)
               }}
-              placeholder="Nhập tên giảng viên, chức vụ hoặc chuyên ngành..."
+              placeholder="Nhập tên giảng viên..."
               className="w-full px-6 py-4 pl-14 pr-14 text-lg border-2 border-gray-200 rounded-full focus:outline-none focus:ring-0 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md hover:border-transparent"
             />
             <BiSearch className="absolute left-5 top-1/2 transform -translate-y-1/2 text-gray-400 w-6 h-6" />
@@ -63,21 +55,6 @@ export default function SearchSection({
               </button>
             )}
           </div>
-
-          {searchTerm === "" && (
-            <div className="mt-4 flex flex-wrap justify-center gap-2 items-center">
-              <label className="text-sm text-gray-500">Gợi ý:</label>
-              {suggestions.map(suggestion => (
-                <button
-                  key={suggestion}
-                  onClick={() => handleSuggestionClick(suggestion)}
-                  className="px-3 py-1 text-sm bg-gray-100 hover:bg-[#2E8BC0] hover:text-white text-gray-600 rounded-full transition-colors duration-200 cursor-pointer"
-                >
-                  {suggestion}
-                </button>
-              ))}
-            </div>
-          )}
         </div>
       </div>
     </section>

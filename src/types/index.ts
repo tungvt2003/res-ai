@@ -8,7 +8,8 @@ export type Keyword = {
 export type Mentor = {
   id: string
   fullName: string
-  academicTitle?: string | null
+  academicDegree?: string | null
+  academicRank?: string | null
   workUnit?: string | null
   position?: string | null
   image?: string | null

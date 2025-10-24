@@ -1,7 +1,24 @@
 import MentorCarouselPlain from "@/components/home/components/MentorCarousel"
-import { Mentor } from "@/types"
+import { useGetMentors } from "@/components/mentor/hooks/use-mentor.mutation"
+import Loading from "@/components/shares/components/Loading"
 
-export default function ListMentor({ mentors }: { mentors: Mentor[] }) {
+export default function ListMentor() {
+  const { data: mentorsResponse, isLoading, error } = useGetMentors()
+
+  if (isLoading) {
+    return <Loading />
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center py-16">
+        <p className="text-red-500">Có lỗi xảy ra khi tải dữ liệu mentor</p>
+      </div>
+    )
+  }
+
+  const mentors = mentorsResponse?.data || []
+
   return (
     <section id="listmentor" aria-labelledby="listmentor-heading" className="relative bg-white">
       <div className="w-full">
@@ -11,7 +28,7 @@ export default function ListMentor({ mentors }: { mentors: Mentor[] }) {
               <div className="space-y-4">
                 <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 leading-tight">
                   Gặp gỡ đội ngũ
-                  <span className="block text-transparent bg-clip-text bg-gradient-to-r from-slate-700 to-gray-700">
+                  <span className="block text-transparent bg-clip-text bg-linear-to-r from-slate-700 to-gray-700">
                     chuyên gia hàng đầu
                   </span>
                 </h2>

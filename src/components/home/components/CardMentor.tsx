@@ -1,3 +1,4 @@
+import { academicUtils } from "@/components/shares/utils/academic.utils"
 import { Mentor } from "@/types"
 import Image from "next/image"
 import { memo } from "react"
@@ -34,21 +35,8 @@ function avatarPlaceholder(name: string) {
   return `data:image/svg+xml,${svg}`
 }
 
-function displayName(fullName: string, academicTitle?: string | null) {
-  const prefix = academicTitle ? `${academicTitle}. ` : ""
-  const hasPrefix = academicTitle && fullName.toLowerCase().startsWith(academicTitle.toLowerCase())
-  return hasPrefix ? fullName : `${prefix}${fullName}`
-}
-
 function badgeText(m: Mentor) {
   return m.keywords?.[0]?.name || m.position || m.workUnit || "Chuyên môn"
-}
-
-function metaText(m: Mentor) {
-  const left = m.workUnit || ""
-  const right = m.position || ""
-  const joined = [left, right].filter(Boolean).join(" • ")
-  return joined || "—"
 }
 
 const CardMentor = memo(function CardMentor({
@@ -62,10 +50,8 @@ const CardMentor = memo(function CardMentor({
   isMobile: boolean
   isTablet: boolean
 }) {
-  const name = displayName(m.fullName, m.academicTitle)
   const img = m.image || avatarPlaceholder(m.fullName)
   const badge = badgeText(m)
-  const meta = metaText(m)
 
   return (
     <li
@@ -77,18 +63,17 @@ const CardMentor = memo(function CardMentor({
       <div className="relative h-[280px] overflow-hidden rounded-t-2xl">
         <Image
           src={img}
-          alt={name}
+          alt={m.fullName}
           fill
           sizes={isMobile ? "85vw" : isTablet ? "45vw" : "22vw"}
-          className="object-cover object-center transition-all duration-500 ease-out"
+          className="object-contain object-center transition-all duration-500 ease-out"
           draggable={false}
           priority={idx < 4}
-          style={{ objectPosition: "center 20%" }}
         />
 
         <div className="absolute inset-0 bg-linear-to-t from-black/20 via-transparent to-transparent" />
 
-        <div className="absolute left-3 bottom-3">
+        <div className="absolute left-3 bottom-3 flex flex-col gap-2">
           <span className="inline-flex items-center rounded-full px-3 py-1.5 text-xs font-semibold text-white bg-[#202c45]/95 backdrop-blur-sm border border-white/20 shadow-lg transition-all duration-300 group-hover:bg-[#202c45] group-hover:shadow-xl">
             {badge}
           </span>
@@ -100,12 +85,26 @@ const CardMentor = memo(function CardMentor({
       <div className="p-4 flex flex-col flex-1 justify-between">
         <div>
           <h3 className="text-lg font-bold text-[#202c45] line-clamp-2 leading-tight group-hover:text-[#2a3a5c] transition-colors duration-300 mb-2">
-            {name}
+            {m.fullName}
           </h3>
 
-          <p className="text-sm text-slate-600 line-clamp-2 leading-relaxed font-medium group-hover:text-slate-700 transition-colors duration-300">
-            {meta}
-          </p>
+          {m.academicRank && m.academicDegree && (
+            <div className="mb-2">
+              <span
+                className={`text-xs px-2 py-1 rounded-full font-medium ${academicUtils.getCombinedColor(m.academicRank, m.academicDegree)}`}
+              >
+                {academicUtils.getFullTitle(m.academicRank, m.academicDegree)}
+              </span>
+            </div>
+          )}
+
+          <div className="space-y-1">
+            {m.workUnit && (
+              <p className="text-sm text-slate-600 leading-relaxed font-medium group-hover:text-slate-700 transition-colors duration-300">
+                {m.workUnit}
+              </p>
+            )}
+          </div>
         </div>
 
         <div className="mt-4">
@@ -114,7 +113,7 @@ const CardMentor = memo(function CardMentor({
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center rounded-xl px-4 h-10 text-sm font-semibold text-white bg-linear-to-r from-[#202c45] to-[#2a3a5c] hover:from-[#2a3a5c] hover:to-[#344563] shadow-md transition-all duration-300"
-            aria-label={`Xem hồ sơ của ${name}`}
+            aria-label={`Xem hồ sơ của ${m.fullName}`}
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
