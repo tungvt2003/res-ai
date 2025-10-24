@@ -6,11 +6,14 @@ import MajorsSection from "@/components/res/components/MajorsSection"
 import { useState } from "react"
 
 export default function Res() {
-  const [suggestedKeywords] = useState(["Tâm lý học", "Giáo dục học"])
+  const [suggestedKeywords] = useState([
+    { name: "Tâm lý học", slug: "tam-ly-hoc" },
+    { name: "Giáo dục học", slug: "giao-duc-hoc" },
+  ])
 
-  const handleKeywordClick = (keyword: string) => {
+  const handleKeywordClick = (major: { name: string; slug: string }) => {
     // Navigate to tree view page with major parameter
-    window.location.href = `/res/tree?major=${encodeURIComponent(keyword)}`
+    window.location.href = `/res/tree?major=${encodeURIComponent(major.slug)}`
   }
 
   return (

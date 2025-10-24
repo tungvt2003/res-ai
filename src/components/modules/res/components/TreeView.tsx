@@ -1,19 +1,19 @@
 "use client"
+import { Lecturer } from "@/components/modules/res/apis/settingsApi"
+import { academicUtils } from "@/components/shares/utils/academic.utils"
 import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
-import { BiBookOpen, BiChevronDown, BiChevronRight, BiFolder, BiFolderOpen, BiTag, BiUser } from "react-icons/bi"
-
-interface Lecturer {
-  id: string
-  name: string
-  image: string | null
-  website: string | null
-  isActive: boolean
-  position: string
-  workUnit: string
-  academicTitle: string
-}
+import {
+  BiArrowBack,
+  BiBookOpen,
+  BiChevronDown,
+  BiChevronRight,
+  BiFolder,
+  BiFolderOpen,
+  BiTag,
+  BiUser,
+} from "react-icons/bi"
 
 interface Field {
   id: string
@@ -35,12 +35,10 @@ interface Parent {
 }
 
 interface TreeViewProps {
-  data: {
-    parents: Parent[]
-  }
+  parents: Parent[]
 }
 
-export default function TreeView({ data }: TreeViewProps) {
+export default function TreeView({ parents }: TreeViewProps) {
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set())
   const [selectedField, setSelectedField] = useState<Field | null>(null)
 
@@ -60,6 +58,17 @@ export default function TreeView({ data }: TreeViewProps) {
 
   return (
     <div className="max-w-7xl mx-auto">
+      {/* Back Button */}
+      <div className="mb-2">
+        <button
+          onClick={() => window.history.back()}
+          className="inline-flex cursor-pointer items-center gap-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors duration-200"
+        >
+          <BiArrowBack className="w-5 h-5" />
+          <span className="font-medium">Quay lại</span>
+        </button>
+      </div>
+
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
         {/* Tree Structure */}
         <div className="xl:col-span-2 bg-white rounded-xl shadow-lg p-6">
@@ -71,7 +80,7 @@ export default function TreeView({ data }: TreeViewProps) {
           </h2>
 
           <div className="space-y-3">
-            {data.parents.map(parent => (
+            {parents.map(parent => (
               <div key={parent.id} className="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
                 {/* Parent Level - Level 1 */}
                 <div
@@ -187,13 +196,15 @@ export default function TreeView({ data }: TreeViewProps) {
                         />
                       </div>
                       <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-3">
+                        <div className="flex items-center gap-2">
                           <h3 className="font-bold text-gray-900 text-lg">{lecturer.name}</h3>
-                          <span className="text-xs bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-medium">
-                            {lecturer.academicTitle}
-                          </span>
                         </div>
                         <div className="space-y-2">
+                          <span
+                            className={`text-xs px-3 py-1 rounded-full font-medium ${academicUtils.getCombinedColor(lecturer.academicRank, lecturer.academicDegree)}`}
+                          >
+                            {academicUtils.getFullTitle(lecturer.academicRank, lecturer.academicDegree)}
+                          </span>
                           <p className="text-sm text-gray-600">
                             <span className="font-semibold text-gray-800">Chức vụ:</span> {lecturer.position}
                           </p>
