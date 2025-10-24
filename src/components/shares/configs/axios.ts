@@ -3,7 +3,7 @@ import { store } from "../stores"
 import { clearAuth } from "../stores/authSlice"
 
 const api: AxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://103.243.173.86:9999",
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "/api",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
