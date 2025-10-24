@@ -9,7 +9,7 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { useState } from "react"
 import Avatar from "react-avatar"
-import { BiBook, BiBookOpen, BiBot, BiBrain, BiHome, BiUser } from "react-icons/bi"
+import { BiBook, BiBookOpen, BiBrain, BiHome, BiSearch, BiUser } from "react-icons/bi"
 
 export default function Header() {
   const router = useRouter()
@@ -79,7 +79,7 @@ export default function Header() {
 
             <li className="relative group">
               <Link href="/res" className={`${getActiveClass("/res")} flex items-center gap-2`}>
-                <BiBrain className="w-5 h-5" />
+                <BiSearch className="w-5 h-5" />
                 Res
               </Link>
             </li>
@@ -121,7 +121,7 @@ export default function Header() {
             </li>
             <li>
               <Link href="/ai" className={`${getActiveClass("/ai")} flex items-center gap-2`}>
-                <BiBot className="w-5 h-5" />
+                <BiBrain className="w-5 h-5" />
                 AI
               </Link>
             </li>
