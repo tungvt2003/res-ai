@@ -1,9 +1,11 @@
+import Link from "next/link"
 import { BiBookOpen, BiSearch } from "react-icons/bi"
 
 export default function ArticlesSection() {
   const articles = [
     {
       id: 1,
+      slug: "29cfc226-e30d-48fa-9f87-e1d170b53ce7",
       title: "Đạo Đức Sử Dụng AI Trong Nghiên Cứu",
       description:
         "Khám phá các nguyên tắc đạo đức quan trọng khi sử dụng AI trong nghiên cứu khoa học, bao gồm tính minh bạch, công bằng và trách nhiệm trong việc phát triển và triển khai các hệ thống AI.",
@@ -44,9 +46,9 @@ export default function ArticlesSection() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
           {articles.map(article => (
-            <div
+            <Link
               key={article.id}
-              // onClick={() => handleArticleClick(article.id)}
+              href={`/blog/${article.slug}`}
               className="group cursor-pointer bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 overflow-hidden"
             >
               <div className={`h-2 bg-gradient-to-r ${article.gradient}`} />
@@ -78,7 +80,7 @@ export default function ArticlesSection() {
                   <div className="text-xs text-gray-500">{article.readTime}</div>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
