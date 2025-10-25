@@ -43,7 +43,7 @@ export default function AIToolsSection() {
       name: "Page Digest",
       description: "Công cụ AI tóm tắt tài liệu tự động",
       logo: "/pd-circle-min-min.png",
-      url: "https://pagedigest.com",
+      url: "https://www.paperdigest.org/",
       color: "from-indigo-500 to-indigo-600",
     },
     {
