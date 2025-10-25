@@ -14,10 +14,10 @@ export default function Footer() {
                 <span>34 Lê Lợi, Phú Hội, Huế, Thành phố Huế</span>
               </a>
               <a href="tel:+84909090909" className="flex items-center gap-2 text-sm">
-                <BiPhone className="w-4 h-4 text-white" /> <span>+84909090909</span>
+                <BiPhone className="w-4 h-4 text-white" /> <span>+84905303024</span>
               </a>
               <p className="flex items-center gap-2 text-sm">
-                <BiUser className="w-4 h-4 text-white" /> Trần Ngọc Huy
+                <BiUser className="w-4 h-4 text-white" /> TEAM RES-AI.EDU
               </p>
               <a href="mailto:daihochue@husc.edu.vn" className="flex items-center gap-2 text-sm">
                 <BiMailSend className="w-4 h-4 text-white" /> <span>daihochue@husc.edu.vn</span>
@@ -26,8 +26,8 @@ export default function Footer() {
           </div>
           <div className="flex flex-row gap-[140px] pr-[150px]">
             <div className="flex flex-col items-center gap-2">
-              <Image src="/logo-su-pham.ico" alt="Logo" width={100} height={100} />
-              <h2 className="text-white text-lg font-bold">Res AI</h2>
+              <Image src="/Logo_DHSPHue.PNG" alt="Logo" width={100} height={100} />
+              <h2 className="text-white text-lg font-bold">Đại học Sư Phạm Huế</h2>
             </div>
             <div className="flex flex-col items-center gap-2">
               <Image src="/Logo_Đại_học_Huế.svg.png" alt="Logo" width={100} height={100} />
