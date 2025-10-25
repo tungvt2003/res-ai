@@ -64,7 +64,7 @@ export default function Header() {
           <div className="shrink-0 flex items-center space-x-2">
             <Link href="/" className="text-2xl font-bold bg-[#202c45] bg-clip-text text-transparent flex items-center">
               <Image src={"/logo-su-pham.ico"} alt="Logo" width={60} height={60} className="rounded-md" />
-              <span className="ml-4 hidden sm:inline">Res AI</span>
+              <span className="ml-4 hidden sm:inline">RES-AI.EDU</span>
             </Link>
           </div>
 
