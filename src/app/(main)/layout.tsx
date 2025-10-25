@@ -6,7 +6,7 @@ import "../globals.css"
 import Providers from "../providers"
 
 export const metadata: Metadata = {
-  title: "Res AI",
+  title: "RES-AI.EDU",
   description: "AI-Powered Eye Disease Detection and Analysis",
 }
 
