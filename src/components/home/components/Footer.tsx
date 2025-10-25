@@ -38,7 +38,7 @@ export default function Footer() {
       </div>
       <div className="bg-black/80 py-2.5">
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center text-[#666666]">
-          <p>&copy; Bản quyền thuộc về Res AI 2025.</p>
+          <p>&copy; Bản quyền thuộc về RES-AI.EDU 2025.</p>
         </div>
       </div>
     </footer>
