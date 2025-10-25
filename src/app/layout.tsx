@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Res AI",
+  title: "RES-AI.EDU",
   description: "AI-Powered Eye Disease Detection and Analysis",
 }
 
