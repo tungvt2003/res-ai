@@ -1,3 +1,4 @@
+import Image from "next/image"
 import Link from "next/link"
 import {
   BiBookAlt,
@@ -19,6 +20,7 @@ export default function PlagiarismCheckSection() {
       url: "https://www.turnitin.com",
       color: "from-red-500 to-red-600",
       type: "Học thuật",
+      logo: "/turnitin.png",
     },
     {
       name: "Grammarly",
@@ -27,6 +29,7 @@ export default function PlagiarismCheckSection() {
       url: "https://www.grammarly.com/plagiarism-checker",
       color: "from-green-500 to-green-600",
       type: "Đa năng",
+      logo: "/grammarly.png",
     },
     {
       name: "Plagiarism Detector",
@@ -35,6 +38,7 @@ export default function PlagiarismCheckSection() {
       url: "https://plagiarismdetector.net/vi",
       color: "from-blue-500 to-blue-600",
       type: "Miễn phí",
+      logo: "/plagiarism-detector.png",
     },
     {
       name: "Small SEO Tools",
@@ -43,6 +47,7 @@ export default function PlagiarismCheckSection() {
       url: "https://smallseotools.com/plagiarism-checker/",
       color: "from-purple-500 to-purple-600",
       type: "Miễn phí",
+      logo: "/small-seo.png",
     },
     {
       name: "CopyScape",
@@ -51,6 +56,7 @@ export default function PlagiarismCheckSection() {
       url: "https://www.copyscape.com/",
       color: "from-orange-500 to-orange-600",
       type: "Web Content",
+      logo: "/copyscape.svg",
     },
     {
       name: "DoIT",
@@ -59,6 +65,7 @@ export default function PlagiarismCheckSection() {
       url: "http://doit.uet.vnu.edu.vn/",
       color: "from-indigo-500 to-indigo-600",
       type: "Việt Nam",
+      logo: "/doIT.png",
     },
   ]
 
@@ -84,10 +91,8 @@ export default function PlagiarismCheckSection() {
               <div className={`h-2 bg-gradient-to-r ${tool.color}`} />
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <div
-                    className={`w-12 h-12 bg-gradient-to-r ${tool.color} rounded-lg flex items-center justify-center shadow-sm`}
-                  >
-                    <tool.icon className="w-6 h-6 text-white" />
+                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center shadow-sm overflow-hidden`}>
+                    <Image src={tool.logo || ""} alt={tool.name} width={48} height={48} className="object-cover" />
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded-full font-medium">

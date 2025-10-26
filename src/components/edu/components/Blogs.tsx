@@ -9,11 +9,10 @@ import SearchSection from "@/components/blog/components/SearchSection"
 import { useGetBlogs, useSearchBlogs } from "@/components/blog/hooks/use-blog.mutation"
 import { useGetCategories } from "@/components/blog/hooks/use-category"
 import type { Category } from "@/components/blog/types/category.types"
-import { formatDate, truncateText } from "@/components/blog/utils/blog.utils"
 import { InlineLoading } from "@/components/shares/components/Loading"
 import { useEffect, useState } from "react"
 
-export default function Blog() {
+export default function SectionBlogs() {
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [currentPage, setCurrentPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState("")
@@ -76,8 +75,10 @@ export default function Blog() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 text-gray-800">
-      <main className="flex-grow pt-20 relative">
-        <HeroSection />
+      <main className="flex-grow relative">
+        <div className="px-6">
+          <HeroSection />
+        </div>
 
         <SearchSection
           searchTerm={searchTerm}
@@ -88,7 +89,7 @@ export default function Blog() {
         />
 
         <section id="blog" className="relative py-16 bg-gradient-to-br from-gray-50 to-blue-50">
-          <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <div className="max-w-7xl mx-auto px-6">
             {categoriesLoading ? (
               <InlineLoading text="Đang tải dữ liệu..." className="h-64" />
             ) : (
@@ -124,7 +125,7 @@ export default function Blog() {
                       </div>
                     ) : (
                       <>
-                        <BlogGrid blogs={currentBlogs} formatDate={formatDate} truncateText={truncateText} />
+                        <BlogGrid blogs={currentBlogs} />
                         <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
                       </>
                     )}

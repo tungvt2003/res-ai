@@ -1,7 +1,7 @@
 export default function HeroSection() {
   return (
-    <div className="bg-gradient-to-br from-[#13294B] via-[#1F4F86] to-[#2E8BC0] py-20">
-      <div className="max-w-7xl mx-auto px-6">
+    <div className="bg-gradient-to-r from-[#202c45] to-[#2E8BC0] rounded-2xl py-16 text-white">
+      <div className="max-w-7xl mx-auto">
         <div className="flex flex-col items-center text-center">
           <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium text-white shadow-sm backdrop-blur">
             <span className="h-1.5 w-1.5 rounded-full bg-white" />

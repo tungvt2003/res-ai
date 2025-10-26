@@ -1,9 +1,9 @@
 "use client"
 
+import { formatDate, truncateText } from "@/components/blog/utils/blog.utils"
 import Image from "next/image"
 import Link from "next/link"
 import { BiArrowToRight, BiCalendar, BiCategory } from "react-icons/bi"
-
 interface Blog {
   id: string
   title: string
@@ -27,11 +27,9 @@ interface Blog {
 
 interface BlogCardProps {
   blog: Blog
-  formatDate: (dateString: string) => string
-  truncateText: (text: string, maxLength: number) => string
 }
 
-export default function BlogCard({ blog, formatDate, truncateText }: BlogCardProps) {
+export default function BlogCard({ blog }: BlogCardProps) {
   return (
     <Link
       href={`/blog/${blog.id}`}

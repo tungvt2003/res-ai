@@ -1,6 +1,8 @@
 "use client"
 
+import BlogGridFilter from "@/components/blog/components/BlogGridFilter"
 import Pagination from "@/components/blog/components/Pagination"
+import { useSearchBlogs } from "@/components/blog/hooks/use-blog.mutation"
 import { MentorApi } from "@/components/mentor/apis/mentorApi"
 import AcademicFilter from "@/components/mentor/components/AcademicFilter"
 import HeroSection from "@/components/mentor/components/HeroSection"
@@ -8,16 +10,11 @@ import MentorGrid from "@/components/mentor/components/MentorGrid"
 import SearchSection from "@/components/mentor/components/SearchSection"
 import { formatDate, truncateText } from "@/components/mentor/utils/mentor.utils"
 import { InlineLoading } from "@/components/shares/components/Loading"
+import { CATEGORY_ID } from "@/constants"
 import type { Mentor } from "@/types"
 import { useEffect, useState } from "react"
 
-const majors = [
-  { id: "all", name: "Tất cả" },
-  { id: "khoa-cong-nghe-thong-tin", name: "Khoa Công nghệ Thông tin" },
-  { id: "khoa-khoa-hoc-may-tinh", name: "Khoa Khoa học Máy tính" },
-]
-
-export default function Mentor() {
+export default function SectionMentor() {
   const [searchTerm, setSearchTerm] = useState("")
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("")
   const [selectedDegree, setSelectedDegree] = useState("")
@@ -28,6 +25,12 @@ export default function Mentor() {
   const [error, setError] = useState<string | null>(null)
 
   const mentorsPerPage = 6
+
+  const { data: blogsData, isLoading: isLoadingBlogs } = useSearchBlogs({
+    categoryId: CATEGORY_ID.EDU,
+  })
+
+  const blogs = blogsData?.data || []
 
   // Debounce search term
   useEffect(() => {
@@ -78,6 +81,18 @@ export default function Mentor() {
     <div className="flex flex-col min-h-screen bg-gray-100 text-gray-800">
       <main className="grow pt-20 relative">
         <HeroSection />
+
+        {isLoadingBlogs ? (
+          <InlineLoading text="Đang tải dữ liệu..." className="h-64" />
+        ) : (
+          blogs.length > 0 && (
+            <div className="bg-white">
+              <div className="px-6 max-w-7xl mx-auto py-16">
+                <BlogGridFilter blogs={blogs} />
+              </div>
+            </div>
+          )
+        )}
 
         <SearchSection
           searchTerm={searchTerm}

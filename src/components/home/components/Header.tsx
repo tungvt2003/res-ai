@@ -9,7 +9,7 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { useState } from "react"
 import Avatar from "react-avatar"
-import { BiBook, BiBookContent, BiBookOpen, BiBrain, BiHome, BiSearch, BiUser } from "react-icons/bi"
+import { BiBookContent, BiBookOpen, BiBrain, BiHome, BiSearch } from "react-icons/bi"
 
 export default function Header() {
   const router = useRouter()
@@ -21,9 +21,6 @@ export default function Header() {
   const name = auth.user?.fullName
 
   // Debug auth state
-  console.log("Auth state:", auth)
-  console.log("User roles:", auth.user?.roles)
-  console.log("Is admin:", auth.user?.roles === "admin")
   const [showLogoutModal, setShowLogoutModal] = useState(false)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
   const { showAuthModal, featureName, closeAuthModal } = useAuthGuard()
@@ -89,40 +86,10 @@ export default function Header() {
               </Link>
             </li>
             <li className="relative group">
-              <Link href="#" className={`${getActiveClass("/edu")} flex items-center gap-2`}>
+              <Link href="/edu" className={`${getActiveClass("/edu")} flex items-center gap-2`}>
                 <BiBookOpen className="w-5 h-5" />
                 Edu
               </Link>
-              <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                <div className="py-2">
-                  <Link
-                    href="/edu/mentor"
-                    className={`block px-4 py-2 text-sm transition-colors ${
-                      isActiveRoute("/edu/mentor")
-                        ? "bg-blue-50 text-[#202c45] font-medium"
-                        : "text-gray-700 hover:bg-blue-50 hover:text-[#202c45]"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <BiUser className="w-4 h-4" />
-                      Mentor
-                    </div>
-                  </Link>
-                  <Link
-                    href="/edu/blog"
-                    className={`block px-4 py-2 text-sm transition-colors ${
-                      isActiveRoute("/edu/blog")
-                        ? "bg-blue-50 text-[#202c45] font-medium"
-                        : "text-gray-700 hover:bg-blue-50 hover:text-[#202c45]"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <BiBook className="w-4 h-4" />
-                      Blog
-                    </div>
-                  </Link>
-                </div>
-              </div>
             </li>
             <li>
               <Link href="/ai" className={`${getActiveClass("/ai")} flex items-center gap-2`}>

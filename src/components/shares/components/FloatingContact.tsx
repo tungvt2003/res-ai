@@ -12,7 +12,7 @@ const ContactButton = () => {
       <div className="flex justify-end w-full h-auto">
         <div className="flex flex-col items-end gap-2">
           {/* Zalo Button */}
-          <Link href="https://zalo.me/0367306158" rel="nofollow" target="_blank" className={iconContactStyle}>
+          <Link href="https://zalo.me/0905303024" rel="nofollow" target="_blank" className={iconContactStyle}>
             <Image src="/new-zalo-icon.svg" alt="Zalo contact" width={31} height={31} priority={false} />
           </Link>
 

@@ -16,7 +16,6 @@ export default function Blog() {
   if (error) {
     return <div>Lỗi: {error.message}</div>
   }
-  console.log(latestBlogs)
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("vi-VN", {
@@ -33,7 +32,7 @@ export default function Blog() {
 
   return (
     <section id="blog" className="relative py-16 bg-gradient-to-br from-gray-50 to-blue-50">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
+      <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-12">
           <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/70 px-3 py-1 text-xs font-medium text-slate-700 shadow-sm backdrop-blur">
