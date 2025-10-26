@@ -8,8 +8,6 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -22,7 +20,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
 }
 
 /* Header */
@@ -118,13 +116,7 @@ textarea.scrollbar-thin::-webkit-scrollbar-thumb:hover {
 
 /* Blog Detail Typography */
 .blog-content {
-  font-family:
-    "Inter",
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    sans-serif;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
 }
 
 .blog-content h2 {

@@ -43,7 +43,7 @@ export default function Blog() {
 
           <h2
             className="
-              text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05]
+              text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-normal
               text-transparent bg-clip-text
               bg-gradient-to-r from-[#13294B] via-[#1F4F86] to-[#2E8BC0]
               text-balance

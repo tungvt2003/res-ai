@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
     // Email content
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: "vancongthanhdata10@gmail.com",
+      to: "infor.res.ai.edu@gmail.com",
       subject: "Đăng ký cố vấn học thuật - RES-AI.EDU",
       html: `
         <!DOCTYPE html>

@@ -10,7 +10,7 @@ export default function HeroSection() {
 
           <h1
             className="
-              text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05]
+              text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-normal 
               text-transparent bg-clip-text
               bg-gradient-to-r from-white via-blue-100 to-blue-200
               [text-wrap:balance]

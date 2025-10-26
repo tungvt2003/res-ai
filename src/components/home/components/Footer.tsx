@@ -20,7 +20,7 @@ export default function Footer() {
                 <BiUser className="w-4 h-4 text-white" /> TEAM RES-AI.EDU
               </p>
               <a href="mailto:daihochue@husc.edu.vn" className="flex items-center gap-2 text-sm">
-                <BiMailSend className="w-4 h-4 text-white" /> <span>daihochue@husc.edu.vn</span>
+                <BiMailSend className="w-4 h-4 text-white" /> <span>infor.res.ai.edu@gmail.com</span>
               </a>
             </div>
           </div>

@@ -32,7 +32,7 @@ const MentorDetailPage = () => {
                   {/* Ảnh */}
                   <div className="rounded-lg flex items-center justify-center mx-auto mb-6 shadow-md">
                     <Image
-                      src="/tran-quoc-huy.jpg"
+                      src="/uploads/2025/10/tranquochuy-1761496658524.png"
                       alt="TRẦN NGỌC HUY"
                       width={192}
                       height={192}
