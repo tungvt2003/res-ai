@@ -50,7 +50,7 @@ export default function Blog() {
             "
             style={{ WebkitTextFillColor: "transparent" }}
           >
-            Blog Nghiên Cứu
+            Bài viết nổi bật
           </h2>
 
           <div className="mt-2 h-1 w-20 rounded-full bg-gradient-to-r from-[#2E8BC0] to-[#7FC3E8] mx-auto" />
@@ -61,7 +61,8 @@ export default function Blog() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {latestBlogs?.map(blog => (
-            <article
+            <Link
+              href={`/blog/${blog.id}`}
               key={blog.id}
               className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
             >
@@ -97,15 +98,12 @@ export default function Blog() {
 
                 <p className="text-gray-600 mb-4 line-clamp-3">{truncateText(blog.description, 120)}</p>
 
-                <Link
-                  href={`/blog/${blog.id}`}
-                  className="inline-flex items-center gap-2 text-[#2E8BC0] font-semibold hover:gap-3 transition-all duration-300"
-                >
+                <div className="inline-flex items-center gap-2 text-[#2E8BC0] font-semibold hover:gap-3 transition-all duration-300">
                   Đọc thêm
                   <BiArrowToRight className="w-4 h-4" />
-                </Link>
+                </div>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
 

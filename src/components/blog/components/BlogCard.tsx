@@ -33,7 +33,10 @@ interface BlogCardProps {
 
 export default function BlogCard({ blog, formatDate, truncateText }: BlogCardProps) {
   return (
-    <article className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 cursor-pointer">
+    <Link
+      href={`/blog/${blog.id}`}
+      className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 cursor-pointer"
+    >
       <div className="relative">
         {blog.image ? (
           <Image src={blog.image} alt={blog.title} width={400} height={250} className="w-full h-48 object-cover" />
@@ -60,14 +63,11 @@ export default function BlogCard({ blog, formatDate, truncateText }: BlogCardPro
 
         <p className="text-gray-600 mb-4 line-clamp-3">{truncateText(blog.description, 120)}</p>
 
-        <Link
-          href={`/blog/${blog.id}`}
-          className="inline-flex items-center gap-2 text-[#2E8BC0] font-semibold hover:gap-3 transition-all duration-300"
-        >
+        <div className="inline-flex items-center gap-2 text-[#2E8BC0] font-semibold hover:gap-3 transition-all duration-300">
           Đọc thêm
           <BiArrowToRight className="w-4 h-4" />
-        </Link>
+        </div>
       </div>
-    </article>
+    </Link>
   )
 }

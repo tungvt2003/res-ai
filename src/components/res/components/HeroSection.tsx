@@ -17,7 +17,7 @@ export default function HeroSection() {
             "
             style={{ WebkitTextFillColor: "transparent" }}
           >
-            Trung Tâm Nghiên Cứu
+            Ý tưởng nghiên cứu
           </h1>
 
           <div className="mt-2 h-1 w-20 rounded-full bg-gradient-to-r from-white to-blue-200" />

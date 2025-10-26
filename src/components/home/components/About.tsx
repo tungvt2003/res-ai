@@ -54,8 +54,9 @@ export default function About() {
 
           <div className="max-w-4xl mx-auto">
             <p className="text-xl text-slate-600 leading-relaxed mb-6">
-              Nền tảng tích hợp nghiên cứu khoa học, giáo dục và trí tuệ nhân tạo, tạo ra môi trường học tập và nghiên
-              cứu tiên tiến cho cộng đồng học thuật.
+              Kiến tạo trên ba trụ cột RES (Research) – AI (Artificial Intelligence) – EDU (Education): hình thành hệ
+              sinh thái văn hóa nghiên cứu và công bố khoa học - nơi sinh viên được rèn luyện tư duy khoa học, liêm
+              chính học thuật và hội nhập tri thức toàn cầu.
             </p>
 
             <div className="flex flex-wrap justify-center gap-4 text-sm">
@@ -167,7 +168,7 @@ export default function About() {
             {[
               {
                 icon: BiTrendingUp,
-                value: "500+",
+                value: "100+",
                 label: "Dự án nghiên cứu",
                 description: "Được thực hiện thành công",
                 color: "from-blue-500 to-cyan-500",
@@ -176,7 +177,7 @@ export default function About() {
               },
               {
                 icon: BiUserCheck,
-                value: "50+",
+                value: "12+",
                 label: "Mentor chuyên môn",
                 description: "Giảng viên giàu kinh nghiệm",
                 color: "from-green-500 to-emerald-500",
@@ -185,7 +186,7 @@ export default function About() {
               },
               {
                 icon: BiAward,
-                value: "1000+",
+                value: "200+",
                 label: "Sinh viên tham gia",
                 description: "Đang học tập và nghiên cứu",
                 color: "from-purple-500 to-pink-500",

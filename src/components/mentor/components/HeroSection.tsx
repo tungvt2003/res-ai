@@ -17,12 +17,13 @@ export default function HeroSection() {
             "
             style={{ WebkitTextFillColor: "transparent" }}
           >
-            Đội Ngũ Giảng Viên
+            Đội ngũ Mentor
           </h1>
 
           <div className="mt-2 h-1 w-20 rounded-full bg-gradient-to-r from-white to-blue-200" />
           <p className="mt-4 max-w-3xl text-base sm:text-lg text-white/90">
-            Khám phá đội ngũ giảng viên giàu kinh nghiệm, chuyên môn cao và tận tâm trong việc đào tạo thế hệ trẻ
+            Quy tụ các nhà khoa học và giảng viên có năng lực nghiên cứu, giàu kinh nghiệm công bố quốc tế – cùng đồng
+            hành, hướng dẫn và truyền cảm hứng cho thế hệ sinh viên nghiên cứu trẻ{" "}
           </p>
         </div>
       </div>
