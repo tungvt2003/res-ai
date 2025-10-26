@@ -2,6 +2,7 @@ import AIToolsSection from "@/components/ai/components/AIToolsSection"
 import ArticlesSection from "@/components/ai/components/ArticlesSection"
 import HeroSection from "@/components/ai/components/HeroSection"
 import PlagiarismCheckSection from "@/components/ai/components/PlagiarismCheckSection"
+import MentorConsultationForm from "@/components/home/components/MentorConsultationForm"
 
 export default function Ai() {
   return (
@@ -11,6 +12,7 @@ export default function Ai() {
         <ArticlesSection />
         <AIToolsSection />
         <PlagiarismCheckSection />
+        <MentorConsultationForm />
       </main>
     </div>
   )

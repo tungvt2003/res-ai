@@ -1,4 +1,5 @@
 "use client"
+import MentorConsultationForm from "@/components/home/components/MentorConsultationForm"
 import ChatAISection from "@/components/res/components/ChatAISection"
 import HeroSection from "@/components/res/components/HeroSection"
 import InfoSection from "@/components/res/components/InfoSection"
@@ -27,6 +28,7 @@ export default function Res() {
             <MajorsSection majors={suggestedKeywords} onMajorClick={handleKeywordClick} />
             <ChatAISection />
             <InfoSection />
+            <MentorConsultationForm />
           </div>
         </div>
       </main>

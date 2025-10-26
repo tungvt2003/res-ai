@@ -45,7 +45,7 @@ export default function About() {
         <div className="text-center mb-20">
           <div className="relative inline-block mb-8">
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-cyan-500/20 rounded-2xl blur-xl"></div>
-            <h2 className="relative text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05] mb-6">
+            <h2 className="relative text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-normal mb-6">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600">
                 RES-AI.EDU
               </span>
