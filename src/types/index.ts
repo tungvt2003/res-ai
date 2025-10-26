@@ -18,4 +18,6 @@ export type Mentor = {
   keywords?: Keyword[]
   createdAt?: string | null
   updatedAt?: string | null
+  zalo?: string | null
+  messenger?: string | null
 }

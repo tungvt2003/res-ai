@@ -19,9 +19,10 @@ export default function MajorsSection({ majors, onMajorClick }: MajorsSectionPro
   return (
     <>
       <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold text-[#202c45] mb-4">Khám Phá Chuyên Ngành</h2>
+        <h2 className="text-3xl font-bold text-[#202c45] mb-4">Từ khóa chuyên ngành</h2>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Chọn chuyên ngành để tìm hiểu thông tin chi tiết hoặc trò chuyện với AI để được hỗ trợ nghiên cứu
+          Hình thành ý tưởng nghiên cứu với hệ thống từ khóa chuyên ngành và trợ lý AI học thuật. Thực hiện kết nối với
+          đội ngũ Mentor để nhận được sự tư vấn, định hướng chuyên môn
         </p>
       </div>
 

@@ -17,12 +17,12 @@ export default function HeroSection() {
             "
             style={{ WebkitTextFillColor: "transparent" }}
           >
-            Trung Tâm AI & Nghiên Cứu
+            AI – Trợ lý học thuật thông minh
           </h1>
 
           <div className="mt-2 h-1 w-20 rounded-full bg-gradient-to-r from-white to-blue-200" />
           <p className="mt-4 max-w-3xl text-base sm:text-lg text-white/90">
-            Khám phá các công cụ AI mạnh mẽ và nguồn tài liệu học thuật để nâng cao nghiên cứu và học tập của bạn
+            Sử dụng AI có đạo đức và trách nhiệm; khám phá các công cụ AI hỗ trợ thông minh trong quá trình nghiên cứu
           </p>
         </div>
       </div>

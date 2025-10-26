@@ -58,7 +58,7 @@ export default function Mentor() {
         setCurrentPage(1)
       } catch (err) {
         console.error("Error fetching mentors:", err)
-        setError("Không thể tải danh sách giảng viên")
+        setError("Không thể tải danh sách mentor")
         setMentors([])
       } finally {
         setIsLoading(false)
@@ -75,7 +75,7 @@ export default function Mentor() {
   const currentMentors = mentors.slice(startIndex, endIndex)
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100 font-sans text-gray-800">
+    <div className="flex flex-col min-h-screen bg-gray-100 text-gray-800">
       <main className="grow pt-20 relative">
         <HeroSection />
 
@@ -98,7 +98,7 @@ export default function Mentor() {
 
           {isLoading ? (
             <div className="text-center py-12">
-              <InlineLoading text="Đang tải danh sách giảng viên..." className="h-32" />
+              <InlineLoading text="Đang tải danh sách mentor..." className="h-32" />
             </div>
           ) : error ? (
             <div className="text-center py-12">
@@ -114,7 +114,7 @@ export default function Mentor() {
             </>
           ) : (
             <div className="text-center py-12">
-              <div className="text-gray-500 text-lg">Không tìm thấy giảng viên nào</div>
+              <div className="text-gray-500 text-lg">Không tìm thấy mentor nào</div>
               <p className="text-gray-400 mt-2">Hãy thử thay đổi từ khóa tìm kiếm hoặc bộ lọc</p>
             </div>
           )}

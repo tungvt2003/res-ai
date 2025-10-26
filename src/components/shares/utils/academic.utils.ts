@@ -2,6 +2,7 @@
 export const academicDegrees = [
   { value: "ts", label: "Tiến sĩ" },
   { value: "ths", label: "Thạc sĩ" },
+  { value: "ncs", label: "Nghiên cứu sinh" },
   { value: "cn", label: "Cử nhân" },
   { value: "ks", label: "Kỹ sư" },
   { value: "ds", label: "Dược sĩ" },
@@ -71,6 +72,7 @@ export const academicUtils = {
     const colorMap: Record<string, string> = {
       ts: "bg-blue-100 text-blue-800",
       ths: "bg-green-100 text-green-800",
+      ncs: "bg-yellow-100 text-yellow-800",
       cn: "bg-purple-100 text-purple-800",
       ks: "bg-orange-100 text-orange-800",
       ds: "bg-pink-100 text-pink-800",

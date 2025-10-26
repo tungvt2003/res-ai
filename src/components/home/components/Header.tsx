@@ -9,7 +9,7 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { useState } from "react"
 import Avatar from "react-avatar"
-import { BiBook, BiBookOpen, BiBrain, BiHome, BiSearch, BiUser } from "react-icons/bi"
+import { BiBook, BiBookContent, BiBookOpen, BiBrain, BiHome, BiSearch, BiUser } from "react-icons/bi"
 
 export default function Header() {
   const router = useRouter()
@@ -19,6 +19,11 @@ export default function Header() {
   const isLoggedIn = auth.isAuthenticated
   const dispatch = useAppDispatch()
   const name = auth.user?.fullName
+
+  // Debug auth state
+  console.log("Auth state:", auth)
+  console.log("User roles:", auth.user?.roles)
+  console.log("Is admin:", auth.user?.roles === "admin")
   const [showLogoutModal, setShowLogoutModal] = useState(false)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
   const { showAuthModal, featureName, closeAuthModal } = useAuthGuard()
@@ -69,7 +74,7 @@ export default function Header() {
           </div>
 
           {/* Menu */}
-          <ul className="hidden md:flex space-x-6 lg:space-x-20">
+          <ul className="hidden md:flex space-x-6 lg:space-x-10">
             <li>
               <Link href="/" className={`${getActiveClass("/")} flex items-center gap-2`}>
                 <BiHome className="w-5 h-5" />
@@ -100,7 +105,7 @@ export default function Header() {
                   >
                     <div className="flex items-center gap-2">
                       <BiUser className="w-4 h-4" />
-                      Giảng viên
+                      Mentor
                     </div>
                   </Link>
                   <Link
@@ -125,16 +130,33 @@ export default function Header() {
                 AI
               </Link>
             </li>
+            <li>
+              <Link
+                href="/scientific-public"
+                className={`${getActiveClass("/scientific-public")} flex items-center gap-2`}
+              >
+                <BiBookContent className="w-5 h-5" />
+                Scientific Public
+              </Link>
+            </li>
           </ul>
           <div className="flex items-center space-x-4">
             {/* Auth */}
             {!isLoggedIn ? (
-              <button
-                className="px-4 py-1.5 text-white border border-[#202c45] rounded-4xl bg-[#202c45] hover:bg-[#202c45]/80 transition cursor-pointer duration-300"
-                onClick={() => router.push("/login")}
-              >
-                Đăng nhập
-              </button>
+              <>
+                <button
+                  className="px-4 py-1.5 text-white border border-[#202c45] rounded-4xl bg-[#202c45] hover:bg-[#202c45]/80 transition cursor-pointer duration-300"
+                  onClick={() => router.push("/login")}
+                >
+                  Đăng nhập
+                </button>
+                <button
+                  className="px-4 py-1.5 text-[#202c45] border border-[#202c45] rounded-4xl bg-white hover:bg-gray-50 transition cursor-pointer duration-300"
+                  onClick={() => router.push("/signup")}
+                >
+                  Đăng ký
+                </button>
+              </>
             ) : (
               <div className="relative group">
                 <Avatar name={name || ""} src={image || ""} size="40" round={true} className="cursor-pointer" />
@@ -143,10 +165,19 @@ export default function Header() {
                     <div className="px-4 py-2 text-sm text-gray-500 border-b border-gray-100">
                       <div className="font-medium text-gray-900">{name}</div>
                       <div className="text-xs text-gray-500">{auth.user?.email}</div>
+                      {/* <div className="text-xs text-blue-600">Role: {auth.user?.roles}</div> */}
                     </div>
+                    {(auth.user?.roles === "admin" || auth.user?.roles?.includes("admin")) && (
+                      <Link
+                        href="/research-literacy"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-md transition-colors"
+                      >
+                        <div className="flex items-center gap-2">Research Literacy</div>
+                      </Link>
+                    )}
                     <button
                       onClick={() => setShowLogoutModal(true)}
-                      className="w-full cursor-pointer text-left px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-md transition-colors flex items-center gap-2"
+                      className="w-full cursor-pointer text-left px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-md transition-colors flex items-center gap-2 mt-1"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path

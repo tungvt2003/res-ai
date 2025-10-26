@@ -1,6 +1,7 @@
 import { academicUtils } from "@/components/shares/utils/academic.utils"
 import { Mentor } from "@/types"
 import Image from "next/image"
+import Link from "next/link"
 import { memo } from "react"
 
 function avatarPlaceholder(name: string) {
@@ -35,10 +36,6 @@ function avatarPlaceholder(name: string) {
   return `data:image/svg+xml,${svg}`
 }
 
-function badgeText(m: Mentor) {
-  return m.keywords?.[0]?.name || m.position || m.workUnit || "Chuyên môn"
-}
-
 const CardMentor = memo(function CardMentor({
   m,
   idx,
@@ -51,7 +48,6 @@ const CardMentor = memo(function CardMentor({
   isTablet: boolean
 }) {
   const img = m.image || avatarPlaceholder(m.fullName)
-  const badge = badgeText(m)
 
   return (
     <li
@@ -75,7 +71,7 @@ const CardMentor = memo(function CardMentor({
 
         <div className="absolute left-3 bottom-3 flex flex-col gap-2">
           <span className="inline-flex items-center rounded-full px-3 py-1.5 text-xs font-semibold text-white bg-[#202c45]/95 backdrop-blur-sm border border-white/20 shadow-lg transition-all duration-300 group-hover:bg-[#202c45] group-hover:shadow-xl">
-            {badge}
+            Mentor
           </span>
         </div>
 
@@ -107,7 +103,7 @@ const CardMentor = memo(function CardMentor({
           </div>
         </div>
 
-        <div className="mt-4">
+        <div className="mt-4 flex flex-row gap-2">
           <a
             href={m.website || "#"}
             target="_blank"
@@ -125,6 +121,22 @@ const CardMentor = memo(function CardMentor({
             </svg>
             Xem hồ sơ
           </a>
+          <Link
+            href={m.zalo || "#"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-10 h-10 bg-white border border-slate-300 hover:border-blue-500 rounded-xl flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300"
+          >
+            <Image src="/new-zalo-icon.svg" alt="Zalo" width={25} height={25} />
+          </Link>
+          {/* <Link
+            href={m.messenger || "#"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-10 h-10 bg-white border border-slate-300 hover:border-blue-600 rounded-xl flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300"
+          >
+            <Image src="/new-messenger-icon.svg" alt="Messenger" width={25} height={25} />
+          </Link> */}
         </div>
       </div>
     </li>
