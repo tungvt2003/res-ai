@@ -34,7 +34,9 @@ export default function Ai() {
             <ArticlesSection />
             <AIToolsSection />
             <PlagiarismCheckSection />
-            <MentorConsultationForm />
+            <div className="px-6 md:px-0">
+              <MentorConsultationForm />
+            </div>
           </>
         )}
       </main>

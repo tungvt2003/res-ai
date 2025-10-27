@@ -106,7 +106,7 @@ export default function Blog() {
           ))}
         </div>
 
-        <div className="text-center mt-12">
+        {/* <div className="text-center mt-12">
           <Link
             href="/edu/blog"
             className="inline-flex items-center gap-2 px-8 py-4 bg-[#202c45] text-white font-semibold rounded-lg hover:shadow-lg transition-all duration-300 hover:bg-[#202c45]/80"
@@ -114,7 +114,7 @@ export default function Blog() {
             Xem tất cả bài viết
             <BiArrowToRight className="w-5 h-5" />
           </Link>
-        </div>
+        </div> */}
       </div>
     </section>
   )

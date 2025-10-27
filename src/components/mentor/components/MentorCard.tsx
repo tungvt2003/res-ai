@@ -52,7 +52,7 @@ export default function MentorCard({ mentor }: MentorCardProps) {
   const badge = badgeText(mentor)
 
   return (
-    <article className="shrink-0 flex flex-col h-[420px] basis-[22%] max-w-[340px] rounded-2xl bg-white/98 backdrop-blur-sm border border-slate-200/70 shadow-lg shadow-slate-200/40 transition-all duration-300 ease-out hover:shadow-xl hover:shadow-[#202c45]/15 hover:border-[#202c45]/40 hover:bg-white group cursor-pointer">
+    <article className="shrink-0 flex flex-col h-[420px] basis-[22%] max-w-full md:max-w-[340px] rounded-2xl bg-white/98 backdrop-blur-sm border border-slate-200/70 shadow-lg shadow-slate-200/40 transition-all duration-300 ease-out hover:shadow-xl hover:shadow-[#202c45]/15 hover:border-[#202c45]/40 hover:bg-white group cursor-pointer">
       <div className="relative h-[280px] overflow-hidden rounded-t-2xl">
         <Image
           src={img}

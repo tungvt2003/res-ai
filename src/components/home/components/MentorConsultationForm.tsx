@@ -141,8 +141,8 @@ const MentorConsultationForm = () => {
   }
 
   return (
-    <div className="py-16 bg-gradient-to-b from-white to-gray-50">
-      <div className="max-w-4xl mx-auto px-6">
+    <div className="py-16">
+      <div className="max-w-4xl mx-auto px-0 md:px-6">
         {/* Header */}
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-[#202c45] mb-4">Liên Hệ Tư vấn Từ Đội ngũ Mentor</h2>

@@ -28,7 +28,9 @@ export default function Ai() {
             </div>
           </>
         )}
-        <MentorConsultationForm />
+        <div className="px-6 md:px-0">
+          <MentorConsultationForm />
+        </div>
       </main>
     </div>
   )
