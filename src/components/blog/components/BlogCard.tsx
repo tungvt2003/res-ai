@@ -55,7 +55,7 @@ export default function BlogCard({ blog }: BlogCardProps) {
           {formatDate(blog.createdAt)}
         </div>
 
-        <h3 className="text-xl font-bold text-gray-800 mb-3 line-clamp-2 hover:text-[#2E8BC0] transition-colors">
+        <h3 className="text-xl font-bold text-gray-800 mb-3 line-clamp-2 hover:text-[#2E8BC0] transition-colors uppercase">
           {blog.title}
         </h3>
 

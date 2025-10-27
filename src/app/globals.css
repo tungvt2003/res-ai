@@ -116,7 +116,28 @@ textarea.scrollbar-thin::-webkit-scrollbar-thumb:hover {
 
 /* Blog Detail Typography */
 .blog-content {
-  font-family: Inter, system-ui, -apple-system, sans-serif;
+  font-family: Inter, system-ui, -apple-system, sans-serif !important;
+}
+
+/* Force override all fonts in blog content, even inline styles */
+.blog-content *,
+.blog-content p,
+.blog-content h1,
+.blog-content h2,
+.blog-content h3,
+.blog-content h4,
+.blog-content h5,
+.blog-content h6,
+.blog-content span,
+.blog-content div,
+.blog-content li,
+.blog-content td,
+.blog-content th,
+.blog-content blockquote,
+.blog-content strong,
+.blog-content em,
+.blog-content a {
+  font-family: Inter, system-ui, -apple-system, sans-serif !important;
 }
 
 .blog-content h2 {

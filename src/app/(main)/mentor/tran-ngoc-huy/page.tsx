@@ -84,7 +84,7 @@ const MentorDetailPage = () => {
                         </p>
                         <p>
                           <strong className="text-gray-700">Địa chỉ:</strong>{" "}
-                          <span className="text-gray-600">Long Hưng, Hải Phú, Hải Lăng, Quảng Trị</span>
+                          <span className="text-gray-600">Long Hưng, Hải Lăng, Quảng Trị</span>
                         </p>
                       </div>
                     </div>
