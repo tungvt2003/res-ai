@@ -1,15 +1,45 @@
 "use client"
 
 import Image from "next/image"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { BiMoviePlay, BiPlayCircle } from "react-icons/bi"
 
 const VideoSection = () => {
   const [isPlaying, setIsPlaying] = useState(false)
+  const sectionRef = useRef<HTMLDivElement>(null)
 
   const handlePlayClick = () => {
     setIsPlaying(true)
   }
+
+  // Intersection Observer for auto-play when scroll into view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            console.log("Video visible - Auto playing...")
+            setIsPlaying(true)
+          }
+        })
+      },
+      {
+        threshold: 0.2, // Trigger when 20% visible
+        rootMargin: "0px",
+      },
+    )
+
+    const currentSection = sectionRef.current
+    if (currentSection) {
+      observer.observe(currentSection)
+    }
+
+    return () => {
+      if (currentSection) {
+        observer.unobserve(currentSection)
+      }
+    }
+  }, [])
 
   return (
     <div className="py-16 bg-gradient-to-b from-gray-50 to-white">
@@ -24,7 +54,10 @@ const VideoSection = () => {
           </p>
         </div>
 
-        <div className="relative w-full max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-2xl bg-gray-900">
+        <div
+          ref={sectionRef}
+          className="relative w-full max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-2xl bg-gray-900"
+        >
           {!isPlaying ? (
             <div className="relative aspect-video cursor-pointer group" onClick={handlePlayClick}>
               {/* YouTube thumbnail */}
@@ -56,7 +89,7 @@ const VideoSection = () => {
               <iframe
                 width="100%"
                 height="100%"
-                src="https://www.youtube.com/embed/S6zKZdLmse0?autoplay=1&vq=hd1080"
+                src="https://www.youtube.com/embed/S6zKZdLmse0?autoplay=1&mute=1"
                 title="Video giới thiệu"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

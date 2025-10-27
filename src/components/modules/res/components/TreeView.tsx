@@ -76,7 +76,7 @@ export default function TreeView({ parents }: TreeViewProps) {
             <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
               <BiBookOpen className="w-5 h-5 text-white" />
             </div>
-            Cấu trúc chuyên ngành
+            Các từ khoá gợi ý
           </h2>
 
           <div className="space-y-3">
