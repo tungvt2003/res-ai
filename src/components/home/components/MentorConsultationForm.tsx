@@ -145,7 +145,7 @@ const MentorConsultationForm = () => {
       <div className="max-w-4xl mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-[#202c45] mb-4">Liên Hệ Mentor Học Thuật</h2>
+          <h2 className="text-3xl font-bold text-[#202c45] mb-4">Liên Hệ Tư vấn Từ Đội ngũ Mentor</h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-2">
             Một ý tưởng nhỏ – Một mentor đồng hành – Một hành trình học thuật bắt đầu
           </p>

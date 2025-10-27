@@ -86,6 +86,9 @@ export default function BlogContent({ blog }: BlogContentProps) {
             prose-blockquote:pl-4
             prose-blockquote:italic
             prose-blockquote:text-gray-600"
+          style={{
+            fontFamily: "Inter, system-ui, -apple-system, sans-serif !important",
+          }}
           dangerouslySetInnerHTML={{ __html: blog.contents }}
         />
       </div>
