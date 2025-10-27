@@ -1,6 +1,6 @@
 "use client"
 
-import BlogCard from "./BlogCard"
+import BlogCarousel from "./BlogCarousel"
 
 interface Blog {
   id: string
@@ -28,11 +28,5 @@ interface BlogGridFilterProps {
 }
 
 export default function BlogGridFilter({ blogs }: BlogGridFilterProps) {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-      {blogs.map(blog => (
-        <BlogCard key={blog.id} blog={blog} />
-      ))}
-    </div>
-  )
+  return <BlogCarousel blogs={blogs} />
 }
