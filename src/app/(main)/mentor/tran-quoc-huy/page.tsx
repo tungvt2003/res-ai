@@ -184,7 +184,7 @@ const MentorDetailPage = () => {
                 </h2>
 
                 {/* Bảng quá trình đào tạo */}
-                <div className="overflow-x-auto">
+                {/* <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
                       <tr className="bg-red-50">
@@ -209,7 +209,7 @@ const MentorDetailPage = () => {
                       </tr>
                     </tbody>
                   </table>
-                </div>
+                </div> */}
 
                 {/* Chứng chỉ khác */}
                 <div className="mt-6">
@@ -242,7 +242,6 @@ const MentorDetailPage = () => {
                   </div>
                 </div>
 
-                {/* Trình độ LLCT */}
                 <div className="mt-6 bg-gray-50 p-4 rounded-lg">
                   <p className="font-semibold text-gray-900 mb-2">Trình độ Lý luận chính trị:</p>
                   <p className="text-gray-700">Trung cấp Lý luận chính trị - Hành chính.</p>
