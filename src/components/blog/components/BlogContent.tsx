@@ -1,5 +1,6 @@
 "use client"
 
+import TableOfContents from "@/components/blog/components/TableOfContents"
 import { BiCalendar, BiCategory } from "react-icons/bi"
 
 interface BlogData {
@@ -38,7 +39,7 @@ export default function BlogContent({ blog }: BlogContentProps) {
   return (
     <article className="bg-white rounded-xl overflow-hidden">
       {/* Header */}
-      <div className="p-8 border-b border-gray-100">
+      <div className="p-4 md:p-8 border-b border-gray-100">
         <div className="flex items-center gap-2 text-sm text-gray-500 mb-4">
           <BiCategory className="w-4 h-4" />
           <span className="px-3 py-1 bg-[#2E8BC0]/10 text-[#2E8BC0] rounded-full text-xs font-medium">
@@ -57,7 +58,10 @@ export default function BlogContent({ blog }: BlogContentProps) {
       </div>
 
       {/* Content */}
-      <div className="p-8">
+      <div className="p-0 md:p-8">
+        <div className="block lg:hidden">
+          <TableOfContents content={blog.contents} />
+        </div>
         <div
           className="blog-content prose prose-lg max-w-none 
             prose-headings:text-gray-900 

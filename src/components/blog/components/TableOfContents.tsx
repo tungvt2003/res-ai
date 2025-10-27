@@ -122,7 +122,7 @@ export default function TableOfContents({ content, className = "" }: TableOfCont
   }
 
   return (
-    <div className={`bg-white rounded-xl p-6 ${className}`}>
+    <div className={`bg-white rounded-xl py-4 px-2 md:p-6 ${className}`}>
       <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2 px-3">Mục lục</h3>
 
       <nav className="space-y-1">

@@ -44,7 +44,7 @@ export default function BlogDetailLayout({ blog, layout = "7-3" }: BlogDetailLay
           </div>
 
           {/* TOC Sidebar */}
-          <aside className={sidebarCols}>
+          <aside className={sidebarCols + " hidden lg:block"}>
             <div className="sticky top-24 space-y-6">
               <TableOfContents content={blog.contents} />
             </div>
