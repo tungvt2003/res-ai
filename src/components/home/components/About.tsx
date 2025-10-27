@@ -177,7 +177,7 @@ export default function About() {
               },
               {
                 icon: BiUserCheck,
-                value: "12+",
+                value: "13+",
                 label: "Mentor chuyên môn",
                 description: "Giảng viên giàu kinh nghiệm",
                 color: "from-green-500 to-emerald-500",
