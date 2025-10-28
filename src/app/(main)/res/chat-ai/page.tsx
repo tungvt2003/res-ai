@@ -15,7 +15,7 @@ export default function ChatAiPage() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
-      text: "Xin chào! Tôi là Gemini AI, trợ lý nghiên cứu của bạn. Tôi có thể giúp bạn tìm kiếm tài liệu, phân tích dữ liệu, và hỗ trợ các công việc nghiên cứu khoa học. Bạn cần hỗ trợ gì hôm nay?",
+      text: "Xin chào! Tôi là Res-AI.EDU, trợ lý nghiên cứu của bạn. Tôi có thể giúp bạn tìm kiếm tài liệu, phân tích dữ liệu, và hỗ trợ các công việc nghiên cứu khoa học. Bạn cần hỗ trợ gì hôm nay?",
       isUser: false,
       timestamp: new Date(),
     },
@@ -90,7 +90,7 @@ export default function ChatAiPage() {
     setMessages([
       {
         id: "1",
-        text: "Xin chào! Tôi là Gemini AI, trợ lý nghiên cứu của bạn. Tôi có thể giúp bạn tìm kiếm tài liệu, phân tích dữ liệu, và hỗ trợ các công việc nghiên cứu khoa học. Bạn cần hỗ trợ gì hôm nay?",
+        text: "Xin chào! Tôi là Res-AI.EDU, trợ lý nghiên cứu của bạn. Tôi có thể giúp bạn tìm kiếm tài liệu, phân tích dữ liệu, và hỗ trợ các công việc nghiên cứu khoa học. Bạn cần hỗ trợ gì hôm nay?",
         isUser: false,
         timestamp: new Date(),
       },
@@ -114,7 +114,7 @@ export default function ChatAiPage() {
               <BiBot className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-lg font-semibold text-gray-900">Gemini AI</h1>
+              <h1 className="text-lg font-semibold text-gray-900">Res-AI.EDU</h1>
               <p className="text-sm text-gray-500">Trợ lý nghiên cứu thông minh</p>
             </div>
           </div>
@@ -202,7 +202,7 @@ export default function ChatAiPage() {
                       style={{ animationDelay: "0.2s" }}
                     ></div>
                   </div>
-                  <span className="text-sm text-gray-500">Gemini đang suy nghĩ...</span>
+                  <span className="text-sm text-gray-500">Res-AI.EDU đang suy nghĩ...</span>
                 </div>
               </div>
             </div>
