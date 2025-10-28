@@ -8,7 +8,7 @@ export default function ArticlesSection() {
       slug: "29cfc226-e30d-48fa-9f87-e1d170b53ce7",
       title: "Đạo Đức Sử Dụng AI Trong Nghiên Cứu",
       description:
-        "Khám phá các nguyên tắc đạo đức quan trọng khi sử dụng AI trong nghiên cứu khoa học, bao gồm tính minh bạch, công bằng và trách nhiệm trong việc phát triển và triển khai các hệ thống AI.",
+        "Sự phát triển nhanh chóng của trí tuệ nhân tạo (AI) đã mang lại nhiều công cụ hỗ trợ đắc lực cho giới nghiên cứu — từ tìm tài liệu, xử lý dữ liệu, phân tích thống kê, đến biên tập bản thảo và trình bày kết quả. Tuy nhiên, việc sử dụng AI trong nghiên cứu và công bố khoa học cũng đặt ra nhiều vấn đề đạo đức: nguy cơ sao chép, xuyên tạc dữ liệu, vi phạm bản quyền, và thậm chí làm suy giảm tính trung thực học thuật.",
       category: "Đạo đức AI",
       readTime: "5 phút đọc",
       gradient: "from-purple-500 to-pink-500",
@@ -20,10 +20,10 @@ export default function ArticlesSection() {
     },
     {
       id: 2,
-      slug: "29cfc226-e30d-48fa-9f87-e1d170b53ce7",
+      slug: "9429ca0e-c63d-4001-843d-a9218eee952a",
       title: "Liêm Chính Khoa Học Trong Nghiên Cứu khi ứng dụng AI",
       description:
-        "Tìm hiểu về các tiêu chuẩn liêm chính khoa học khi áp dụng AI trong nghiên cứu, đảm bảo tính khách quan, độ tin cậy và tính có thể tái tạo của kết quả nghiên cứu.",
+        "Trong bối cảnh Trí tuệ nhân tạo (AI) đang trở thành “Trợ lý học thuật thông minh” và được tích hợp xuyên suốt quá trình nghiên cứu, việc duy trì liêm chính khoa học (Research Integrity) là điều tối quan trọng để đảm bảo tính khách quan, độ tin cậy, và khả năng tái tạo (reproducibility) của kết quả nghiên cứu.",
       category: "Liêm chính khoa học",
       readTime: "7 phút đọc",
       gradient: "from-blue-500 to-cyan-500",
