@@ -17,7 +17,7 @@ const ContactButton = () => {
           </Link>
 
           {/* Messenger Button */}
-          <Link href="https://m.me/339690869699132" target="_blank" rel="nofollow" className={iconContactStyle}>
+          <Link href="https://m.me/pham.hang.7547" target="_blank" rel="nofollow" className={iconContactStyle}>
             <Image src="/new-messenger-icon.svg" alt="Messenger contact" width={31} height={31} priority={false} />
           </Link>
         </div>
