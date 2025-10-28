@@ -20,7 +20,8 @@ export default function ArticlesSection() {
     },
     {
       id: 2,
-      title: "Liêm Chính Khoa Học Trong Nghiên Cứu",
+      slug: "29cfc226-e30d-48fa-9f87-e1d170b53ce7",
+      title: "Liêm Chính Khoa Học Trong Nghiên Cứu khi ứng dụng AI",
       description:
         "Tìm hiểu về các tiêu chuẩn liêm chính khoa học khi áp dụng AI trong nghiên cứu, đảm bảo tính khách quan, độ tin cậy và tính có thể tái tạo của kết quả nghiên cứu.",
       category: "Liêm chính khoa học",

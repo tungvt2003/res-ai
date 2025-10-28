@@ -7,7 +7,7 @@ export default function ChatAISection() {
   const { requireAuth, showAuthModal, featureName, closeAuthModal } = useAuthGuard()
 
   const handleChatClick = () => {
-    requireAuth("Chat Bot Gemini", () => {
+    requireAuth("Chat Bot Res-AI.EDU", () => {
       window.location.href = "/res/chat-ai"
     })
   }
@@ -19,7 +19,7 @@ export default function ChatAISection() {
             <BiBot className="w-8 h-8 text-blue-600" />
           </div>
           <div>
-            <h3 className="text-2xl font-bold text-[#202c45] mb-2">Chat Bot Gemini</h3>
+            <h3 className="text-2xl font-bold text-[#202c45] mb-2">Chat Bot Res-AI.EDU</h3>
             <span className="inline-block px-3 py-1 text-sm font-semibold text-blue-600 bg-blue-100 rounded-full">
               Trò chuyện AI
             </span>
