@@ -322,10 +322,81 @@ textarea.scrollbar-thin::-webkit-scrollbar-thumb:hover {
 
 .blog-content img {
   transition: transform 0.3s ease !important;
+  max-width: 100% !important;
+  height: auto !important;
 }
 
 .blog-content img:hover {
   transform: scale(1.02) !important;
+}
+
+/* Force override ALL inline styles for responsive images */
+.blog-content img,
+.blog-content img[style],
+.blog-content img[style*="width"],
+.blog-content img[style*="height"],
+.blog-content img[style*="margin"],
+.blog-content img[style*="display"],
+.blog-content img[style*="aspect-ratio"] {
+  max-width: 100% !important;
+  width: auto !important;
+  height: auto !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+  display: block !important;
+  aspect-ratio: auto !important;
+}
+
+/* Override span wrapper styles that contain images */
+.blog-content span[style*="width"],
+.blog-content span[style*="height"],
+.blog-content span[style*="display"],
+.blog-content span[style*="overflow"],
+.blog-content span[style*="border"] {
+  max-width: 100% !important;
+  width: auto !important;
+  height: auto !important;
+  display: block !important;
+  overflow: visible !important;
+  border: none !important;
+}
+
+/* Target spans that contain images specifically */
+.blog-content span img {
+  max-width: 100% !important;
+  width: auto !important;
+  height: auto !important;
+  display: block !important;
+  margin: 0.5rem auto !important;
+}
+
+/* Responsive images for mobile */
+@media (max-width: 768px) {
+  .blog-content img {
+    max-width: 100% !important;
+    width: auto !important;
+    height: auto !important;
+    aspect-ratio: auto !important;
+    margin: 0.5rem 0 !important;
+    border-radius: 8px !important;
+  }
+  
+  .blog-content img:hover {
+    transform: none !important; /* Disable hover effect on mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .blog-content img {
+    max-width: 100% !important;
+    width: auto !important;
+    height: auto !important;
+    aspect-ratio: auto !important;
+    margin: 0.25rem 0 !important;
+    border-radius: 6px !important;
+  }
 }
 
 /* Table Styling - Base Styles */
