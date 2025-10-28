@@ -51,7 +51,7 @@ const ProgressRing = ({ value }: { value: number }) => {
 const LEVELS = [
   {
     key: "foundational",
-    title: "Cấp độ 1: Nhận thức nền tảng",
+    title: "Level 1: Explorer Badge",
     subtitle: "Foundational",
     color: "from-blue-500 to-indigo-500",
     icon: <Info className="h-5 w-5" />,
@@ -64,7 +64,7 @@ const LEVELS = [
   },
   {
     key: "applied",
-    title: "Cấp độ 2: Ứng dụng thực hành",
+    title: "Level 2: Researcher Badge",
     subtitle: "Applied",
     color: "from-emerald-500 to-teal-500",
     icon: <BadgeCheck className="h-5 w-5" />,
@@ -78,7 +78,7 @@ const LEVELS = [
   },
   {
     key: "advanced",
-    title: "Cấp độ 3: Độc lập & Công bố",
+    title: "Level 3: Scholar Badge",
     subtitle: "Advanced",
     color: "from-fuchsia-500 to-rose-500",
     icon: <Sparkles className="h-5 w-5" />,
@@ -206,7 +206,7 @@ const ResearchLiteracyBadge = () => {
                 key={lvl.key}
                 onClick={() => setActive(lvl.key)}
                 whileHover={{ y: -2 }}
-                className={`group relative w-full text-left p-5 rounded-2xl bg-white shadow-sm transition overflow-hidden ${activeCls}`}
+                className={`group relative w-full cursor-pointer text-left p-5 rounded-2xl bg-white shadow-sm transition overflow-hidden ${activeCls}`}
               >
                 <div className={`absolute inset-x-0 top-0 h-1 bg-linear-to-r ${lvl.color}`} />
                 <div className="flex items-center justify-between">
@@ -259,7 +259,7 @@ const ResearchLiteracyBadge = () => {
                   <button
                     key={i}
                     onClick={() => toggleTask(i)}
-                    className={`w-full flex items-start gap-3 p-3 rounded-xl border transition text-left ${
+                    className={`w-full flex cursor-pointer items-start gap-3 p-3 rounded-xl border transition text-left ${
                       profile[active].completed[i]
                         ? "bg-emerald-50 border-emerald-200"
                         : "bg-slate-50 border-slate-200 hover:bg-slate-100"
@@ -286,7 +286,7 @@ const ResearchLiteracyBadge = () => {
                 </div>
                 <button
                   onClick={addEvidence}
-                  className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900 text-white text-sm hover:bg-slate-800"
+                  className="inline-flex cursor-pointer items-center gap-2 px-3 py-2 rounded-xl bg-slate-900 text-white text-sm hover:bg-slate-800"
                 >
                   <Upload className="h-4 w-4" /> Tải minh chứng
                 </button>
