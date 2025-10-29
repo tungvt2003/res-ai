@@ -138,7 +138,7 @@ export async function POST(request: NextRequest) {
               
               <div class="info-row">
                 <div class="info-label">Hình thức:</div>
-                <div class="info-value">${formData.format.join(", ")}</div>
+                <div class="info-value">${formData.format}</div>
               </div>
               
               ${

@@ -28,7 +28,7 @@ const MentorConsultationForm = () => {
     researchStage: [],
     goal: "",
     duration: "",
-    format: [],
+    format: "",
     hasIdea: "",
     researchIdea: "",
     mentorType: "",
@@ -107,7 +107,7 @@ const MentorConsultationForm = () => {
           researchStage: [],
           goal: "",
           duration: "",
-          format: [],
+          format: "",
           hasIdea: "",
           researchIdea: "",
           mentorType: "",
@@ -405,12 +405,12 @@ const MentorConsultationForm = () => {
                     {["Online", "Trực tiếp", "Kết hợp"].map((format, idx) => (
                       <label key={idx} className="flex items-center gap-2 cursor-pointer">
                         <input
-                          type="checkbox"
+                          type="radio"
                           name="format"
                           value={format}
-                          checked={formData.format.includes(format as never)}
-                          onChange={handleCheckboxChange}
-                          className="w-4 h-4 text-[#202c45] rounded focus:ring-[#202c45]"
+                          checked={formData.format === format}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-[#202c45] focus:ring-[#202c45]"
                         />
                         <span className="text-gray-700">{format}</span>
                       </label>
