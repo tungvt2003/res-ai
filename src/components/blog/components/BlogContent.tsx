@@ -1,6 +1,7 @@
 "use client"
 
 import TableOfContents from "@/components/blog/components/TableOfContents"
+import { useMemo } from "react"
 import { BiCalendar, BiCategory } from "react-icons/bi"
 
 interface BlogData {
@@ -26,19 +27,31 @@ interface BlogContentProps {
   blog: BlogData
 }
 
+// Hàm chuẩn hóa HTML: đổi IP HTTP sang đường dẫn proxy/relative
+const normalizeHtml = (html: string) => {
+  if (!html) return html
+
+  return (
+    html
+      // ảnh uploads
+      .replace(/http:\/\/103\.243\.173\.86:9999\/uploads\//g, "/uploads/")
+  )
+  // nếu API khác cũng dùng IP thì map tiếp ở đây
+  // .replace(/http:\/\/103\.243\.173\.86:9999\/api\//g, "/api/")
+}
+
 export default function BlogContent({ blog }: BlogContentProps) {
-  // Format date
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("vi-VN", {
+  const formatDate = (dateString: string) =>
+    new Date(dateString).toLocaleDateString("vi-VN", {
       year: "numeric",
       month: "long",
       day: "numeric",
     })
-  }
+
+  const safeContents = useMemo(() => normalizeHtml(blog.contents), [blog.contents])
 
   return (
     <article className="bg-white rounded-xl overflow-hidden">
-      {/* Header */}
       <div className="p-4 md:p-8 border-b border-gray-100">
         <div className="flex items-center gap-2 text-sm text-gray-500 mb-4">
           <BiCategory className="w-4 h-4" />
@@ -57,11 +70,11 @@ export default function BlogContent({ blog }: BlogContentProps) {
         </div>
       </div>
 
-      {/* Content */}
       <div className="p-0 md:p-8">
         <div className="block lg:hidden">
           <TableOfContents content={blog.contents} />
         </div>
+
         <div
           className="blog-content prose prose-lg max-w-none 
             prose-headings:text-gray-900 
@@ -93,7 +106,7 @@ export default function BlogContent({ blog }: BlogContentProps) {
           style={{
             fontFamily: "Inter, system-ui, -apple-system, sans-serif !important",
           }}
-          dangerouslySetInnerHTML={{ __html: blog.contents }}
+          dangerouslySetInnerHTML={{ __html: safeContents }}
         />
       </div>
     </article>
