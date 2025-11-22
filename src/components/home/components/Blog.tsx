@@ -4,11 +4,32 @@ import { useGetBlogs } from "@/components/blog/hooks/use-blog.mutation"
 import { InlineLoading } from "@/components/shares/components/Loading"
 import Image from "next/image"
 import Link from "next/link"
-import { BiArrowToRight, BiCalendar, BiCategory } from "react-icons/bi"
+import { useMemo, useState } from "react"
+import { BiArrowToRight, BiCalendar, BiCategory, BiChevronLeft, BiChevronRight } from "react-icons/bi"
+
+const BLOGS_PER_PAGE = 6
 
 export default function Blog() {
   const { data: blogs, isLoading, error } = useGetBlogs()
-  const latestBlogs = blogs?.data?.slice(0, 6)
+  const [currentPage, setCurrentPage] = useState(0)
+
+  const { displayedBlogs, totalPages, hasNext, hasPrev } = useMemo(() => {
+    if (!blogs?.data) {
+      return { displayedBlogs: [], totalPages: 0, hasNext: false, hasPrev: false }
+    }
+
+    const totalPages = Math.ceil(blogs.data.length / BLOGS_PER_PAGE)
+    const startIndex = currentPage * BLOGS_PER_PAGE
+    const endIndex = startIndex + BLOGS_PER_PAGE
+    const displayedBlogs = blogs.data.slice(startIndex, endIndex)
+
+    return {
+      displayedBlogs,
+      totalPages,
+      hasNext: currentPage < totalPages - 1,
+      hasPrev: currentPage > 0,
+    }
+  }, [blogs?.data, currentPage])
   if (isLoading) {
     return <InlineLoading text="Đang tải bài viết..." className="h-64" />
   }
@@ -28,6 +49,18 @@ export default function Blog() {
   const truncateText = (text: string, maxLength: number) => {
     if (text.length <= maxLength) return text
     return text.substring(0, maxLength) + "..."
+  }
+
+  const handlePrevious = () => {
+    if (hasPrev) {
+      setCurrentPage(prev => prev - 1)
+    }
+  }
+
+  const handleNext = () => {
+    if (hasNext) {
+      setCurrentPage(prev => prev + 1)
+    }
   }
 
   return (
@@ -59,7 +92,7 @@ export default function Blog() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {latestBlogs?.map(blog => (
+          {displayedBlogs.map(blog => (
             <Link
               href={`/blog/${blog.id}`}
               key={blog.id}
@@ -106,15 +139,44 @@ export default function Blog() {
           ))}
         </div>
 
-        {/* <div className="text-center mt-12">
-          <Link
-            href="/edu/blog"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-[#202c45] text-white font-semibold rounded-lg hover:shadow-lg transition-all duration-300 hover:bg-[#202c45]/80"
-          >
-            Xem tất cả bài viết
-            <BiArrowToRight className="w-5 h-5" />
-          </Link>
-        </div> */}
+        {/* Navigation Buttons */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-center gap-4 mt-8">
+            <button
+              onClick={handlePrevious}
+              disabled={!hasPrev}
+              className={`inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                hasPrev
+                  ? "bg-[#2E8BC0] text-white hover:bg-[#1F4F86] hover:shadow-lg active:scale-95"
+                  : "bg-gray-200 text-gray-400 cursor-not-allowed"
+              }`}
+              aria-label="Bài viết trước"
+            >
+              <BiChevronLeft className="w-5 h-5" />
+              Trước
+            </button>
+
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600">
+                Trang <span className="font-semibold text-[#2E8BC0]">{currentPage + 1}</span> / {totalPages}
+              </span>
+            </div>
+
+            <button
+              onClick={handleNext}
+              disabled={!hasNext}
+              className={`inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                hasNext
+                  ? "bg-[#2E8BC0] text-white hover:bg-[#1F4F86] hover:shadow-lg active:scale-95"
+                  : "bg-gray-200 text-gray-400 cursor-not-allowed"
+              }`}
+              aria-label="Bài viết tiếp theo"
+            >
+              Tiếp theo
+              <BiChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        )}
       </div>
     </section>
   )
